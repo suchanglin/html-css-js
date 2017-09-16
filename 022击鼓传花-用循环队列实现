@@ -1,0 +1,191 @@
+一. 什么是队列
+
+队列是遵循先进先出的原则的一组有序的项。
+
+（类似我们平时生活中排队买东西，队伍最前面的先买到，然后离开）
+
+二. 创建队列
+
+1. 声明一个队列的类
+
+function Queue() {
+var items = [];//使用数组来储存队列中的元素
+//队列的属性和方法
+}
+2. 声明队列中的一些方法
+
+a. enqueue(element) 向队列尾部添加一项或多项
+
+this.enqueue = function(element){
+    items.push(element);
+}
+b. dequeue() 删除队列头部的一项，并返回移除的元素
+
+this.dequeue = function()
+{
+    return items.shift();
+}
+c. front() 返回队列中的第一个元素，队列不做任何改变
+
+this.front = function()
+{
+    return items[0];
+}
+d. isEmpty() 判断队列是否为空，若为空，则返回true；若不为空，则返回false
+
+this.isEmpty = function()
+{
+    return items.length == 0;
+}
+e. size() 返回队列包含元素的个数
+
+this.size = function()
+{
+    return items.length;
+}
+f. print() 以字符串的形式在控制台打印出来队列中的所有元素
+
+this.print = function()
+{
+    console.log(items.toString());
+}
+使用queue类
+实例化我们创建的queue类
+
+var myqueue = new Queue();
+
+三. 队列的一些修改的版本
+
+二中定义的队列是普通的版本，现实生活中有一些修改的队列。
+
+1. 优先队列
+
+实例：机场登机的时候，乘客是分有优先级的，优先级高的乘客可以先登机。
+
+（1）. 声明一个优先队列的类
+
+function PriorityQueue()
+{
+    var items = [];//还是使用一个数组来保存队列中的值
+}
+（2）. 定义优先队列里的一些方法
+
+a. QueueElement()创建一个特殊的元素，包含队列中的元素和对应的优先级
+
+function QueueElement(element,priority)
+{
+this.element = element;
+}
+
+b. enqueue() 向队列中按照优先级插入元素
+
+优先级越高，元素越靠前（优先级数字越小，优先级越高）
+
+this.enqueue = function(element,priority)
+{
+    var queueElement = new QueueElement(element,priority);
+
+    if(this.isEmpty())
+    {
+        items.push(queueElement);//如果队列为空，则直接把这个元素插入队列
+    }
+    else
+    {
+        var added = false;
+        //如果队列不为空，则将队列中的元素优先级从0位置逐一与要插入的元素的优先级比较，遇到第一个优先级数字比插入元素优先级数字大的，
+        则将元素插入到这个元素的前面
+        for(var i = 0; i<items.length;i++)
+        {
+            if(queueElement.priority < items[i].priority)
+            {
+                items.splice(1,0,queueElement);
+                added = true;
+                break;
+            }
+        }
+
+        if(!added)
+        {
+            items.push(queueElement);//如果队列中所有元素的优先级数字都比插入元素优先级数字小，则将元素插到队列末尾
+        }
+    }
+}
+注意：这种插入可以保证，在优先级一样的情况下，仍然是先进先出
+c. 补充解释js中的三个方法：
+
+shift() 移除数组的第一个元素，并返回第一个元素
+
+<script type="text/javascript">
+
+    var arr = new Array(3)
+    arr[0] = "George"
+    arr[1] = "John"
+    arr[2] = "Thomas"
+
+    document.write(arr.shift() + "<br />")
+
+</script>
+
+
+输出结果：George
+splice(index,howmany,item1,…,itemX)
+
+从index的地方开始删除howmany个元素，然后插入item
+
+若howmany=0，则不删除元素，直接插入
+
+<script type="text/javascript">
+
+    var arr = new Array(6)
+    arr[0] = "1"
+    arr[1] = "2"
+    arr[2] = "3"
+
+    document.write(arr + "<br />")
+    arr.splice(2,0,"4")
+    document.write(arr + "<br />")
+
+</script>
+
+输出结果：
+1，2，3
+1，2，4，3
+slice(start,end)
+
+不对原数组进行操作（原数组不变），生成一个新的数组（子数组）
+
+2. 循环队列 实现一个模拟的击鼓传花的游戏
+
+(1). 用程序语言理解击鼓传花的游戏
+
+击鼓传花是一群人围成一个圈，那么用一个数组来保存这些人的名字。
+
+当敲鼓一段时间，鼓停止，花在谁手上谁就会被淘汰，那么定义这段时间为一个数字，数到这个数字的时候，花在谁手上谁就会被淘汰。
+
+那么这个游戏需要传入两个参数：保存人名的数组、鼓停止的时刻
+
+(2). 实现击鼓传花
+
+function hotPotato(nameLIst,num)
+{
+    var queue = new Queue();//创建一个队列
+
+    //将人名存入队列
+    for(var i=0;i<nameList.length;i++)
+    {
+        queue.enqueue(nameList[i]);
+    }
+
+    while(queue.size()>1)
+    {
+        var loser = "";
+        for(var i=0;i<num;i++)
+        {
+            queue.enqueue(queue.dequeue());//在没有数到鼓停止的数字num时，从队列头部删除的元素queue.dequeue()需要被添加到队列尾部
+        }
+        loser = queue.dequeue();
+        console.log(loser+"在游戏中被淘汰")
+    }
+
+    return queue.dequeue();//最后的获胜者
+}
