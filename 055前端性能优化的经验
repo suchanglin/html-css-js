@@ -1,0 +1,328 @@
+主要分为以下7个方面进行优化
+
+雅虎35条：
+
+https://developer.yahoo.com/performance/rules.html
+
+内容
+服务端
+cookie
+CSS
+JavaScript
+Images
+Mobile
+
+一. 网页内容（9条）
+
+1. 减少http请求的次数
+
+(1)捆绑文件，减少文件请求的次数
+
+将多个js文件捆绑成一个文件
+将多个CSS文件捆绑成一个文件
+需要规划静态资源文件，把相对不变的合并在一起，把频繁变易的分隔开。
+
+(2) CSS Sprites:将多幅图片拼成一副图片，然后通过控制在什么地方具体显示这整张图片的什么位置
+
+CSS Sprites优点：减少http请求，减轻服务器压力
+
+CSS Sprites缺点：只能将background-image图片合成一张；需要对图片计算坐标和精准的定位。
+
+使用CSS3的一些效果代替图片。
+
+2. 缓存Ajax返回的数据
+
+（1）浏览器缓存：使用Expire和Cache-Control
+
+Expire和Cache-Control的介绍见这里：http://www.path8.net/tn/archives/2745
+
+这是设置浏览器缓存用的。注意，如果你设置了较长时间的缓存，那么每次修改组件内容时，也需要一并修改组件名字，否则浏览器不会重新发起请求。
+这就是为什么我们看到的许多js和css文件都带着hash戳或者时间戳。
+
+（2）304协同缓存：配置ETag
+
+后端可以在响应报文中添加Etag这一项，那么当浏览器下次请求同样的资源时，会携带If-None-Match条目。假如Etag没有发生变化，
+服务器可以返回304 Not Modified状态码，无须重新下载资源。
+
+Etag指的是版本标识符，由服务端配置。
+
+例如：
+
+响应报文：
+
+  HTTP/1.1 200 OK   
+  Last-Modified: Tue, 12 Dec 2006 03:03:59 GMT   
+  ETag: "10c24bc-4ab-457e1c1f"   
+  Content-Length: 12195
+
+下一次的请求报文 ：
+
+  GET /i/yahoo.gif HTTP/1.1   
+  Host: us.yimg.com   
+  If-Modified-Since: Tue, 12 Dec 2006 03:03:59 GMT   
+  If-None-Match: "10c24bc-4ab-457e1c1f"  
+
+再次响应的报文：
+
+  HTTP/1.1 304 Not Modified
+这件事一般交由你用的服务器（比如Nginx）去做
+
+3. 减少DOM元素的数量
+
+过多的DOM元素会拖慢js执行的速度
+
+4. 避免404
+
+5. 预加载组件
+
+6. 延迟加载组件
+
+5，6都是为了拆分初始化负载
+
+7. 减少DNS查找
+
+8. 跨域分离组件
+
+9. 尽量少用iframe
+
+
+
+二. 服务器（7条）
+
+1. 使用CDN（Content Delivery Network）内容分发网络（加速静态资源的访问）
+
+一般的大型网站，为了优化网络资源，通常会将页面和静态资源分集群部署。
+
+一般会把静态资源部署到CDN上，使用户就近取得所需要的内容，解决Internet网络拥挤状况，提高用户访问网络的响应速度。
+
+2. 尽量使用GET请求
+
+GET方法耗时较短
+
+浏览器在实现XMLHttpRequest POST的时候分成两步，先发header，然后发送数据。而GET却可以用一个TCP报文完成请求。
+
+3. 服务器启用Gzip压缩
+
+在发送的请求中添加：
+
+GET /index.html HTTP/1.1
+Accept-Encoding: gzip
+服务器接收到这个请求后，就会返回压缩后的数据
+
+你可以gzip一切，除了图片和pdf，因为这些文件一般都是压缩过了的，使用gzip甚至可能会增大文件大小。
+
+4. 避免图片src的属性为空
+
+5. 尽早清空缓存区
+
+6. 配置Etag
+
+7. 在请求头中添加Expires或者Cache-Control
+
+6、7其实就是一中的缓存ajax返回的数据
+
+
+
+三. Cookie（2条）
+
+1. 减小Cookie的大小
+
+由于Cookie是用来标识服务器的特有信息，一般通过http请求中的头部一起发送到服务器端。在客户端和服务器端之间来回传递
+
+2. 把组件放在不含cookie的域下
+
+四. CSS（6条）
+
+1. 将CSS样式表置顶
+
+将css文件放在head中
+
+原因：浏览器解析代码是从上到下的。如果把css放在底部，当网速慢时，html代码加载完成后而css没加载完的话，会导致页面没有样式而难以阅读，
+所以先加载css样式能让页面正常显示。
+
+加载和解析css不会阻塞页面。
+
+2. 合并多个css文件
+
+减少http请求次数
+
+3. 压缩css文件
+
+去掉不必要的空格、回车
+给一些样式添加前缀（解决兼容性）
+抽取出共同的样式？
+4. 把css放到外面
+
+5. 避免使用滤镜
+
+6. 避免使用@import
+
+
+五. JavaScript的相关性能优化（6条）
+
+1. 将脚本置底
+
+JavaScript代码的加载和执行会阻塞页面的解析渲染以及其他资源的下载。
+
+如果放在head里面，当加载多个js时，就会阻塞页面渲染而出现白屏，用户体验会很差。
+
+所以将脚本放在之前，等其他部分加载好了，再加载脚本。
+
+2. 把脚本放在外面
+
+3. 合并多个script标签
+
+合并多个js文件来减少HTTP请求的次数,减少三次握手的次数和多余的HTTP头传输,降低响应时间提高用户体验。
+
+4. 去除重复的脚本
+
+5. 减少对dom的操作
+
+尽量减少回流（reflow）和重绘（repaint）
+
+6. 使用无阻塞加载js的方法
+
+使用script标签的defer和async属性
+使用动态创建的script标签来加载执行js代码
+使用XHR对象加载js代码并注入页面
+7. 压缩js
+
+保证每句话的结尾用”;”
+去掉注释、空格
+if else用{}包好
+变量命名的优化
+
+
+
+
+六. 图片的相关性能优化（4条）
+
+1. 压缩图片
+
+2. 使用css sprite技术
+
+将多个小图标放在一张图片上，减少http请求，将多幅图片拼成一副图片，然后通过控制在什么地方具体显示这整张图片的什么位置
+
+优点：
+
+减少网页的http请求
+减少图片的字节：3张图片合并成1张图片的字节总是小于这3张图片的字节总和
+不需要对每一个小元素进行命名
+3. iconfont矢量图标库
+
+icon图片过多的情况下，考虑使用iconfont技术
+
+4. 不要用HTML缩放图片
+
+多个CSS样式表是不会同时加载的，但是所有的样式表都加载完了之后，再一起解析，加载css不会阻塞页面。
+
+多个js也是不会同时加载的，如果没有设定一些特殊的属性的情形下，一般是加载完了直接执行。
+
+多个图片是可以同时加载的，加载图片也不会阻塞页面
+
+
+
+七. 移动端（2条）
+
+1. 保证所有组件都小于25k
+
+2. 把组件打包到一个复合文档里
+
+编写高效的js
+
+上面的几点都不是在写代码的过程中的优化
+
+1. 管理作用域 ———— 使用局部变量，尽量少使用全局变量
+
+局部变量是js中读写最快的标识符
+
+因为局部变量一般都在作用域链的活动对象中，在作用域链的顶部。
+
+标识符在作用域链中的位置越靠上，存取的速度就越快。
+
+例子：
+
+
+//不好的写法
+function createChildFor(id) {
+	var element = document.getElementById('id'),
+	newElement = document.createElement('div');
+
+	element.appendChild(newElement);
+}
+
+//好的写法
+//使用局部变量缓存全局变量document
+function createChildFor(id) {
+	var doc = document,
+	element = doc.getElementById('id'),
+	newElement = doc.createElement('div');
+
+	element.appendChild(newElement);
+}
+
+2. 存取读取数据的方式 ———— 将频繁需要读取的值存储在局部变量中
+
+举个栗子：
+
+
+//不好的写法
+function process(data) {
+	if(data.length > 0) {
+		for(var i = 0; i < data.length; i++) {
+			...
+		}
+	}
+}
+
+//好的写法
+function process(data) {
+	
+	//将数组的长度存到一个局部变量中
+	var len = data.length;
+	if(len > 0) {
+		for(var i = 0; i < len; i++) {
+			...
+		}
+	}
+}
+
+3. if语句和switch语句
+
+使用if语句的情况：2个之内的离散值需要判断；有区间范围
+
+使用switch语句的情况：10个离散值需要判断
+
+使用数组查询？？？？
+
+4. 快速循环
+
+for / while / do … while
+
+用局部变量缓存数组的长度
+
+将循环递减到0，而不是增加到总长度
+
+5. 使用定时器
+
+使用setTimeout进行数组分块处理
+
+使用setTimeout进行函数节流
+
+http://panpanfish.com/2016/05/16/2016-05-16-%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/
+
+6. 减少对dom的操作
+
+使用DocumentFragment优化多次append
+
+使用一次innerHTML赋值代替构建dom元素
+
+7. 减少重绘和回流
+
+利用className代替style
+
+为动画的元素使之脱离文档流
+
+8. 使用事件代理
+
+9. 尽量少使用eval函数
