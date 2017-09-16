@@ -1,0 +1,90 @@
+一. css实现tab页的基本思想
+
+tab页也就是标签页，点击一个标签选择一个页面，基本思想就是，点击标签，让对应的页面显示（display:block;）
+
+由于不能使用javascript，这里就要借助html里面一个特殊的标签<input type="radio" />，也就是单选框，每一个tab按钮对应一个单选框，
+如果单选框的状态是checked，那么就让对应的div显示。
+
+这里还有一个小技巧，就是利用label标签的for属性，点击label，就可以选中input框。
+
+<label for="myinput"></label>
+<input id="myinput" type="radio" />
+二. 用CSS实现tab页的代码
+
+<ul class="tabs">
+    <li>
+      <input type="radio" name="tabs" id="tab1" checked />
+      <label for="tab1">选项卡 1</label>
+      <div id="tab-content1" class="tab-content">
+        <p>选项卡内容 1</p>
+      </div>
+    </li>
+
+    <li>
+      <input type="radio" name="tabs" id="tab2" />
+      <label for="tab2">选项卡 2</label>
+      <div id="tab-content2" class="tab-content">
+        <p>选项卡内容 2</p>
+      </div>
+    </li>
+  </ul>
+css代码
+
+.tabs {
+  width: 650px;
+  float: none;
+  list-style: none;
+  position: relative;
+  margin: 80px 0 0 10px;
+  text-align: left;
+}
+.tabs li {
+  float: left;
+  display: block;
+}
+.tabs input[type="radio"] {
+  position: absolute;
+  top: -9999px;
+  left: -9999px; /*这一段代码主要是为了隐藏掉input单选框 */
+}
+.tabs label {
+  display: block;
+  padding: 14px 21px;
+  border-radius: 2px 2px 0 0;
+  font-size: 20px;
+  font-weight: normal;
+  text-transform: uppercase;
+  background: #8e44ad;
+  cursor: pointer; /*指定光标移上的形状*/
+  position: relative;
+  top: 4px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.tabs label:hover {
+  background: #703688;
+}
+.tabs .tab-content {
+  z-index: 2;
+  display: none;
+  overflow: hidden;/**/
+  width: 100%;
+  font-size: 17px;
+  line-height: 25px;
+  padding: 25px;
+  position: absolute;
+  top: 53px;
+  left: 0;
+  background: #612e76;
+}
+.tabs [id^="tab"]:checked + label {
+  top: 0;
+  padding-top: 17px;
+  background: #612e76;/*.tab的子孙元素里，id里面含有"tab"的元素，如果状态是checked，那么input相邻的label元素的样式发生变化*/
+}
+.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+  display: block;/*.tab的子孙元素里，id里面含有"tab"的元素，如果状态是checked，那么input相邻的元素，如果id里面包含"tab-content",
+  那么就显示为block*/
+}
