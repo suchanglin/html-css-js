@@ -1,0 +1,42 @@
+一. 浏览器中对js程序的限制
+
+js在浏览器中运行时，会被分配一个确定数量的资源。
+
+主要是在下面两个方面进行了限制：
+
+运行时间
+语句数量
+如果程序超过了限制，便会有一个弹出框，询问用户是否继续执行该段程序。
+
+使用定时器可以绕开这个弹出框
+
+二. 数组分块技术
+
+长时间的循环
+
+思想：将对整个数组的操作分割成一小块一小块来操作，可以使用setTimeout将每一次操作插入到消息队列中。
+
+
+function chunk(array, process, context) {
+	setTimeout(function(){
+		//获得数组的第一项
+		var item = array.shift();
+		
+		//对数组的第一项进行处理
+		process.call(context,item);
+		
+		if(array.length > 0) {
+			
+			//arguments.callee指的是当前正在执行的函数
+			setTimeout(arguments.callee, 100);
+		}
+		
+	}, 100);
+}
+
+var names = ['a','b','c','d','e'],
+	todo = names.concat(); //复制数组
+
+chunk(todo, function(item) {
+		...一些复杂的操作
+});
