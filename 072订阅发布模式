@@ -1,0 +1,45 @@
+今天面试让手写了一个类似jquery里面的on、trigger的程序
+
+
+$(".ele").on("click",function(){
+    console.log("clicking");//监听事件（订阅）
+});
+
+$(".ele").trigger("click");//触发事件（发布）
+
+程序实现如下：
+
+
+var callbacks = {};
+      function on(type,func){
+          if(!callbacks[type]){
+              callbacks[type] = [];
+          }
+          callbacks[type].push(func);
+      }
+
+      function trigger(type){
+          var args = Array.prototype.slice.apply(arguments,1);
+          if(!callbacks[type]){
+              return;
+          }else{
+              for(var i = 0;i < callbacks[type].length;i++){
+                  callbacks[type][i].apply(this,args);
+              }
+          }
+      }
+
+这个程序就是一个订阅/发布模式的程序。
+
+注意：
+
+一个type类型可以使用on来监听若干个事件，所以在trigger里面需要使用循环来调用这个type上的所有的事件处理程序
+
+trigger还可以传入参数给事件处理程序
+
+
+$(".ele").on("click",function(a){
+    console.log("clicking" + a);//监听事件（订阅）
+});
+
+$(".ele").trigger("click", '1');//触发事件（发布）
