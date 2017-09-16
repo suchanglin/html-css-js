@@ -1,0 +1,65 @@
+1. 关键字 in 的作用
+
+判断变量是否为对象的属性
+判断变量是否为数组的索引
+其实上面两种很好理解，由于数组是一组有序的名值对，对象是一组无序的名值对，对象的属性也可以类比为数组的索引。
+
+格式： 变量 in 对象
+
+(1) 判断变量是否为对象的属性
+
+eg:
+
+var myObj = {
+  name:"hello",
+  age:22
+};
+
+alert("name" in myObj);//true
+alert("hello" in myObj);//false
+in不能辨别出对象自身的属性和原型链上的属性
+hasOwnProperty 可以判断一个对象是否包含自定义属性而不是原型链上的属性
+
+// 修改Object.prototype
+Object.prototype.bar = 1; 
+var foo = {goo: undefined};
+
+foo.bar; // 1
+'bar' in foo; // true
+
+foo.hasOwnProperty('bar'); // false
+foo.hasOwnProperty('goo'); // true
+(2) 判断变量是否为数组的索引
+
+eg:
+
+var myArr = ["a","b","c"];
+
+alert(1 in myArr);//true
+alert("b" in myArr);//false
+2. for-in语句
+
+是一种精准的迭代语句，用来枚举对象的属性
+
+(1) 枚举对象的属性
+
+var myObj = {
+  name:"hello",
+  age:22
+};
+
+for(var attr in myObj)
+{
+    console.log(attr);//name age
+}
+
+for-in会遍历对象原型链上的所有属性
+(2) 枚举数组的元素
+
+var myArr = ["a","b","c"];
+
+for(var i in myArr)
+{
+    console.log(myArr[i]);//name age
+}
+注意： 这里的i是字符串，而不是数字
