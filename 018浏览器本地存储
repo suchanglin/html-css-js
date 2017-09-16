@@ -1,0 +1,281 @@
+一. 什么是缓存
+
+web缓存是一个设备，这个设备可以自动保存常用的文档的副本。在客户端发起请求的时候，如果就近的缓存拥有客户端想要的副本，那么就会加快网站的响应速度。
+
+在出现带宽不足、瞬间拥塞（很多用户同时访问某一站点）、距离时延（由于距离很远产生时延）这些情况下，缓存的优势就会体现出来了。
+
+缓存可分为：私有缓存和公有缓存。
+
+私有缓存是个人缓存，包含单个用户最常用的页面。（浏览器的缓存是私有缓存）
+
+公有缓存包含了某个用户团体的常用的页面。
+
+二. 浏览器存储
+
+浏览器存储（Browser Caching）是浏览器的一种优化机制。浏览器的缓存中保存了用户经常访问的一些文档的副本，避免了一些重复的网络请求，
+浏览器能够快速地读取本地的数据，这样就会加快网站的访问速度。
+
+1. 浏览器有哪几种缓存机制
+
+浏览器一共有九种缓存机制
+
+打开浏览器 -> 点击F12 -> 点resourses
+
+可以看到浏览器的八种缓存机制
+
+浏览器的几种缓存机制
+
+(1). http缓存
+
+http缓存是基于http协议的浏览器文件缓存机制，当重复请求某一个文件时，浏览器可以根据协议的头文件判断是从服务器端请求文件还是从本地读取文件。
+
+上图中的Frames展示的就是http缓存
+
+http缓存
+
+a. 判断过期的两种方式：Expires和Cache-Control:max-age
+
+Expires：存的是绝对的过期的日期（例如：牛奶的保质期）
+
+Cache-Control:max-age 存的是还可以保鲜多久，是相对时间，用秒做单位
+b. 如果a中判断缓存已经过期，那么就要进行缓存再验证
+
+缓存再验证的两种方式：
+请求报文里携带
+If-Modified-Since:Date和If-None-Match
+
+If-Modified-Since:Date  对修改日期进行验证
+
+If-None-Match：<tags> 对实体标签的版本标识符进行验证
+例如：
+
+响应报文：
+
+  HTTP/1.1 200 OK   
+  Last-Modified: Tue, 12 Dec 2006 03:03:59 GMT   
+  ETag: "10c24bc-4ab-457e1c1f"   
+  Content-Length: 12195
+
+下一次的请求报文 ：
+
+  GET /i/yahoo.gif HTTP/1.1   
+  Host: us.yimg.com   
+  If-Modified-Since: Tue, 12 Dec 2006 03:03:59 GMT   
+  If-None-Match: "10c24bc-4ab-457e1c1f"  
+
+再次响应的报文：
+
+  HTTP/1.1 304 Not Modified
+c. b中再验证的结果有两种：服务器中的文件未修改 和 服务器中的文件有修改
+
+服务器中的文件未修改：缓存中的副本可以使用，那么浏览器直接从缓存读取文档，返回304
+
+服务器中的文件有修改：缓存中的副本不能使用，那么直接从服务器端读取文档，返回200
+(2). indexDB 客户端本地数据库（大型数据库）
+
+indexDB是浏览器中的一种数据库，用来保存结构化数据。
+
+indexDB设计的操作完全是异步进行的。
+
+indexDB最大的特色是使用对象保存数据。
+
+indexDB.open(“database”) 打开数据库 或者 创建并打开数据库
+
+indexDB.setVersion(“1.0”) 为数据库指定一个版本号
+
+database.transaction(); 创建事务，对数据库进行操作
+
+openCursor() 在对象存储空间上调用这个方法，通过游标查找数据
+
+createIndex() 创建索引
+
+indexDB的并发问题
+
+(3). Cookies
+
+1.cookies是什么
+
+cookies是服务器用来标识web用户的一小块数据。
+
+cookies的基本思想就是让浏览器积累一组服务器特有的信息，并在客户端和服务器端来回传递。
+
+Cookies是由服务器端生成，发送给浏览器，浏览器会将Cookies的key/value保存到某个目录下的文本文件内，下次请求同一网站时就发送该Cookies给服务器（前提是浏览器设置为启用cookies）。
+
+Cookies一般存在用户本地终端上，通常经过加密处理。
+
+Cookies一般通过http请求中的头部一起发送到服务器端。在客户端和服务器端之间来回传递。
+
+一条cookie记录主要由键、值、域、过期时间、大小组成。
+
+2. cookies的分类：持久cookies 和 会话cookies
+
+一般而言，我们所说的cookie是指的持久cookie（设置了过期时间的cookie）
+
+持久cookie：存储在硬盘上
+
+持久cookie：是在过期时间之后消失。
+
+持久cookie：是存在电脑硬盘里，是可以被同一个浏览器的所有页面共享的（无论是多进程还是多线程浏览器）；
+补充一点点：
+
+不同浏览器之间不能共享cookie，因为每个浏览器存cookie路径不是一样的。
+
+3. cookies的安全性问题：
+
+第三方web站点使用持久cookie来跟踪用户，当用户访问同一个广告公司提供的站点，浏览器就会回送之前设置的持久cookie，
+广告公司便可构建成一个用户档案和浏览习惯的详尽数据集。
+
+(4). storage类型
+
+有如下方法：
+
+clear()
+getItem(name)
+key(index)
+removeItem(name)
+setItem(name,value)
+localStorage对象：要访问同一个localStorage对象，页面必须同源
+sessionstorage对象：只能被最初给对象存储的页面所访问
+globalStorage对象：已被localStorage对象所取代
+修改localStorage对象、sessionstorage对象都会触发 document 的 storage事件
+
+localstorage 和 sessionstorage 都是HTML5提供的在客户端存储数据的新方法。
+
+这两个都是windows对象的属性。
+
+其主要区别是：
+
+localStorage - 没有时间限制的数据存储，主要用来存储ajax返回的数据，加快下次访问的渲染速度。
+
+sessionStorage - 针对一个 session 的数据存储。浏览器关闭后就删除。
+
+不同的浏览器无法共享localStorage或sessionStorage中的信息。
+
+注意：cookies、localStorage、sessionStorage的区别
+
+1. 存储时间不同
+
+持久cookies在过期日期之前都会存在
+
+localStorage会一直存在，除非主动删除
+
+sessionStorage在标签页关闭之后就会删除
+
+2. 存储的位置不同
+
+持久cookies是存在用户终端，也就是电脑硬盘上，cookies始终在同源的http请求中携带，会在浏览器和服务器间来回传递。
+
+localStorage和sessionStorage是存在浏览器端
+
+3. 存储大小不同
+
+cookies数据大小不能超过4k
+
+sessionStorage和localStorage存储大小比cookies大得多，可以达到5M
+
+4. cookie还需要指定作用域，不允许跨域调用
+localStorage、sessionStorage的使用场景：
+
+localStorage实现离线操作，新闻编辑上传功能，离线时保存在本地，有线时上传；保存用户配置项。
+
+希望用户关闭页面之后就销毁的数据可以保存在sessionStorage中
+
+(6). application cache 离线存储
+
+1.什么是application cache
+
+application cache是HTML5的新特性，允许浏览器在本地存储页面所需要的资源，使得页面离线也可以访问。
+
+在用户没有与因特网进行连接时，可以正常访问站点或应用，在用户与因特网连接时，更新用户机器上的缓存文件。
+
+application cache是从浏览器的缓存中分出来的一块缓存区。
+
+如何判断设备是否离线？
+
+1
+2
+3
+4
+5
+6
+7
+if(navigator.onLine) {
+
+	//设备在线时的操作
+
+} else {
+	//设备离线时的操作
+}
+window对象上定义了2个事件：
+
+online: 设备从离线变成在线
+offline: 设备从在线变成离线
+2.使用方法
+
+a. 首先需要写一下application cache的配置文件
+
+配置文件称为缓存清单文件（cache manifest），这个很好理解，可以理解成我们通过这个文件告诉浏览器需要缓存哪些文件。
+
+这个文件一般为.appcache类型
+
+缓存清单文件一般包括4个部分：
+
+第一部分 文件头部信息 标注文件类型
+
+CACHE MANIFEST
+# version XX.XX.XX
+第二部分 CACHE部分 标注哪些资源文件需要被缓存
+
+CACHE：
+image.png
+myjavascript.js
+第三部分 NETWORK部分 标注哪些文件需要连接服务器
+
+NETWORK：
+login.php
+注意：如果CACHE和NETWORK里面有相同的资源，那么这个资源还是会被离线缓存，CACHE的有限级更高。
+第四部分 FALLBACK 表示没有响应时的替代方案
+
+FALLBACK：
+static.htmi
+b. 在html标签上添加manifest属性
+
+<html manifest="name.appcache">
+
+name.appcache为离线存储的配置文件
+c. 在离线状态下操作window.applicationCache进行需求实现
+
+另外，需要注意的是更新缓存。可以通过window.applicationCache 对象来访问浏览器的app cache。
+
+window.applicationCache.status 为cache当前的状态
+
+window.applicationCache.update() 会更新当前的缓存
+
+window.applicationCache.swapCache() 会启用新的缓存
+
+oncached:当离线资源存储完成之后触发这个事件，这个是文档的说法，我在Chrome上面测试的时候并没有触发这个事件。
+
+onchecking:当浏览器对离线存储资源进行更新检查的时候会触发这个事件
+ondownloading:当浏览器开始下载离线资源的时候会触发这个事件
+
+onprogress:当浏览器在下载每一个资源的时候会触发这个事件，每下载一个资源就会触发一次。
+
+onupdateready:当浏览器对离线资源更新完成之后会触发这个事件
+
+onnoupdate:当浏览器检查更新之后发现没有资源更新的时候触发这个事件
+在网上看到的一篇讲离线存储讲得很好的文章，https://segmentfault.com/a/1190000000732617
+
+(7). cacheStorage
+
+cacheStorage 在浏览器上的引用名叫 caches
+
+CacheStorage 是多个 Cache 的集合，而每个 Cache 可以存储多个 Response 对象
+
+cacheStorage有open、match、has、delete、keys五个核心方法，可以对cache对象的不同匹配进行不同的响应
+
+https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage
+
+(8). flash缓存
+
+这种方式基本不用，这一方法主要基于flash有读写浏览器端本地目录的功能，同时也可以向js提供调用的api，则页面可以通过js调用flash去读写特定的磁盘目录，
+达到本地数据缓存的目的。
