@@ -1,0 +1,70 @@
+洗牌算法的本质其实就是将有序的数组变成无序。
+
+一. 方法一
+
+算法思路：
+
+选中数组中的最后一个数（基准尾数）
+随机选取从第一个数到基准尾数之间的一个数，将选中的数和基准尾数中的数位置互换
+选取倒数第二个数作为基准尾数，重复上面两步
+以此类推
+选择两个[0…array.Length)之间的随机数
+
+
+Array.prototype.shuffle = function() {
+	var input = this;
+	for (var i = input.length-1; i >=0; i--) {
+		var randomIndex = Math.floor(Math.random()*(i+1)); //产生0到i之间的随机整数
+		var itemAtIndex = input[randomIndex]; 
+		input[randomIndex] = input[i]; 
+		input[i] = itemAtIndex;
+	}
+	return input;
+}
+
+var tempArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+tempArray.shuffle();
+// and the result is...
+alert(tempArray);
+
+
+
+二. 方法二
+
+
+//洗牌算法 
+function shuffle(arr){            
+               var len = arr.length, i, j, temp, index,
+               n = Math.floor(len/2)+1; 
+               
+               while( n-- ){ 
+                   i = Math.floor(Math.random()*len); 
+                   j = Math.floor(Math.random()*len); 
+                   if( i!==j ){ 
+                       temp = arr[i]; 
+                       arr[i] = arr[j]; 
+                       arr[j] = temp; 
+                   } 
+               } 
+               //增加切牌操作 
+               index = Math.floor(Math.random()*len);
+			var half = arr.splice(0,i) ;
+               arr.push.apply(arr, half); //splice会改变原数组
+               return arr; 
+      } 
+var test = [1, 2, 3, 4, 5, 6, 7, 8, 9]; 
+var newarr = test.slice(0); 
+mess(newarr); 
+console.log(test); 
+console.log(newarr);
+
+
+
+三. 方法三（乱序效率可能不高）
+
+
+var testArray3=[1,2,3,4,5,6,7,8,9,10,22,33,55,77,88,99]; 
+
+testArray3.sort(function(){return Math.random()>0.5?-1:1;}); 
+
+alert(testArray3);
