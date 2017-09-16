@@ -1,0 +1,70 @@
+一. css3的新属性
+
+边框
+文本
+背景
+转换
+过渡
+动画
+
+1. 边框
+
+border-radius
+box-shadow
+border-image
+
+2. 背景
+
+background-size
+background-origin
+
+3. 文本
+
+text-shadow
+word-wrap
+
+4. 字体
+
+5. 转换 transform
+
+transform:translate()
+transform:rotate()
+transform:scale()
+transform:skew()
+transform:matrix()
+
+6. 过渡 transition
+
+
+animation: myfirst 5s;
+
+@keyframes myfirst
+{
+  from {background: red;}
+  to {background: yellow;}
+}
+二. 过渡／动画的回调处理
+
+一个动画完成后执行一些回调操作
+
+1. Transition Events
+
+webkit: ‘webkitTransitionEnd’
+Moz: ‘transitionend’
+O: ‘oTransitionEnd’
+ms: ‘MSTransitionEnd’
+
+var Div = document.getElementById("myDIV");
+Div.addEventListener("webkitTransitionEnd", myFunction,false);
+
+注意：如果transition中变换的属性有多个比如设置宽高过渡（transition :width:.2s,height:.4s）, transitionend事件会促发2次
+
+2. Animation Events
+
+animationend
+
+var Div = document.getElementById("myDIV");
+Div.addEventListener('webkitAnimationEnd', function () {
+        alert('动画执行完毕！');
+        // callback here
+      }, false);
