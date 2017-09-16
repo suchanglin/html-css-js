@@ -1,0 +1,72 @@
+一. 什么是webpack
+
+webpack是一个前端构建工具，其主要思想是将项目中用到的一切静态资源都看成是模块，webpack可以对其进行统一的管理和发布。
+
+webpack中支持使用AMD和CommonJS规范。
+
+webpack可以看成模块打包机，它所做的功能：分析项目结构，找到js模块，和其他一些模块（Scss等），并将其进行相应的处理，打包为合适的格式给浏览器使用。
+
+二. webpack模块加载器Loaders
+
+webpack本身只支持将js模块打包，对于图片、CSS、LESS、JSX等等，需要首先使用对应的模块加载器进行转换。
+
+举个栗子：
+
+LESS文件 ——> 通过less-load处理成css ——> 通过css-loader加载成css模块 ——> 由style-loader做最后的处理
+
+Webpack的加载器之间可以进行串联，一个加载器的输出可以成为另一个加载器的输入。
+
+三. 打包成多个资源文件
+
+将项目中的模块打包成多个资源文件有两个目的：
+
+将多个页面的公用模块独立打包，从而可以利用浏览器缓存机制来提高页面加载效率；
+按需加载，减少页面初次加载时间。
+四. webpack打包之后的文件
+
+webpack兼容commonjs规范、AMD
+
+打包之前的2个模块：
+
+parent.js
+
+
+var cats = ['dave','henry','martha'];
+//commonJS的写法
+module.exports = cats;
+app.js
+
+
+cats = require('./parent.js');
+打包之后的文件：
+
+
+([
+	function(module, exports, __webpack_require__) {
+    	cats = __webpack_require__(1);
+    	console.log(cats);
+	},
+    
+	function(module, exports) {
+        var cats = ['dave', 'henry', 'martha'];
+        module.exports = cats;
+	}
+])
+数组第一个元素是app.js里面的内容，第二个元素是依赖的内容
+
+由此可见，不仅app.js里面的内容被打包进app.bundle.js，app.js所依赖度cats.js也被打包了进来。
+
+webpack打包原理是边读边分析入口文件的依赖，分析入口文件依赖的文件的依赖，以此类推，只要有依赖都去分析并打包到输出文件(app.bundle.js)中
+
+五. 生成source maps
+
+使得调试更容易
+
+在配置文件中加上devtool字段
+
+devtool的取值有
+
+source-map
+cheap-module-source-map
+eval-source-map
+cheap-module-eval-source-map
