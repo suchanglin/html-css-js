@@ -1,0 +1,90 @@
+一.
+
+一栏浮动，另一栏设置margin
+
+<style>
+    body {
+        width: 300px;
+    }
+
+    .aside {
+        width: 100px;
+        height: 150px;            
+        background: #f66;
+
+        float: left;//
+    }
+
+    .main {
+        height: 200px;
+        background: #fcc;
+
+        margin-left:110px;
+    }
+</style>
+<body>
+    <div class="aside"></div>
+    <div class="main"></div>
+</body>
+二. 一栏绝对定位，另一栏设置margin
+
+<style>
+    body {
+        width: 300px;
+    }
+
+    .aside {
+        width: 100px;
+        height: 150px;            
+        background: #f66;
+
+        position: absolute;//
+    }
+
+    .main {
+        height: 200px;
+        background: #fcc;
+
+        margin-left:110px;
+    }
+</style>
+<body>
+    <div class="aside"></div>
+    <div class="main"></div>
+</body>
+一、二的原理是一样的，都是利用div的流体特性，这两种方法的缺点是：要知道浮动或者绝对定位的那一栏的宽度。
+
+三. 利用BFC布局
+
+<style>
+    body {
+        width: 300px;
+    }
+
+    .aside {
+        width: 100px;
+        height: 150px;            
+        background: #f66;
+
+        float:left;
+        margin-right:10px;
+    }
+
+    .main {
+        height: 200px;
+        background: #fcc;
+
+        overflow:auto/hidden;
+    }
+</style>
+<body>
+    <div class="aside"></div>
+    <div class="main"></div>
+</body>
+由于BFC不会和设置了float的元素重叠，因此可以把main的div生成BFC，
+
+这里适用的生成BFC的方法有：
+
+overflow:auto/hidden
+display:table-cell/inline-box/flex/inline-flex
+这里利用了BFC特性之后，可以不用知道左侧栏的宽度，也可以实现两栏布局
