@@ -1,0 +1,50 @@
+一. 安装php运行环境
+
+1. 在官网上下载，解压
+
+2. 将php.ini-development改为php.ini
+
+3. 将解压的目录添加至环境变量
+
+例如：我解压到D盘的php文件夹中，D:\php
+
+将D:\php添加至环境变量
+
+右键计算机->属性->高级系统设置->环境变量->系统变量->找到PATH，双击->将D:\php添加到变量值的末尾，各个环境变量之间用;隔开
+
+4. 在命令行中运行php -v
+
+如果出现版本号，即为正确安装
+
+如果没有出现，那么php环境配置错误
+
+二. 在安装过程中出现的问题
+
+由于我安装的是php-7.0.7版本，在启动php时，
+
+弹出窗口提示：无法启动此程序，因为计算机中丢失 VCRUNTIME140.dll。尝试重新安装改程序以解决此问题。
+
+原来在Windows下运行php7需要Visual C++Redistributable 2015而之前的版本不需要那么高的，安装一次即可解决环境问题，去微软官网下载安装即可。
+
+有64位版和32位版，根据计算机配置进行下载，下面是下载链接：
+
+　　64位版下载地址：
+
+http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x64/vc_redist.x64.exe
+
+　　32位版下载地址：
+
+http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x86/vc_redist.x86.exe
+
+三. 运行本地的php文件
+
+然后在当前目录下（安装php环境的目录）新建test.php，输入简单的代码：
+
+
+<?php
+echo "Hello world!";
+?>
+然后打开cmd进入该目录，输入以下代码即可运行：
+
+
+php test.php
