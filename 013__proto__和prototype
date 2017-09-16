@@ -1,0 +1,53 @@
+一. 原型指针proto
+
+原型指针是对象才有的
+
+每一个对象都有一个原型指针，指向的是它的原型。
+
+举例：
+
+
+//对象
+var a = new Object();
+console.log(a.__proto__); // Object.prototype
+console.log(a.__proto__.__proto__) // null
+原型链：
+a => Object.prototype => null
+
+//数组
+var a = ['1', '2', '3'];
+console.log(a.__proto__); // [] = Array.prototype
+console.log(a.__proto__.__proto__) // Object.prototype
+console.log(a.__proto__.__proto__.__proto__) // null
+原型链：
+a => Array.prototype => Object.prototype => null
+
+//函数
+function foo() {}
+console.log(foo.__proto__); // Function.prototype
+console.log(foo.__proto__.__proto__); // Object.prototype
+console.log(foo.__proto__.__proto__.__proto__); // null
+原型链：
+foo => Function.prototype => Object.prototype => null
+二. 原型对象prototype
+
+原型对象是只有函数才有的属性。
+
+原型对象是javaScript中的基因链接。
+
+javaScript中的函数也是对象，因此一个函数既有proto指针，也有prototype属性。
+
+原型、构造函数、实例之间的关系：
+
+
+function Person() {		
+}
+
+Person.prototype 
+
+var p = new Person();
+
+构造函数：Person            属性：prototype => 指向原型对象
+原型对象：Person.prototype  属性：constructor => 指向构造函数
+								                                                __proto__ (原型指针) => 指向原型链上一层的原型对象 
+实例：p                     属性：__proto__(原型指针) => 指向原型对象
