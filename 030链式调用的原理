@@ -1,0 +1,58 @@
+一. 什么是链式调用
+
+a().b().c()
+
+链式调用也是设计模式中的一种。
+
+链式调用的好处：
+
+就是使代码更加简化，增加代码易读性
+
+二. 链式调用的原理
+
+jQuery里面就支持链式调用
+
+主要是在函数最后加上 return this;返回元素或者对象本身，以支持其可以继续调用对象的其它方法。
+
+举个栗子：
+
+//getName不传入callback
+function Person(name) {
+  var _name = name;
+  this.setName = function (name) {
+    _name = name;
+    return this;
+  };
+  this.getName = function () {
+    return _name
+  };
+}
+var jordan = new Person('jordan1');
+console.log(jordan.getName())
+console.log(jordan.setName('Meow1').getName());
+
+输出：
+jordan1
+Meow1
+
+
+//getName传入callback
+function Person(name) {
+  var _name = name;
+  this.setName = function (name) {
+    _name = name;
+    return this;
+  };
+  this.getName = function (callback) {
+    callback.call(this, _name);
+    return this
+  };
+}
+
+var jordan = new Person('jordan2');
+jordan.getName(console.log).setName('Meow2').getName(console.log);
+
+输出：
+jordan2
+Meow2
+Person对象
