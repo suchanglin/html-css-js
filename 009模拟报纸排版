@@ -1,0 +1,65 @@
+一. 需要完成的示意图
+
+模拟报纸排版
+
+任务要求：
+
+页面宽度固定（定宽）
+只需要完成HTML，CSS代码编写，不需要写JavaScript
+有能力的同学可以在实现一遍后尝试用less, sass或者stylus等再实现一次
+二. 模拟报纸排版demo
+
+http://panpanfish.com/myDemo/newspaper.html
+
+三. 模拟报纸排版代码
+
+https://github.com/panpan040828/myDemo/blob/gh-pages/newspaper.html
+
+四. 实现过程中的笔记
+
+任务六是做一个模拟报纸排版的固定宽度的网页
+
+我在做这个任务时遇到的问题有：
+
+<img> 标签行后有空格问题
+可能是编辑器换行产生的空格，把font-size设置成0px即可
+
+用CSS画三角形
+
+.triangle-up{ width: 0;
+height: 0;
+border-left: 5px solid transparent;
+border-right: 5px solid transparent;
+border-bottom: 10px solid #31539E;
+display: inline-block;}
+
+可以抽象地想象一下：一个宽和高均为0px的div
+
+CSS3高级选择器——伪元素选择器
+所谓伪元素，也就是并不是html里面的元素
+
+CSS中有4个伪元素选择器：
+
+（1）first-line
+
+对某个元素中的第一行文字使用样式
+
+例子： p:first-line{ }
+
+(2) first-letter
+
+对某个元素中的第一个字母使用样式
+
+例子： p:first-letter{ }
+
+（3）before
+
+在元素之前添加内容
+
+例子： li:before{ }
+
+（4）after
+
+在元素之后添加内容
+
+例子： li:after{ }
