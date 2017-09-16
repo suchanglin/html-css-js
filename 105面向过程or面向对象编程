@@ -1,0 +1,166 @@
+这是两种编程方式。
+
+一. 面向过程编程
+
+面向过程编程的思维方式是计算机的思维方式——给处理器输入数据，处理器处理，然后输出数据。
+
+将程序分成数据和处理函数两个部分。
+
+数据和处理函数之间并没有关联起来，共同属于某个物件。
+
+整个编程的思维就是：定义数据，定义处理函数，然后将数据传给处理函数进行处理；处理函数之间也可以相互调用；数据和处理函数之间耦合紧密。
+
+二. 面向对象编程
+
+面向对象编程的思维方式是使用生活中的思维进行编程，描述一个个物件，这些物件有自己的属性和行为。
+
+面向对象编程的思维就是：定义一个个对象，对象有自己的属性和行为，因为属性和行为都是从属于对象的，于是有了对象内和对象外的概念，
+整个程序可以由一堆对象组成，对象与对象之间可能会有通信，为了实现这种通信，对象会将自己的部分属性设计成公有，暴露出来成为通信的接口。
+
+面向对象的特点：继承，封装，多态。
+
+1. js中的面向对象编程
+
+与C++这种正统的面向对象语言相比，js中的面向对象有以下几点不同：
+
+没有Class来定义类，js中定义类是利用函数（构造函数）来充当类的。
+没有public、protect、private这些关键字来声明属性和行为的可访问性，js是利用作用域来实现公有还是私有的问题。用this.attr来定义的属性是公有的，
+在构造函数中用var定义的属性是私有的。
+
+eg：
+//定义Animal类
+var Animal = function(name) {
+	//公有属性
+	this.name = name || "XXX";
+	this.type = "animal";
+
+	//私有属性
+	var age = 20;
+
+	//私有方法
+	var move = function() {
+		alert("I'm moving now!");
+	};
+}
+
+//Animal的原型
+Animal.prototype = {
+	//公有方法
+	say: function() {
+		alert("I'm a" + this.type + ", my name is" + this.name);
+	}
+}
+
+//实例化Animal类
+var myDog = new Animal("dudu");
+console.log(myDog.name);//可以访问公有属性
+console.log(myDog.age);//会报错，不能访问私有属性
+myDog.move();//会报错，不能访问私有方法
+2. js中如何定义私有属性和行为
+
+方法一：在构造函数中定义
+
+1中所讲的方法可以真正地实现属性和行为私有化，但是放在构造函数里会消耗更多地内存，因为原型中的属性和行为可以被所有实例共享，而构造函数里的属性和行为，
+是每个实例都会复制一份。
+
+方法二：使用命名来约定其私有性（并不能真正实现私有）
+
+仍然用this._attr来定义，但是命名前加下划线。
+三. 电话本程序（分别用两种思想来写）
+
+1. 用面向过程编程思想
+
+
+//电话本1
+var phoneBook1 = [
+	{name: "a", tel: "111111"},
+	{name: "b", tel: "222222"},
+	{name: "c", tel: "333333"},
+];
+
+//电话本2
+var phoneBook2 = [
+	{name: "d", tel: "444444"},
+	{name: "e", tel: "555555"},
+	{name: "f", tel: "666666"},
+];
+
+//查询电话
+function getTel(phoneBook,name) {
+	var tel = "";
+	for(var i = 0; i < phoneBook.length; i++) {
+		if(name == phoneBook[i].name) {
+			tel = phoneBook[i].tel;
+			break;
+		}
+	}
+}
+
+//添加记录
+function addItem(phoneBook,name,tel) {
+	phoneBook.push({name: name, tel: tel});
+}
+
+//删除记录
+function removeItem(phoneBook,name) {
+	var n;
+	for(var i = 0; i < phoneBook.length; i++) {
+		if(phoneBook[i].name == name) {
+			n = i;
+			break;
+		}
+	}
+	
+	if(n != undefined) {
+		phoneBook.splice(n,1);
+	}
+}
+2. 用面向对象编程思想
+
+
+var PhoneBookManager = function(o) {
+	//电话本为私有属性
+	this._phoneBook = o;
+}
+
+PhoneBookManager.prototype = {
+	constructor: PhoneBookManager,
+
+	//查询电话
+	getTel: function(name) {
+		var tel = "";
+		for(var i = 0; i < phoneBook.length; i++) {
+			if(name == this._phoneBook[i].name) {
+				tel = this._phoneBook[i].tel;
+				break;
+			}
+		}
+	},
+
+	//添加记录
+	addItem: function(name,tel) {
+		this._phoneBook.push({name: name, tel: tel});
+	}
+
+	//删除记录
+	removeItem: function(name) {
+		var n;
+		for(var i = 0; i < this._phoneBook.length; i++) {
+			if(this._phoneBook[i].name == name) {
+				n = i;
+				break;
+			}
+		}
+		
+		if(n != undefined) {
+			this._phoneBook.splice(n,1);
+		}
+	}
+}
+
+//实例化一个电话本管理系统
+var my = new PhoneBookManager([
+	{name: "a", tel: "111111"},
+	{name: "b", tel: "222222"},
+	{name: "c", tel: "333333"},
+]);
