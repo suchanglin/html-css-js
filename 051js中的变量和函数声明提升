@@ -1,0 +1,205 @@
+JavaScript 能够在变量和函数被声明之前使用它们。
+
+原因：js解析器将当前作用域内所有的变量声明和函数声明都会放到作用域的开始处，但是，只有变量的声明被提前到作用域的开始处了，而赋值操作被保留在原处。
+
+一. 定义函数的两种方式
+
+1. 函数声明
+
+(1) 什么是函数声明
+
+function myFunc(){ }
+
+上面就是函数声明
+
+(2) 函数声明提升
+
+函数声明提升————执行函数之前会读取函数声明
+
+函数声明并不仅仅是函数名“被提前”了，整个函数的定义也“被提前”了
+
+eg:    
+myFunc();//执行函数   
+function myFunc(){ };//函数声明
+由于函数申明提升特性，上面的代码不会报错
+2. 函数表达式
+
+var myFunc = function(){}
+
+创建一个函数，这里创建的函数是匿名的（function后面没有标识符），并把函数赋值给一个变量
+
+eg:    
+myFunc();//会报错，这个时候，myFunc还不是一个函数
+var myFunc = function(){};
+
+上面的代码等价于：
+var myFunc;
+myFuc();//会报错，这个时候，myFunc还不是一个函数
+myFunc = function(){};
+var myFunc = function f(){}
+
+创建一个函数，这里创建的函数是命名函数，并把函数赋值给一个变量，命名函数表达式的名字不会进入名字空间，也不会被提升
+
+eg:    
+myFunc();//会报错，这个时候，myFunc还不是一个函数
+var myFunc = function f(){};
+myFunc();//不会报错
+f();//会报错，命名函数表达式的名字只在该函数的作用域内部有效
+
+上面的代码等价于：
+var myFunc;
+myFuc();//会报错，这个时候，myFunc还不是一个函数
+myFunc = function f(){};
+myFunc();//不会报错
+f();//会报错，命名函数表达式的名字只在该函数的作用域内部有效    
+这里和变量声明提前的规则一致：变量声明提前了，但是变量的赋值操作还留在原地。
+二. 变量声明提升
+
+1. 定义变量的方法
+
+js的变量是一种松散类型，可以用来保存任何类型的数据。
+
+定义变量：
+var myvar;//像这样，未经过初始化的变量会保存一个特殊的值：undefined
+注意：没有使用var声明的变量，都是全局变量。
+
+2. 变量声明提升
+
+var name = "A";    
+(function () {
+    alert(name);//undefined    
+    var name = "B";    
+    alert(name);//B       
+})();
+
+上面的代码等价于：
+var name = "A";    
+(function () {
+    var name;//局部变量的声明被提升到作用域的最前面
+    alert(name);//undefined    
+    name = "B";    
+    alert(name);//B       
+})();
+
+函数内部的name是一个局部变量
+全局作用域中声明的变量、函数都是window对象的属性和方法。
+
+eg1:
+var in_window = "a" in window; 
+console.log(in_window); //false
+
+eg2:
+var in_window = "a" in window; 
+console.log(in_window); //true
+if(!("a" in window)) 
+{ var a = 1; }
+
+上面的代码相当于：
+var a,in_window;
+in_window = "a" in window; 
+console.log(in_window); //true a是全局变量中声明的，所以a是window的属性
+if(!("a" in window)) 
+{ var a = 1; }
+
+eg3:
+ if(!("a" in window)) 
+{ var a = 1; } 
+console.log(a); //undefined 
+
+上面的代码相当于：
+var a;//if语句块内的申明的变量a，会自动提到上面去申明
+if(!("a" in window)) //"a" in window为true
+{ a = 1; } //不会执行赋值语句
+console.log(a); //undefined
+
+eg4:
+if(!("a" in window)) //没有变量声明提升，所以!("a" in window)为true
+{ a = 1 } //执行函数体内部的赋值语句
+console.log(a); //
+总结：
+
+所有变量的声明被提前到作用域顶部，赋值保留在原地
+函数声明整个“被提前”
+三. 函数声明和变量声明，谁的优先级更高
+
+对于同一个变量名，函数声明会覆盖变量声明
+
+eg1:
+var a;
+function a(){}
+console.log(a);//function a(){}        
+
+eg2:
+function a(){}
+var a;
+console.log(a);//function a(){}
+
+上面两个例子均输出function a(){}，可见函数声明会覆盖变量声明
+如果在声明变量的同时对变量进行了初始化，那么对同一个变量名，声明变量同时初始化变量优先级高于函数声明
+
+eg1:
+var a=1;
+function a(){}
+console.log(a);//1    
+
+上面的代码等价于：
+var a;
+ function a(){}
+a = 1;
+console.log(a)    
+
+eg2:
+function a(){}
+var a=1;
+console.log(a);//1
+
+上面两个例子均输出1，可见声明变量同时初始化变量优先级高于函数声明
+多看几个例子：
+
+    eg1:
+    (function(a){
+        console.log(a);
+        var a=10;
+        function a(){};
+    })(100)
+
+输出：function a(){}
+解析：function(a){}里面的a只是一个形参，换成b,c,d...都行，所以没什么关联；变量和函数的声明同时被提升了，但是变量的赋值语句没有被提升，
+由于函数声明的优先级高于变量声明，因此输出function a(){}
+
+    eg2:
+    var a = 0, b = 0;
+    function A(a) {
+        A = function(b) {
+            alert(a+b++);
+        }
+        alert(a++);
+    }
+    A(1);//alert 1
+    A(2);//alert 4
+    console.log(a);//0
+
+    解析：这个程序里考到的知识点有 函数声明提升、运算符的优先级、函数参数按值传递
+    在执行A(1)时，运行的是函数
+    function A(a) {
+        A = function(b) {
+            alert(a+b++);
+        }
+        alert(a++);
+    }
+    然后会alert(a++);(a++)这个表达式仍然等于1，a=2；所以会alert出1
+    执行了上面这个函数之后，A被重新赋值了，也就是说
+    A(2)运行的是函数，alert的是4
+    function(b) {
+            alert(a+b++);//a+b++ = a+(b++) = 4
+            //这里的a相当于外部函数里面的局部变量a，由于第一次运行a=2;所以alert出4
+            //形参是局部变量，由于这里用了闭包，所以外层函数的局部变量a没有释放。
+    }
+四. js中名字解析的顺序
+
+比如，当访问函数内的 foo 变量时，JavaScript 会按照下面顺序查找：
+
+当前作用域内是否有 var foo 的定义。
+函数形式参数是否有使用 foo 名称的。
+函数自身是否叫做 foo。
+回溯到上一级作用域，然后从 #1 重新开始。
