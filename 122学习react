@@ -1,0 +1,333 @@
+一. 什么是react
+
+react是一个前端框架，相当于MVC框架中的V的部分。
+
+可以理解成一个做UI组件的javaScript库
+
+MVC分别代表的是model（模型）／view（视图）／controller（控制器）
+
+1. react的优点有：
+
+a.组件化 —— 封装起来的具有独立功能的UI部件
+
+所谓组件，就是状态机器
+
+React将用户界面看做简单的状态机器。当组件处于某个状态时，那么就输出这个状态对应的界面。通过这种方式，就很容易去保证界面的一致性。
+
+在React中，你简单的去更新某个组件的状态，然后输出基于新状态的整个界面。React负责以最高效的方式去比较两个界面并更新DOM树。
+
+b. 使用虚拟DOM(虚拟DOM是内存里的一种特殊的结构)，能够提高性能
+
+基于React进行开发时所有的DOM构造都是通过虚拟DOM进行，每当数据变化时，React都会重新构建整个DOM树，然后React将当前整个DOM树和上一次的DOM树进行对比，
+得到DOM结构的区别，然后仅仅将需要变化的部分进行实际的浏览器DOM更新。
+
+为什么使用虚拟dom能够提高性能？
+
+虚拟DOM是内存数据，性能是极高的，而对实际DOM进行操作的仅仅是Diff部分，因而能达到提高性能的目的
+
+c. 代码可预测：使用react写出来的代码简单易懂直观，方便维护
+
+以简单直观、符合习惯的（idiomatic）方式去编程，让代码更容易被理解，从而易于维护和不断演进。这正是React的设计哲学。
+
+2. 调试react页面的小工具
+
+chrome有提供一个插件react develop tools，可以方便我们在控制台直接查看react相关的组件。
+
+jsfiddle是一个可以使用react的前端代码在线演示的网站
+
+二. JSX语法
+
+我们在使用react时，会经常使用JSX语法，这样可以增加程序的可读性。
+
+但是浏览器不能直接运行jsx，需要首先对jsx进行编译。
+
+1. 什么是JSX
+
+JSX是 JavaScript XML的缩写，是Facebook为react开发的一套语法糖，
+JSX允许我们在javaScript中使用HTML的语法。
+
+目的：增加程序的可读性
+
+2. JSX语法的基本规则
+
+遇到<>，就使用HTML的规则解析
+遇到{}，就使用JavaScript的规则解析
+
+三. 如何使用react
+
+在HTML文件中，需要引入react的相关js文件
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    
+    //这里的type＝“text/jsx”表明这里的代码是jsx
+    <script type="text/jsx">
+      // 在这里写相关的js文件
+    </script>
+  </body>
+</html>
+四. react中的基本方法
+
+1. 全局的方法
+
+渲染DOM的方法
+
+ReactDOM.render(要渲染的模版, 渲染的组件要插入的容器);
+
+创建组件的方法
+
+React.createClass({…});
+
+找到真实的DOM节点
+
+ReactDOM.findDOMNode(this.refs.［ref.name］)
+
+2. 组件内部使用的方法
+
+render
+getInitialState
+this.setState
+eg:
+
+React.createClass({
+//组件返回的方法
+ render: function() {
+ 	return (
+ 		// 注意：这里只能返回一个<div>
+ 	)
+ }
+   //给组件定义一个初始状态，设置state的初始值
+getInitialState: function() {
+   	return {liked: false};
+ 	}
+ 		
+});
+
+3.this.props和this.state的区别
+
+props和state都是描述react组件的状态的属性。
+
+其区别如下：
+
+this.props props是组件对外的接口，是通过使用组件时传入，一般不可变，通过props可以在外部控制组件的状态和行为
+this.state 属于组件本身，可以改变，通过setState()函数可以给state赋值
+如果组件的某些状态需要被改变，并且会影响到组件的render，那么这个状态就应该用state表示。
+
+注意：在组件内部如果要修改state的值，一定要使用setState()函数，而不能直接给state的某个属性赋值！！！
+获取组件的所有子节点：this.props.children
+
+没有子节点，类型为undefined
+有一个子节点，类型为object
+有2个或以上的节点，类型为array
+
+五. react中的组件
+
+1. 组件命名规则
+
+组件名首字母大写
+可以像html标签那样使用，可以添加任意属性。但是需要注意以下几点：
+
+a. class和for需要写成className和htmlFor，原因如下：
+
+
+//这里不能像HTML中，直接用class添加类名，因为这是一个js的运行环境，而class是ES6里的关键字
+<div className="myDiv"></div>
+b. 这里不能像HTML中，直接使用style＝“”来添加行内样式，在react中，行内样式不是用字符串表示，而是用一个样式对象表示，
+样式对象的属性是用css样式的驼峰命名法
+
+var obj = {
+	color: "red"
+}
+<div style={obj}></div>
+
+2. 组件的生命周期
+
+React Components的生命周期分3种状态：
+
+Mounting： 组件已被render解析，生成对应的dom节点，并插入浏览器的DOM结构
+Updating： 一个已被Mounted的组件被重新render的过程（组件的state发生了改变）
+Unmounting：一个已被Mounted的组件被从dom结构中移除的状态
+基于这三种状态的组件的生命周期方法有7种：
+
+Mounting：
+
+componentWillMount()
+componentDidMount()
+Updating：
+
+componentWillReceiceProps(object nextProps)：已加载组件收到新的参数时调用
+shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用，返回值为bool值
+componentWillUpdate(object nextProps, object nextState)
+componentDidUpdate(object nextProps, object nextState)
+Unmounting：
+
+componentDidUnmount()
+react组件生命周期不同阶段中的调用的方法
+
+1. 组件实例化（Mounting）：也就是将真实的dom结构插入html页面中
+
+首次实例化
+
+getDefaultProps()：对于组件而言，只会调用一次，如果是引用值，会被所有的实例共享，返回对象用于设置默认的props
+
+getInitialState()：组件mounted之前调用一次，返回值作为this.state的初始值，对于组件的实例来说，只调用一次
+
+componentWillMount()：挂载之前立刻调用
+
+render()：渲染组件，创建虚拟的DOM    
+
+componentDidMount()：挂载之后立刻调用
+
+2. 组件属性改变：props发生改变
+
+componentWillReceiveProps()：在prop传入之后，render()渲染之前更新state的机会，
+
+react是单向数据流，数据从组件的属性流入，再结合组件的状态，流入生命周期方法，直到渲染结束这都应该是一个单向的过程，其间不能随意改变组件的状态
+
+shouldComponentUpdate()：通过判断state和props是否导致组件更新，来返回true或者false
+
+componentWillUpdate()：在接收到新的props或者state之后，进行渲染之前调用
+
+render()：
+
+componentDidUpdate()：
+
+3. 组件状态改变：state发生改变
+
+shouldComponentUpdate()
+
+componentWillUpdate()
+
+render()
+
+componentDidupdate()
+
+4. 销毁掉组件
+
+componentWillUnmount()：组件被移除之前调用，可以用于做一些清理工作，例如：创建的定时器或添加的事件监听器
+参考至：https://segmentfault.com/a/1190000003940416
+
+3. react中绑定事件
+
+在React里只需把事件处理器当作组件的 props 传入即可，以驼峰命名的方式。
+
+给按钮绑定事件
+
+在原生的js里面的写法：
+
+
+$('#my-button').on('click', this.checkAndSubmit.bind(this));
+使用react搭配jsx的语法：
+
+
+<button onClick={this.checkAndSubmit.bind(this)}>Submit</button>
+事件使用驼峰命名
+
+使用react的优点：
+
+事件和绑定事件的元素写在一起了，方便易读
+不用考虑解除事件的绑定，React会在对应的真实DOM节点移除时就自动解除了事件绑定
+
+4. 如何获取组件内部的dom节点
+
+由于react组件中的DOM节点在被插入浏览器的DOM结构之前，是一个虚拟的DOM，因此在创建组件时，应该怎么获取到组件内部的DOM节点呢？
+
+给render() 输出的组件中的dom节点设置ref属性
+通过ReactDOM.findDOMNode(this.refs.[refsName])来获取真实的dom节点
+举个绑定事件和获取真实dom节点的栗子：
+
+var Input = React.creatClass({
+	handleClick: function(event) {
+		var warn = ReactDOM.findDOMNode(this.refs.waring);
+		
+		if(warn.style.display === 'none') {
+			warn.style.display = 'block';
+		} else {
+			warn.style.display = 'none';
+		}
+	}
+	
+	render: function() {
+		return (
+			<div>
+				<button onClick={this.handleClick}>显示／隐藏</button>
+				<span style={{display: 'none'}} ref='waring' >test</span>
+			</div>
+		)
+	}
+});
+六. react中组件之间的通信
+
+react中顶层的组件可以通过props属性向下层组件传递数据
+下层组件不能向上层组件传递数据
+兄弟组件之间也不能传递数据
+单向数据流，只能由上至下
+
+1. 使用属性的方式
+
+上层组件通过属性向下层组件传递回调函数，下层组件触发回调来更新上层组件的数据
+
+2. 使用事件的形式
+
+3. 使用Flux
+
+react相当于是针对mvc框架中的view的框架。
+
+Flux定义了一种单向数据流的方式，主要解决的是数据在 React 应用中的流动方式及过程。
+
+在传统的MVC框架中，View和Model是双向绑定。
+
+Model中的数据发生变化 ——> 一个或多个View会发生变化
+View接受了用户输入发生改变 ——> Model中的数据也会发生变化
+一个state发生变化可能会引起多个view发生变化；一个view上的动作可能会引起多个state的改变。
+
+在Flux中
+
+view 视图层
+action 动作
+dispatcher 派发器
+store 数据层
+View不直接改变应用状态，只能触发action。应用的状态独立放到store中进行管理。
+
+View完全是Store的展现形式，Store的更新则完全由Action触发。
+
+4. redux
+
+redux主要分为三个部分：action、reducer、store
+
+action和reducer为多对多的关系
+
+action
+
+主要用来传递操作State的信息
+
+//下面是一个 增加电影 的操作
+function addFilm(name) {
+  return { type: 'ADD_FILM', name: name };
+}
+reducer
+
+根据action的指示来更新State
+
+//state指的是旧的state
+//指示操作的action
+function films(state, action) {
+	switch(action.type) {
+		case 'ADD_FILM':
+		
+		//进行增加电影的操作
+		return...
+	}
+}
+combineReducers() 接收一个对象作为参数，对象的key为state中的一部分数据，其value值为对应的reducer
+
+store
+
+redux中，store是单一的，维护着一个全局的State，根据Action进行事件分发处理State。
