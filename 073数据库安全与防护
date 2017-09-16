@@ -1,0 +1,101 @@
+一. 数据库安全性
+
+数据库系统中的数据共享不能是无条件的共享
+
+数据库安全性控制的常用方法：
+
+用户标识和鉴定：系统核对口令以鉴别用户身份，每个用户预先约定好一个计算过程或者函数
+
+存取控制：自主存取控制、强制存取控制
+
+授权GRANT
+
+用户权限组成：数据对象、操作类型
+
+定义用户存取权限：定义用户可以在哪些数据库对象上进行哪些类型的操作
+
+定义存取权限称为授权
+
+
+GRANT   SELECT //查询权限
+   ON   TABLE   Student //学生表
+   TO   U1;				//给用户U1
+这句SQL的意思是：把查询学生表的权限给用户U1
+
+GRANT ALL PRIVILIGES //所有权利
+   ON TABLE Student, Course //学生表、课程表
+   TO U2, U3;			//用户U2、U3
+这句SQL的意思是：把对学生表、课程表的所有权限给用户U2、U3
+
+GRANT SELECT //查询权限
+   ON TABLE SC  //选课表
+TO PUBLIC;	//所有用户
+这句SQL的意思是：把对学生表的查询权限给用户U1
+
+WITH GRANT OPTION;//允许将此权限授予给其他用户
+
+回收REVOKE
+
+授予的权限可以由DBA或其他授权者用REVOKE语句收回
+
+
+REVOKE UPDATE(Sno) //对学号的修改权限
+ON TABLE Student 	//学生表
+FROM U4;			//用户U4
+这句SQL的意思是：将用户U4的修改权限收回
+
+REVOKE SELECT 
+ON TABLE SC 
+FROM PUBLIC;
+这句SQL的意思是：收回所有用户对表SC的查询权限
+
+REVOKE INSERT 
+ON TABLE SC 
+FROM U5 CASCADE ;//CASCADE 级联
+
+数据库角色
+
+角色是权限的集合；可以为一组具有相同权限的用户创建一个角色
+；简化授权的过程
+
+创建角色 CREATE ROLE <角色名>
+
+给角色授权
+
+将一个角色授予其他的角色或者用户
+
+角色权限的收回
+
+
+eg:
+
+   通过角色来实现将一组权限授予一个用户。
+   步骤如下：
+   1. 首先创建一个角色 R1
+   CREATE  ROLE  R1；
+
+   2. 然后使用GRANT语句，使角色R1拥有Student表的SELECT、UPDATE、INSERT权限
+   GRANT SELECT，UPDATE，INSERT 
+   ON TABLE Student 
+   TO R1；
+
+   3. 将这个角色授予王平，张明，赵玲。使他们具有角色R1所包含的全部权限
+   GRANT  R1 
+   TO 王平，张明，赵玲；
+
+   4. 可以一次性通过R1来回收王平的这3个权限
+    REVOKE  R1 
+    FROM 王平；
+视图
+
+审计
+
+审计日志（Audit Log)：将用户对数据库的所有操作记录在上面
+
+   AUDIT ALTER，UPDATE  
+   ON  SC；
+对修改SC表结构或修改SC表数据的操作进行审计
+
+NOAUDIT  ALTER，UPDATE  
+   ON  SC；
+取消对SC表的一切审计
