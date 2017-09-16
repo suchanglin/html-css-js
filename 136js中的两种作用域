@@ -1,0 +1,80 @@
+词法作用域
+动态作用域
+一. 什么是词法作用域和动态作用域？
+
+词法作用域：注重的是write-time，也就是编程的上下文。
+动态作用域：注重的是run-time，也就是运行时的上下文。
+
+词法作用域关注的是函数在何处被定义，动态作用域关注的是函数在何处被调用。
+
+js是词法作用域的语言，但是js里面的this指针却是动态作用域。
+
+证明js是词法作用域的例子：
+
+
+var a = 10;
+function con() {
+	console.log(a);
+}
+
+(function() {
+	var a = 20;
+	con(); //打印出的结果是10
+})();
+这里打印出的结果是10，因为函数con是在全局作用域里面定义的，所以con的作用域为全局作用域，所以函数con里面只能访问到全局作用域里面的变量，
+而不能访问到匿名函数里面的变量a。
+
+将程序改成下面这样，就会报错：
+
+
+function con() {
+	console.log(a);
+}
+
+(function() {
+	var a = 20;
+	con(); //a is not defined
+})();
+二. ES6中的箭头函数
+
+js中的this是在函数运行时绑定的，根据函数的不同的执行方式，指向的上下文不同。
+
+具体可以看这篇博客：http://panpanfish.com/2016/05/08/2016-05-08-js%E4%B8%AD%E7%9A%84this%E5%AF%B9%E8%B1%A1/
+
+ES6中的箭头函数改变了this的指向，总是指向词法作用域，也就是定义函数时的作用域。
+
+在ES5中：
+
+
+
+var obj = {
+	name: 'aa',
+	getName: function() {
+		var fn = function() {
+			//由于这里的fn是作为一个普通函数调用的，所以这里的this指向window
+			console.log(this.name);
+			console.log(this);
+		}
+		fn();
+	}
+}
+
+obj.getName();
+
+所以，在ES5中如果需要让上述打印出正确的值，需要对this进行hack
+在ES6中使用箭头函数：
+
+
+var obj = {
+	name: 'aa',
+	getName: function() {
+		//箭头函数内部的this指向定义函数时的词法作用域
+		var fn = () => {
+			console.log(this.name);
+			console.log(this);
+		}
+		fn();
+	}
+}
+
+obj.getName();
