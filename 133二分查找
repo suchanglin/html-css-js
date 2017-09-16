@@ -1,0 +1,25 @@
+一. 二分查找的思想
+
+对于一个有序数组，每次取最中间的一个数，与要目标数进行比较
+
+二. 二分查找的实现
+
+
+function binSearch(arr,data) {
+	var upperBound = arr.length - 1;
+	var lowerBound = 0;
+	while(lowerBound <= upperBound) {
+		var mid = Math.floor((upperBound + lowerBound)/2);
+		if(arr[mid] < data) {
+			lowerBound = mid + 1;
+		} else if(arr[mid] > data) {
+			upperBound = mid - 1;			
+		} else {
+			return mid;
+		}
+	}
+	return -1;
+}
+
+var arr = [1,4,6,7,10,15,18];
+binSearch(arr,10); //4
