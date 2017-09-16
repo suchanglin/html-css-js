@@ -1,0 +1,329 @@
+一. 什么是CSS预处理器
+
+CSS的优点
+
+使结构和表现分离
+一个文件可以在多处引用
+
+
+CSS的缺点
+
+嵌套
+复用代码段
+模块化开发的不灵活
+不具备逻辑能力和抽象能力
+由于css是一门纯静态的语言，并且有上述这些缺点，因此出现了css预处理器。
+
+1. 什么是css预处理器
+
+css预处理器可以看成是css的一门方言，用更精简的语法表达更多。
+
+css预处理器并不是css的替代品，它只是让css变得更加高效、可维护。
+
+使用css预处理器编写代码之后也会生成css代码，部署到线上的是生成的css文件，而不是预处理器文件（Sass/Less/stylus）。
+
+因此，使用css预处理器主要是为了提高开发效率。
+
+注意：永远不要去修改生成后的css
+
+2. 使用css预处理器的优点
+
+提高开发效率
+易维护，更方便的定制
+让css看起来更像是一门编程语言
+
+二. 几种css预处理器（Sass/Less/stylus）
+
+Sass：2006年提出
+Less：2009年提出
+stylus：2010年
+
+三. 安装Sass
+
+Sass的官网（中文）：http://www.sasschina.com/
+
+第一步，安装ruby
+由于之前我的博客是基于jekyll的，jekyll时基于ruby，所以我已经安装过ruby了。
+
+第二步，安装Sass
+打开cmd
+输入gem install sass
+发现提示了一个错误：
+
+模拟文件报表排版
+
+然后我就在网上找原因，后来发现了其他的安装方法
+
+http://www.w3cplus.com/sassguide/install.html
+
+我采用的是第三种安装方法
+
+首先，在RubyGems.org上下载sass，然后保存在自己的电脑里
+[https://rubygems.org/gems/sass](https://rubygems.org/gems/sass)
+
+然后，在cmd中输入`gem install 保存sass的路径`
+
+最后，输入`sass -v`来验证是否安装成功
+
+
+四. Sass的语法
+
+1. Sass的两种后缀名文件
+
+sass：语法严格，不使用大括号和分号。
+scss：使用大括号和分号，建议使用scss为后缀名。
+
+2. 导入sass文件
+
+在一个sass文件中可以通过@import导入另外一个写好的文件
+
+@import可以导入的文件类型
+
+.css文件：不能忽略后缀名
+.sass/.scss文件：可以忽略后缀名、前缀_
+
+3. 注释
+
+标准的css注释：/*.......*/
+sass的静默注释：//........
+静默注释在生成的css文件中不会出现。
+
+4. 变量
+
+(1)普通变量
+
+使用$val：attr;来进行声明
+在全局的范围内使用
+
+eg:
+$highlight-color: #eee;
+
+(2)默认变量!default
+
+$highlight-color: #eee ！default;
+sass的默认变量一般是用来设置默认值，然后根据需求来覆盖的，覆盖的方式也很简单，只需要在默认变量之前重新声明下变量即可
+
+(3)特殊变量
+
+一般情况下，我们定义的变量都为属性值；如果变量作为属性，需要用一种特殊的方式使用#{$variables}。
+
+eg:
+//定义
+$borderDirection: top; 
+
+//使用
+.border-#{$borderDirection}{
+      border-#{$borderDirection}:1px solid #ccc;
+}
+
+(4)多值变量
+
+多值变量分为list类型和map类型
+list类型有点像js中的数组，但是下标从1开始
+map类型有点像js中的对象，但是是用()包裹起来
+list类型
+
+定义: 
+$px: 5px 10px 15px 20px;//一维数组
+$px: (5px 10px) (15px 20px);//二维数组
+
+取值： nth($px,2);//取到的是10px
+map类型
+
+定义：
+$heading: (h1: 2em, h2: 1.5em, h3: 1.2em);
+
+取值：map-get($heading, $h1);//取到的是2em
+
+(5)变量的作用域
+
+和一般编程语言一样，sass中声明的变量也有作用域
+在规则块以外声明的变量，相当于全局变量，可以在任意地方使用；
+在css规则块里面声明的变量，相当于局部变量，只能在{...}里面使用。
+
+eg:
+$nav-color: red;//相当于全局变量
+nav {
+    $width: 20px;
+    width: $width;//可以使用，不会有错误
+    color: $nav-color;//可以使用
+}
+
+div {
+    width: $width;//不能使用，会有错误
+}
+
+(6)变量的赋值
+
+可以给一个变量赋值
+$nav-color: red;
+
+也可以用另外一个变量赋值给一个变量
+$color: red;
+$nav-color: color;
+
+5. 嵌套css
+
+像俄罗斯套娃一样，在一个规则块里面嵌套规则块。
+
+(1)选择器的嵌套
+
+eg:
+//css
+#content aside {background: #eee;}
+#content article h1 {color: red;}
+#content article p {color: black;}
+
+//sass,用嵌套的规则来写    
+#content {
+    article {
+        h1 {color: red;}
+        p {color: black;}
+    }
+
+    aside {background: #eee;}
+}
+在使用选择器的嵌套时，会用到以下两个属性：
+
+父选择器&
+
+在使用嵌套规则时，`&`代表的是上一层的选择器。
+
+eg:
+
+#content {
+    article {
+        h1 {color: red;}
+        & p {color: black;}//这里的&代表article
+    }
+
+    aside {background: #eee;}
+}
+
+由于sass是将嵌套规则的选择器用空格拼接起来，所以当遇到伪类时，使用嵌套规则就会有错误，这时就要使用父选择器&
+article a {
+    color: red;
+    &:hover: black;
+}
+跳出上一层选择器
+
+@at-root：跳出上一层选择器
+@at-root (without: all)：跳出所有的选择器
+@at-root (without: rule)：跳出常规的css选择器
+@at-root (without: media)：跳出@media
+
+(2)属性的嵌套
+
+eg:
+//css
+nav {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc;
+}
+
+//sass 属性嵌套
+nav {
+  border: {
+  style: solid;
+  width: 1px;
+  color: #ccc;
+  }
+}
+
+6. 混合器
+
+实现大段样式的重用
+
+@mixin：定义混合器
+@include：引用混合器
+
+@mixin里面可以是css的属性，也可以是css规则
+
+@mixin no-bullets {
+  list-style: none;
+  li {
+    list-style-image: none;
+    list-style-type: none;
+    margin-left: 0px;
+  }
+}
+给混合器传参，参数是变量$val
+
+//定义混合器
+@mixin link-colors($normal, $hover, $visited) {
+  color: $normal;
+  &:hover { color: $hover; }
+  &:visited { color: $visited; }
+}
+
+//引用混合器
+a {
+  @include link-colors(blue, red, green);
+}
+
+7. 继承
+
+选择器继承@extend：让选择器继承另一个选择器的所有样式，并联合声明
+
+//sass
+h1 {
+  border: 4px solid #ff9aa9;
+}
+.speaker {
+  @extend h1;
+  border-width: 2px;
+}
+
+//css
+h1,.speaker {
+  border: 4px solid #ff9aa9;
+}
+.speaker {
+  border-width: 2px;
+}
+占位选择器%：不继承的话，css里面不会出现，所以可以用其定义一些基础的样式文件，然后根据需要调用产生相应的css。
+
+//sass
+%h1 {
+  border: 4px solid #ff9aa9;
+}
+%h2 {
+  border: 4px solid #ff9aa9;
+}
+.speaker {
+  @extend h1;
+  border-width: 2px;
+}
+
+//css
+h1,.speaker {
+  border: 4px solid #ff9aa9;
+}
+.speaker {
+  border-width: 2px;
+}
+
+8. 函数
+
+自定义函数@function
+
+9. 运算
+
+可以对数值型，如：数字、颜色、变量等，进行加减乘除四则运算，
+
+注意:运算符前后留一个空格。
+
+
+11. 条件判断及循环
+
+@if
+@else
+if(条件，条件为真，条件为假)
+@for循环
+@each循环
+五. Sass转化为css
+
+打开cmd
+进入到保存sass或者scss文件的文件夹中
+在cmd中输入`sass --watch 文件名.scss:文件名.css`
