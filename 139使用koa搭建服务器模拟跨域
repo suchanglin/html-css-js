@@ -1,0 +1,125 @@
+一. 使用Koa搭建服务器
+
+使用koa-router
+
+监听端口3000:
+
+
+var app = require('koa')();
+var router = require('koa-router')();
+var bodyparser = require('koa-bodyparser');
+
+//引入读取本地文件的模块
+var fs = require('fs');
+
+router.get('/', function *() {
+	//将需要展示的html页面内容读取进来
+	var text = fs.readFileSync(process.cwd() + '/layout.html', 'utf8');
+	this.body = text;		
+});
+
+router.post('/ajax/deal', function *(next) {	
+	var reqBody = this.request.body;
+   	console.log("server accept: ", reqBody.name, reqBody.id)
+   	var data = {
+       	name: reqBody.name + ' - server 3000 process',
+       	id: reqBody.id + ' - server 3000 process'
+   	}
+   	this.body = JSON.stringify(data); 
+});
+
+app
+	.use(bodyparser())
+	.use((router).routes())
+
+app.listen(3000, function() {
+	console.log('run 3000');
+})
+使用localhost:3000访问到的页面layout.html
+
+
+
+	<!DOCTYPE html>
+	<html>
+  	<head>
+    	<meta charset="utf-8">
+    	<title>React Tutorial</title>
+    </head>
+  	<body>
+    	<div id="content">
+    		<h1>Ajax跨域请求</h1>
+    		<div>
+    			<p>
+    				<label>名称</label>
+    				<input id='name' type='text' />
+    			</p>
+    			<p>
+    				<label>id</label>
+    				<input id='id' type='text' />
+    			</p>
+    			<input id='submit' type='button' value='submit' />
+    		</div>
+    	</div>
+    	<script type='text/javaScript' src='//cdn.bootcss.com/jquery/3.1.0/jquery.js'></script>
+    	<script>
+    			$(function() {
+    	    		$("#submit").click(function() {
+    	        		var data = {
+    	            		name: $("#name").val(),
+    	            		id: $("#id").val()
+    	        		};
+    	        	$.ajax({
+    	            	type: 'POST',
+    	            	data: data,
+    	            	url: 'http://localhost:3000/ajax/deal',
+    	            	dataType: 'json',
+    	            	cache: false,
+    	            	timeout: 5000,
+    	            	success: function(data) {
+    	                	console.log(data);
+    	            	},
+    	            	error: function(jqXHR, textStatus, errorThrown) {
+    	                	console.log('error ' + textStatus + ' ' + errorThrown);
+    	            		}
+    	        		});
+    	   	 		});
+    			});
+    	</script>
+   </body>
+</html>
+监听端口3001：
+
+
+var app = require('koa')();
+var router = require('koa-router')();
+
+var bodyparser = require('koa-bodyparser');
+//引入读取本地文件的模块
+var fs = require('fs');
+
+router.post('/ajax/deal', function *(next) {	
+	var reqBody = this.request.body;
+   	console.log("server accept: ", reqBody.name, reqBody.id)
+   	var data = {
+       	name: reqBody.name + ' - server 3000 process',
+       	id: reqBody.id + ' - server 3000 process'
+   	}
+   	this.body = JSON.stringify(data); 
+});
+
+app
+	.use(bodyparser())
+	.use((router).routes())
+
+app.listen(3001, function() {
+	console.log('run 3001');
+})
+在3000端口的页面发起ajax的post请求，如果请求的地址是
+url: 'http://localhost:3000/ajax/deal'，ajax请求的域名相同（端口也是3000），那么就会输出正确的值。
+
+在3000端口的页面发起ajax的post请求，如果请求的地址是
+url: 'http://localhost:3001/ajax/deal'，ajax进行了跨域请求（端口是3001），控制台就会报如下错误：
+
+二. 跨域操作
+
+1. jsnop
