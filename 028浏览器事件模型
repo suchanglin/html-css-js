@@ -1,0 +1,363 @@
+一. 什么是事件模型
+
+1. 事件
+
+事件是用户对浏览器的一个动作或者浏览器自身执行的某种动作，文档或浏览器窗口发生特定交互的瞬间。
+
+2. 事件流
+
+事件流：从页面中接收事件的顺序。
+
+IE和Netscape提出了两种相反的事件流：事件冒泡流、事件捕获流。
+
+事件冒泡流：由具体的节点逐级往上传播
+
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+	</head>
+	<body>
+		<div>click me</div>
+	</body>
+</html>
+如果单击了div，那么click事件的传播为：div -> body -> html -> Document -> windows
+
+事件捕获流：由最上层的节点逐级往下传到具体节点
+
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+	</head>
+	<body>
+		<div>click me</div>
+	</body>
+</html>
+如果单击了div，那么click事件的传播为：windows -> Document -> html -> body -> div
+
+
+插播一个windows对象和Document对象的区别：
+
+windows对象：指的是浏览器的窗口
+
+Document对象：指的是显示于窗口的一个文档
+
+Document 对象是 Window 对象的一部分，可通过 window.document 属性对其进行访问
+3. DOM2级事件规定的事件流
+
+W3C为了兼顾之前的标准，将事件发生定义成三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段
+
+事件捕获阶段：windows -> Document -> html -> body
+
+事件捕获阶段，事件到<body>就停止了
+
+处于目标阶段：事件在
+
+上发生
+事件冒泡阶段：body -> html -> Document -> windows
+
+DOM2级事件明确要求捕获阶段不会涉及到事件目标，但是很多高版本的浏览器都会在捕获阶段触发事件对象上的事件。
+
+二. W3C和IE绑定事件
+
+一般绑定事件可以用
+
+obj.onclick = function(){}；
+但如果要给同一个元素绑定多个事件，上面那种方法就行不通了
+
+
+   obj.onclick = function(){
+   			alert("1");
+   		}
+   
+   obj.onclick = function(){
+   			alert("2");
+   		}
+   
+   obj.onclick = function(){
+   			alert("3");
+   		}
+   
+只会alert("3")
+可以采用下面的绑定事件的方式：
+
+1. W3C
+
+W3C绑定事件 
+
+obj.addEventListener(event,function,usecapture)
+
+W3C解绑事件
+
+obj.removeEventListener(event,function,usecapture)
+
+usecapture可选值有
+false:事件在冒泡阶段执行（默认）
+true：事件在捕获阶段执行
+下面是一个冒泡阶段和捕获阶段执行事件的例子
+
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <style>
+   div {
+    background-color: coral;
+    border: 1px solid;
+    padding: 50px;
+   }
+  </style>
+ </head>
+ <body>
+ 
+  <p>该实例演示了在添加事件监听时冒泡与捕获阶段的不同。</p>
+  
+  <div id="myDiv">
+    <p id="myP">点击该段落， 我是冒泡</p>
+  </div><br>
+  
+  <div id="myDiv2">
+    <p id="myP2">点击该段落， 我是捕获</p>
+  </div>
+  
+  <script>
+   document.getElementById("myP").addEventListener("click", function() {
+   alert("你点击了 P 元素!");
+   }, false);
+   
+   document.getElementById("myDiv").addEventListener("click", function() {
+   alert("你点击了 DIV 元素!");
+   }, false);
+   
+   document.getElementById("myP2").addEventListener("click", function() {
+   alert("你点击了 P 元素!");
+   }, true);
+   
+   document.getElementById("myDiv2").addEventListener("click", function() {
+   alert("你点击了 DIV 元素!");
+   }, true);
+ 	</script>
+ 
+ </body>
+</html>
+如果用addEventListener给同一个对象绑定了多个事件，执行顺序如下：
+
+1obj.addEventListener("click",function1,false)
+obj.addEventListener("click",function2,false)
+obj.addEventListener("click",function3,false)
+
+function1->function2->function3
+2. IE中绑定事件 事件冒泡流
+
+IE中绑定事件
+obj.attachEvent(event,function)
+IE中解绑事件
+obj.detachEvent(event,function)
+如果用attachEvent给同一个对象绑定了多个事件，执行顺序如下：
+
+obj.attachEvent("onclick",function1)
+obj.attachEvent("onclick",function2)
+obj.attachEvent("onclick",function3)
+
+IE11下：function1->function2->function3
+IE8下：function3->function2->function1 颠倒顺序执行
+3. W3C和IE中绑定事件的不同点
+
+(1) 参数不同，W3C可以控制事件是在捕获阶段还是在冒泡阶段执行
+
+(2) 绑定事件的名称不同：
+
+W3C没有on  eg:click
+IE 有on    eg:onclick
+(3) 绑定多个事件的执行顺序
+
+W3C按顺序执行
+
+IE8中是倒序执行，高一点的版本貌似是按顺序执行
+注意：新版本的ie在绑定事件上有所修改
+经过测试：
+
+ie10（不包括ie10）以上就只支持addEventListener绑定事件了
+ie9,ie10支持addeventListener和attachEvent
+ie8及其以下都只支持attachEvent
+三. 事件对象
+
+DOM中的事件对象和IE中的事件对象也不同。
+
+1. DOM中的事件对象
+
+触发某个事件时，会产生一个事件对象event。
+
+不管绑定事件处理程序的方式是什么，浏览器会将这个事件对象传入事件处理程序中，作为第一个参数
+
+event
+
+event.currentTarget：绑定事件的元素
+在事件处理程序内部：this永远等于event.currentTarget
+
+event.target：触发事件的元素(事件的实际目标)
+
+event.type：事件类型
+
+event.stopPropagation();
+取消事件进一步捕获或冒泡    
+什么是事件冒泡：
+
+eg:
+
+<body>
+    <input id="btn" type="submit" />
+</body>
+
+//给按钮绑定一个点击事件
+btn.addEventListener("click",function(event){
+                    alert("1")});
+//给其父元素绑定一个点击事件
+document.body.addEventListener("click",function(event){
+                    alert("2")});
+
+当我们点击按钮时，会触发两个点击事件，因为按钮的点击事件冒泡到其父元素上了。
+使用event.stopPropagation()阻止冒泡
+
+//给按钮绑定一个点击事件
+btn.addEventListener("click",function(event){
+                    alert("1");
+                    event.stopPropagation();
+                });
+//给其父元素绑定一个点击事件
+document.body.addEventListener("click",function(event){
+                    alert("2")});
+2. IE中的事件对象
+
+访问ie中事件对象event的三种不同方式：
+
+(1) 使用.onclick方式绑定时
+
+通过window.event的方式访问
+
+(2) 使用attachEvent的方式绑定时
+
+通过传入event参数访问
+
+也可以通过windoe.event来访问
+
+(3) 在html里面绑定时
+
+直接通过一个event的变量访问
+
+
+eg:
+
+<input type="submit" onClick="alert(event.type)">
+ie中的event对象有srcElement属性，但没有target属性
+
+event.srcElement = event.target
+
+3. 兼容写法
+
+ie中事件是全局变量window.event可以随时拿到 ，其它浏览器必须在参数中传递才能获取事件
+
+var event = event || window.event;
+
+obj = event.srcElement ? event.srcElement : event.target;
+四. 事件委托代理机制
+
+1. 事件委托代理机制运用的场景
+
+   <ul class="data-list">
+     <li>1</li>
+     <li>2</li>
+     <li>3</li>
+   </ul>
+<div class="data-show"></div>
+点击每一个li执行一个事件，让数字显示在div里
+
+思路：若给列表的每一项分别绑定点击事件，这样做的弊端在于，增加了内存，因为$(’#data-list li’)里有100个li对象。同时降低了代码性能，
+因为$(’#data-list li’)会搜索ul#data-list下所有的li元素
+
+这时，可以使用事件委托代理机制
+
+思路：将li的点击事件委托给其父元素ul，当内层元素的某个事件被触发，事件会一级一级地冒泡到外层元素。给父元素绑定事件，当被触发时，
+判断当前触发事件的对象是否是目标元素li，如果是，则执行回调函数。
+
+event.target 当前触发事件的对象，即用户真正单击到的对象
+event.currentTarget 当前绑定事件的对象 UL.data-list
+
+手写原生js实现事件代理，并要求兼容浏览器
+考察对事件对象e的了解程度，以及在IE下对应的属性名
+
+
+   // ============ 简单的事件委托
+   function delegateEvent(mydiv, childName, type, fn) {
+	//这四个参分别指的是
+	//mydiv——>绑定事件的父元素（事件委托者）
+	//childName——>实际执行事件的元素
+	//type——>绑定事件的类型
+	//fn——>事件处理程序
+
+	//给父元素绑定事件，注意兼容性
+    if(mydiv.addEventListener){
+    	mydiv.addEventListener(type, eventfn);
+    }else if(mydiv.attachEvent){
+    	mydiv.attachEvent("on"+type, eventfn);
+    }else {
+    	mydiv['on'+type] = eventfn
+    }
+    
+	//事件处理程序
+    function eventfn(event){
+	    var event = event || window.event;
+	    var target = event.target || event.srcElement;
+	    if (matchSelector(target, childName)) {
+		    if(fn) {
+		    	fn.call(target, event);
+		    }
+	    }
+	 }
+  }
+    /**
+     * only support #id
+     */
+
+//这个函数主要是判断当前事件源是否与我们想绑定事件的元素相同
+function matchSelector(target, childName) {
+    //如果通过id名指定
+    if (childName.charAt(0) === "#") {
+    	return target.id === childName.slice(1);
+    }
+   }
+
+   //调用
+   var mydiv = document.getElementById("myDiv");
+   delegateEvent(mydiv,"a","click",function(){
+   	alert("1");
+   })
+五. 不支持冒泡的事件
+
+focus
+blur
+mouseenter
+mouseleave
+focus和blur如何实现事件代理：
+
+由于事件代理是基于事件的冒泡机制，但是focus和blur不支持冒泡。
+
+在IE中可以使用focusein和focusout来实现
+
+在非IE浏览器中可以在捕获阶段绑定事件
+
+.addEventListener(“click”,function(event){},true);
+
+六. js中如何自定义事件
+
+
+  //创建一个事件
+var event = document.createEvent('Event');
+
+//初始化创建的事件event.initEvent(type, bubbles, cancelable);
+
+event.initEvent('build', true, true);
+
+//自定义的事件与click事件不一样，需要在程序中分发，类似于订阅发布模式
+elem.dispatchEvent(event);
