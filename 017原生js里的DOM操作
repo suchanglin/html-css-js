@@ -1,0 +1,33 @@
+一. 获取节点的方法
+
+1. 顶层API
+documment.getElementById() 返回一个元素
+document.getElementsByName() 返回一个dom数组，具有相同name值的dom
+document.getElementsByTagName() 返回一个dom数组，具有相同的标签名
+
+2. 通过父节点获取
+parent.firstChild
+parent.lastChild
+parent.childNodes
+parent.children
+parent.getElementsByTagName
+
+3. 通过子节点获取
+childNode.parentNode
+
+4. 通过临近节点获取
+neighbour.previousSibling
+neighbour.nextSibling
+
+二. 插入节点的方法
+appendChild()
+insertBefore()
+
+三. 删除节点的方法
+replaceChild(替换节点, 被替换的节点)
+removeChild(被移除的节点)
+
+四. 复制节点
+cloneNode(bool)
+bool为true时，深复制，复制节点以及节点的所有子节点
+bool为false时，浅复制，只复制节点本身
