@@ -1,0 +1,101 @@
+实现tab不是什么很难的功能，之前我也写过《用纯css实现tab页》（
+http://panpanfish.com/2016/04/04/2016-04-04-%E7%94%A8CSS%E5%AE%9E%E7%8E%B0tab%E9%A1%B5%E7%9A%84%E5%88%87%E6%8D%A2/），
+这个demo主要是在我看了《编写高质量代码》这本书之后的一个小实践，虽然这本书并不是很新，有的东西或许慢慢地也用不着了，但是看了之后觉得受益匪浅，
+感觉自己之前写demo，写组件就是自己在那“硬实现功能”，也没有考虑设计模式，代码的质量等问题。
+
+所以想重构一下这个实现tab页的组件的代码，希望能够学以致用吧~~
+
+一. tab页切换
+
+demo地址：http://panpanfish.com/myDemo/tab.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/js/common/common_tab.js
+
+二. 实现思路
+
+1. html部分
+
+通过id来获取dom存在一定的局限性：由于相同id只能出现一次，因此如果页面中需要出现多次tab组件，那么就会出现问题。
+
+通过标签名获取dom：虽然可以同时获取一部分dom，但是跟html结构耦合太紧，一旦html标签名发生变化，就得修改代码。
+
+于是，在tab组件的html部分，是通过定义className，然后在js里面通过className来获取dom。
+
+与js有关的className统一采用J_className命名的形式，这样方便以后查找。
+
+className的命名采用以下原则：使用驼峰命名法区分不同的单词，使用划线表示从属关系。
+
+2. css部分
+
+base.css：一些css样式重置
+common_tab.css：具体到tab组件的样式
+css按照base/common/page来分层
+
+但由于这里是写一个组件，所以没有page.css
+
+3. js部分
+
+base.js
+common_tab.js
+(1)base.js
+
+base.js里面定义了一个全局对象GLOBAL，并创建了2个命名空间Dom和Eve。
+
+Dom里面封装有关dom操作扩展的函数
+Eve里面封装跟事件有关的操作
+Dom里面的函数：
+
+$——根据id名获取dom
+getElementsByClassName——根据className获取dom
+addClass——给dom添加一个类
+removeClass——删除dom的一个类
+Eve里面的函数：
+
+addEvent——监听事件
+removeEvent——移除事件
+(2)common_tab.js
+
+通过hash对象传参
+
+利用hash对象传参的优点：参数的位置和顺序不重要了。
+eg：
+function setTab(config) {
+    //函数的实现
+}
+
+setTab({
+    root: tab, 
+    currentClass: "tab-curMenu",
+    trigger: "click",
+    handler: function(index) {
+        alert("您点击的是第" + (index + 1) + "个标签");
+    }
+});
+可复用性
+
+如果程序需要被同一个页面的多处复用，就不能用id来获取dom节点。
+
+可以通过一个for循环来实现多处复用
+
+eg:
+//点击相应的标签，出现该处对应的tab页
+for(var i = 0; i < this._tabMenus.length; i++) {
+    (function(_i) {
+        GLOBAL.Eve.addEvent(that._tabMenus[_i],"click",function() {
+            that.showItem(_i);
+        });
+    })(i);
+}
+组件独立性
+
+组件需要一个根节点，以保持每个组件之间的独立性。eg: config.root属性
+通过参数实组件定制功能
+
+将函数内不稳定的某个因素分离出来，以参数的形式传入，从而将不稳定的因素和函数解耦。
+eg: 
+被点击的标签的样式——config.currentClass
+触发标签页选中的方式——config.trigger
+是否需要自动播放功能——config.autoPlay
+预留回调接口
+
+config.handler
