@@ -1,0 +1,125 @@
+关于垂直居中和水平居中的方法有很多，我下面只是总结了几个。
+
+一. 垂直居中
+
+1. 利用css3的新属性transform:translate(x,y)
+
+首先将div绝对定位，然后设置top:50%;left:50%;
+然后设置transform:translate(-50%,-50%)
+
+<div class="content">Content goes here</div>
+
+#content {
+    position:absolute;
+
+    height:240px;
+    width:200px;
+
+    top:50%;  /*指的是div与顶部的距离为浏览器高度的一半*/
+
+    left:50%;
+
+    transform:translate(-50%,-50%);//这里是想对于div自身的百分比，进行x轴，y轴的变换
+}
+2. 设置div绝对定位，并且设置margin:auto;
+
+<div id="content">Content here</div>
+
+#content {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin:auto;
+    height:240px;
+    width:70%;
+}
+注意：这种方法必须设定div的宽和高，若要使div垂直居中，必须设定top:0;bottom:0;若要使div水平居中，必须设定left:0;right:0;
+
+3. 设置div绝对定位，并且设置top:50%;margin-top
+
+<div class="content">Content goes here</div>
+
+#content {
+    position:absolute;
+    top:50%;  /*指的是div与顶部的距离为浏览器高度的一半*/
+    height:240px;
+    margin-top:-120px; /*内容与盒子顶部的距离为盒子高度的一半*/
+}
+4. 使用表格的 vertical-align property 属性
+
+<div id="wrapper">
+  <div id="cell">
+    <div class="content">
+      Content goes here
+    </div>
+  </div>
+</div>
+
+#wrapper {display:table;}
+#cell {display:table-cell; vertical-align:middle;}
+vertical-align属性只有父元素为<td>、<th>时才有作用，这里是通过将display类型变成table-cell，激活了veritical-align属性。
+
+5. 行内元素垂直居中
+
+height = line-height
+6. 文本、图片、块级元素垂直居中
+
+给父元素设定margin-top = margin-bottom
+
+个人觉得最好的方法是第一种，但是可能需要考虑兼容性的问题。
+
+二. 水平居中
+
+1. 文本，图片等行内元素的水平居中
+
+text-align:center;
+2. 确定宽度的div水平居中
+
+margin-left:auto;
+margin-right:auto;
+postion:absolute;
+left:0;
+right:0;
+3. 不确定宽度的div水平居中————方法一
+
+首先将div绝对定位，然后设置left:50%;
+然后设置transform:translateX(-50%);
+
+<div class="content">Content goes here</div>
+
+#content {
+    position:absolute;
+
+    height:240px;
+    width:200px;
+
+    top:50%;  /*指的是div与顶部的距离为浏览器高度的一半*/
+
+    left:50%;
+
+    transform:translate(-50%,-50%);//这里是想对于div自身的百分比，进行x轴，y轴的变换
+}
+4. 不确定宽度的div水平居中————方法二
+
+外层div设定：float属性;position:relative;left:50%;
+
+内层div设定:position:relative;right:50%;
+
+
+.wrap {
+	position:relative;
+	left:50%;
+	float:left;
+}
+.inside {		
+	position:relative;
+	right:50%;
+	height:50px;
+	background:red;
+}
+
+<div class="wrap">
+     <div class="inside">lallala</div>
+   </div>
