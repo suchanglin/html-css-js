@@ -1,0 +1,120 @@
+为什么要异步加载脚本？
+加载脚本会阻塞其他资源和文件的加载，当浏览器解析器遇到<script>时，会立即加载，浏览器对其他资源和文档的加载会停止。
+
+其他文件（图片，样式表）可以并行下载。
+
+为了提高页面的加载速度，需要让JS不阻塞其他资源的加载。
+
+ansyc
+
+绿线是HTML解析，蓝线是js脚本加载，红线是js脚本执行
+
+1. 方案一：<script>标签的async=”async”属性
+
+HTML5中新增的async属性，脚本会异步加载(注意是加载而不是执行！！！)，加载时不会阻塞页面，加载完马上执行，执行时仍然会阻塞页面的解析。
+
+由于async脚本何时加载完是不确定的，所以async脚本执行的时机是不确定的。
+
+因此，若有多个脚本，这种方法不能保证脚本按顺序执行。
+
+注释：async 属性仅适用于外部脚本（只有在使用 src 属性时）。
+
+特点：可以跨域，多个脚本不能按顺序执行。
+
+2. 方案二：<script>标签的defer=”defer”属性
+
+defer的作用是：阻止脚本在下载完成后立即执行，会让脚本延迟到所有脚本加载执行完成后顺序执行。
+
+设置了defer属性之后，脚本会异步加载，加载完之后不会马上执行，等到页面解析完毕之后再按顺序执行。
+
+因此，设置了defer属性的脚本不会阻塞页面的执行。
+
+此外，这种方法可以确保所有设置defer属性的脚本按顺序执行。
+
+特点：可以跨域，多个脚本可以按顺序执行。
+
+defer和async这两个特性的初衷也是希望能够解决或者缓解阻塞对于页面体验的影响
+
+defer和async优先级的问题：
+
+如果<script>元素同时定义了defer和async特性，则按async来处理（注意：对于不支持async的浏览器会直接忽略async特性）
+如果<script>元素只定义了defer，则按延迟脚本的方式处理
+如果<script>元素没有定义defer也没有定义async，则按正常情况处理，即：脚本立即加载和执行
+3. 方案三：动态创建<script>标签
+
+示例：
+
+<!DOCTYPE html>
+  	<html>
+   	<head>
+    	<script type="text/javascript">
+	    	(function(){
+		    	var s = document.createElement('script');
+		    	s.type = 'text/javascript';
+		    	s.src = "http://code.jquery.com/jquery-1.7.2.min.js";
+		    	var tmp = document.getElementsByTagName('script')[0];
+		    	tmp.parentNode.insertBefore(s, tmp);//在这个script标签前再加一个script标签
+	    	})();
+    	</script>
+   	</head>
+   	<body>
+   		<img src="http://xybtv.com/uploads/allimg/100601/48-100601162913.jpg" />
+   	</body>
+  	</html>
+在执行最后一行代码之前，是不会加载外部文件的。
+
+此文件元素添加到页面后立即开始下载。此技术的重点在于：无论在何处启动下载，脚本的下载和运行都不会阻塞页面的处理过程。
+
+优点：允许跨域，多个脚本可以按顺序执行。
+
+
+
+4. AJAX
+
+使用XHR对象加载js代码并注入页面
+
+思路1：XHR 注入
+
+先创建一个XMLHttpRequest对象，加载js文件，最后通过动态添加<script>元素将代码注入页面。
+
+eg:
+
+var xhr = new XMLHttpRequest();
+xhr.open("get","file.js",true);//发送GET请求file.js文件
+xhr.onreadystatechange = function(){
+	if(xhr.readyState == 4){
+		if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){
+			var myScript = document.createElement("script");
+			myScript.type = "text/javascript";
+			myScript.text = xhr.responseText;
+			document.body.appendChild(myScript);
+		}
+	}
+}
+思路2：XHR eval
+
+先创建一个XMLHttpRequest对象，加载js文件，然后将加载得到的js代码放到eval()函数内
+
+eval() 它是一个动态执行函数,可以把脚本语句写成字符串,然后用它来执行，eval() 函数可计算某个字符串，并执行其中的 JavaScript 代码。
+
+
+var xhr = new XMLHttpRequest();
+xhr.open('get','file.js',true);
+xhr.onreadystatechange = function() {
+	if(xhr.readystate == 4) {
+		if(xhr.status >= 200 && xhr.status <= 300 || xhr.status == 304) {
+			eval(xhr.responseText);
+		}
+	}
+}
+特点：这两种方法都不允许跨域，不能确保多个脚本按顺序执行。
+
+5. iframe方式（这里可以参照：iframe异步加载技术及性能 中关于Meboo的部分）
+
+不允许跨域访问。
+
+使用iframe是因为它可以和主页面并行加载，不会阻塞主页面。
+
+iframe会阻塞主页面的onload事件
+
+主页面和iframe共享同一个连接池
