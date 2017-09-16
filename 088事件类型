@@ -1,0 +1,123 @@
+一. 事件类型
+
+UI事件
+焦点事件
+鼠标事件
+滚轮事件
+文本事件
+键盘事件
+合成事件
+变动事件
+变动名称事件
+
+
+二. UI事件
+
+UI事件不一定与用户操作有关
+
+load：页面完全加载后触发（包括图像、js、css）
+unload：用户从一个页面切换到另一个页面时触发
+resize：浏览器窗口宽度、高度改变时触发
+scroll：浏览器的窗口滑动滚轮时触发
+
+
+
+三. 焦点事件
+
+页面获得或者失去焦点
+
+blur：元素失去焦点时触发（不冒泡！！！）
+focus：元素获得焦点时触发（不冒泡！！！）
+focusin：元素获得焦点时触发
+focusout：元素失去焦点时触发
+
+
+四. 鼠标事件
+
+用户用鼠标执行某些操作
+
+click：单击鼠标按钮（左边的键），或者按下回车键
+dbclick：双击鼠标按钮（左边的键）
+mousedown：用户按下任意鼠标按钮
+mouseenter：将鼠标光标首次移动到元素范围之内时触发（不冒泡！！！）
+mouseleave：位于元素内的鼠标移出元素时触发（不冒泡！！！）
+mousemove：鼠标指针在元素内部移动时重复触发
+mouseout：鼠标指针位于一个元素上方，然后用户将其移入另一个元素时触发
+mouseover：鼠标指针位于一个元素外部，用户将其首次移入另一个元素边界之内时触发
+mouseup：用户释放鼠标按钮时触发
+mouseenter和mouseover的区别：
+
+若元素内部有子元素，鼠标进入该元素和该元素内部的子元素都会触发mouseover；鼠标进入该元素整个范围之内触发mouseenter
+
+举个栗子：
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+            #over {
+                background-color: lightgray;
+                padding: 20px;
+                width: 40%;
+                float: left;
+            }
+            
+            #enter {
+                background-color: lightgray;
+                padding: 20px;
+                width: 40%;
+                float: right;
+            }
+        </style>
+
+    </head>
+    <body>
+        <p>不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件。</p>
+        <p>只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件。</p>
+        <div id="over">
+            <h2 style="background-color:white;">被触发的 Mouseover 事件：
+                <span id="overNum">0</span>
+            </h2>
+        </div>
+        <div id="enter">
+            <h2 style="background-color:white;">被触发的 Mouseenter 事件：
+                <span id="enterNum">0</span>
+            </h2>
+        </div>
+
+        <script type="text/javascript">
+            var divOver = document.getElementById("over");
+            var divEnter = document.getElementById("enter");
+            var overNum = document.getElementById("overNum");
+            var enterNum = document.getElementById("enterNum");
+            
+            divOver.onmouseover = function() {
+                overNum.innerHTML = parseInt(overNum.innerHTML) + 1;
+            }
+
+            divEnter.onmouseenter = function() {
+                enterNum.innerHTML = parseInt(enterNum.innerHTML) + 1;
+            }
+        </script>
+    </body>
+</html>
+相应的onmouseleave和onmouseout的区别类似
+
+onmouseenter对应onmouseleave
+onmouseover对应onmouseout
+
+
+五. 滚轮事件
+
+mousewheel
+
+mousewheel事件有一个特殊的属性：wheelDelta，是120的倍数
+
+六. 键盘事件
+
+keydown：按下键盘上的任意键触发，按住不放会重复触发
+keypress：按下键盘上的字符键触发，按住不放会重复触发
+keyup：释放键盘上的任意键触发
+textInput：在可编辑区域内输入字符时触发
