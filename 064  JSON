@@ -1,0 +1,95 @@
+一. 什么是JSON
+
+json是一种数据格式，json语法能表示简单值、对象、数组三种类型的值。
+
+对象和数组通常是json数据结构的最外层形式
+
+1. 简单值
+
+bool、字符串、number、null
+
+其中字符串与js中的字符串中的不同之处：必须用双引号
+
+2. 对象
+
+json对象和js中对象的区别：
+
+json对象的属性名必须用双引号
+末尾没有分号(不是一个js语句)
+3. 数组
+
+二. json序列化
+
+JSON对象的方法
+
+JSON.stringify(js对象)：把js对象序列化为json字符串
+JSON.parse(json字符串)：把json字符串解析为原生的json对象
+1. 将对象序列化成json字符串 JSON.stringify()
+
+在序列化js对象时，函数和undefined值都会被跳过。
+
+JSON.stringify()第一个参数为json对象，第二个参数可以为一个数组，或者一个函数（过滤器）
+
+第二个参数为数组时:
+
+
+var book = {
+	"title": "javaScript",
+	edition: 1,
+	year: 2011
+};
+
+var bookStr = JSON.stringify(book,["title","edition"]);
+console.log(bookStr); // "{"title":"javaScript","edition":1}"
+typeof bookStr; //string
+第二个参数为函数时：
+
+
+//一般的js对象里的key值是可以不加引号的
+var book = {
+	"title": "javaScript",
+	edition: 1,
+	year: 2011
+};
+
+//注意：过滤器函数一定要设置default的值
+var bookStr = JSON.stringify(book,function(key,value){
+	switch(key) {
+		case "year":
+			return 2016;
+		default:
+			return value;
+	}
+});
+
+console.log(bookStr); // "{"title":"javaScript","edition":1,"year":2016}"
+typeof bookStr; //string
+2. 将json字符串解析成对象
+
+JSON.parse()第一个参数是一个json字符串，第二个参数可以是一个函数
+
+
+var book1 = {
+	"title": "javaScript",
+	edition: 1,
+	year: 2011
+};
+
+var bookStr = JSON.stringify(book1);
+
+var book2 = JSON.parse(bookStr,function(key,value){
+	if(key == "edition") {
+		return 2;
+	} else {
+		return value;
+	}
+});
+
+console.log(book); // Object {title: "javaScript", edition: 2, year: 2016}
+三. 除了json以外的数据格式
+
+XML：可扩展通用标记语言
+
+与json相比：
+
+XML文件庞大，格式复杂，传输占带宽；json较轻量级
