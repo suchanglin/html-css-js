@@ -1,0 +1,71 @@
+一. 什么是ajax
+
+异步的javascript and xml
+
+是一种不需要刷新页面就可以从服务台请求数据的一种技术。
+
+二. ajax的过程
+
+1.新建一个XMLHttpRequest对象
+
+var xhr = new XMLHttpRequest();
+
+2.调用open()方法，请求准备阶段
+
+注意：调用open()方法时，并没有发送请求，只是启动一个请求以备发送。
+
+xhr.open("请求的方法","请求的地址",是否发送异步请求);
+
+
+GET请求：向服务器查询某些信息，把查询的字符串追加到URL末尾
+POST请求：用于向服务器发送某些要保存的数据。
+
+flase:请求不是异步
+true:请求是异步的
+
+3.调用send()方法，发送请求
+
+xhr.send(null);
+
+send()函数里面接收的参数，是作为请求主体发送的数据，如果不发送数据，那么必须将参数置为null
+4.给xhr绑定一个状态变化的监听事件onreadystatechange
+
+为了满足跨浏览器的兼容性，必须在open事件调用之前指定onreadystatechange事件处理程序
+
+xhr.onreadystatechange = function(){
+    if(xhr.readystate == 4)//请求响应的当前活动阶段，4表示响应已完成
+    {
+        if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304)
+        {alert(responseText);}
+        else
+        {alert("unsuccessful")}    
+    }
+}
+服务器响应之后，XHR对象的4个属性值发生了变化
+
+responseText:响应的内容
+responseXML：响应的类型
+status：响应的状态
+statusText：响应状态的文字说明
+readyState: ajax请求响应过程的当前活动阶段
+
+根据响应状态status写相关的操作函数
+status的几种取值：
+200表示成功
+304表示可以使用浏览器的缓存版本
+204表示没有新文档
+
+
+readyState的几种取值：
+0：未调用open()
+1：已调用open()，未调用send()
+2：已调用send()，但没有接收到响应
+3：已接收到部分响应数据
+4：已接收到全部响应数据
+在接收到响应之前取消异步请求的方法：
+
+xhr.abort()
+
+5.获取异步调用返回的数据
+
+6.使用js和DOM实现局部刷新
