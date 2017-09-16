@@ -1,0 +1,31 @@
+一. 字典
+
+1. 什么是二叉树？
+
+字典是一种以键值对形式存储数据的数据结构。
+
+2. 二叉树的实现
+
+function Dictionary() {
+	this.dataStore = new Array(); // 为啥是数组不是对象？？？
+	this.add = add;
+	this.find = find;
+	this.remove = remove;
+	this.showAll = showAll;
+}
+
+Dictionary.prototype = {
+	constructor: Dictionary,
+	add: function() {},
+}
+字典类增加一个键值对
+
+function add(key, value) {
+this.dataStore[key] = value;
+}
+
+找到字典类里面的某一个键对应的值
+
+function find(key) {
+return this.dataStore[key];
+}
