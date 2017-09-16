@@ -1,0 +1,69 @@
+一. 虚拟dom的思想
+
+react最大的特点之一，就是其运用了虚拟dom的技术。
+
+首先看一个例子：http://panpanfish.com/myDemo/research/sortTable.html
+
+这是我之前做过的一个排序表格的demo，就是点击表格的头部，然后对整个表格进行排序，当时的实现思想是：用一个二维数组将表格的数据存放起来，
+然后根据某一列对二维数组排序，最后由排序后的二维数组再重新渲染整个表格。
+
+这种做法虽然避免了复杂的dom操作，但是每次整个页面都要重新渲染一遍，这样性能肯定是很差的。
+
+但是这个就是虚拟dom的思想，只不过每次都不是重新更新实际的dom，而是每次都在内存中重新构建一次dom树，然后将当前的dom树，和上一次的dom树进行对比，
+将不同的部分进行实际的浏览器dom更新。
+
+二. 虚拟dom实现
+
+1. 用js构建虚拟dom树
+
+构建dom对象
+
+
+
+function Element(tagName, props, children) {
+	this.tagName = tagName;
+	this.props = prrops;
+	this.children = children;
+}
+
+Element.prototype = {
+	render: function() {
+		var el = document.createElement(this.tagName);
+		var props = this.props;
+
+		for(var propName in props) {
+			var propValue = props[propName];
+			el.setAttribute(propName,propValue);
+		}
+
+		var children = this.children || [];
+
+		children.foreach(function(child) {
+
+			//如果子节点也是Element，那么递归调用render构建dom
+			var childEl = child instanceof Element ? child.render : document.createTextNode(child);
+			el.appendChild(childEl);
+		});
+	}
+
+	return el;
+}
+
+var ul = new Element('ul', {id: 'list'}, [
+	Element('li', {class: 'item'}, ['item1']),
+	Element('li', {class: 'item'}, ['item2']),
+	Element('li', {class: 'item'}, ['item3'])
+]);
+
+//利用Element.render()方法构建一个dom树
+var ulElement = ul.render();
+
+//将构建的dom树插入到真实的文档中
+document.body.appendChild(ulElement);
+2. 虚拟dom的diff算法
+
+比较新的dom和之前的dom树，将不同的地方保存下来
+
+3. 在真正的元素上应用变更
+
+参考：《深度剖析：如何实现一个 Virtual DOM 算法》https://github.com/livoras/blog/issues/13
