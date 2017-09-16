@@ -1,0 +1,100 @@
+一.HTML5是什么
+
+HTML5是HTML标准的第5次修订。
+
+HTML5包括：一些新的javascript的API、HTML的一些新的元素、一些新的技术（让web站点和应用更加多样化，功能更强大）
+
+HTML5的目的：将互联网语义化，以便更好地被人类和机器阅读。
+
+二. HTML5中的新的特性
+
+1. HTML5中的新元素
+
+语义化、结构化元素：
+
+<section>
+<article>
+<nav>
+<header>
+<footer>
+<aside>
+<hgroup>
+对标签语义化的理解？
+
+去掉样式时，页面结构依然清晰
+有利于SEO(提高该网站在搜索引擎结果中排名的位置)
+方便其它设备解析
+语义化更具可读性
+新的媒体元素
+
+<audio>
+<video>
+新的表单元素
+
+<datalist>
+<keygen>
+<output> 用于不同类型的输出
+<datalist>规定输入域的选项列表
+
+<input type="url" list="url_list" name="link" />
+<datalist id="url_list">
+	<option label="W3School" value="http://www.W3School.com.cn" />
+	<option label="Google" value="http://www.google.com" />
+	<option label="Microsoft" value="http://www.microsoft.com" />
+</datalist>
+<keygen>提供一种验证用户的可靠方法，提交表单时，会生成2个键，一个私钥，一个公钥。用于验证用户。
+
+<canvas>元素
+
+MathML元素
+
+<math></math>
+2. HTML5中新的javascript的API
+
+(1) 跨文档消息传递 XDM
+
+不同域之间的消息传递
+
+postMessage(“字符串”,”目标域”)
+
+(2) 原生拖放
+
+拖放事件
+
+针对被拖放的元素：dragstart、drag、dragend
+针对放置目标：dragenter、dragover、dragleave/drop
+数据交换dataTransfer
+
+dataTransfer对象是事件对象event的属性
+
+dataTransfer对象有两个方法：
+
+setData(“数据保存类型”，”保存的值”)
+getData(“数据保存类型”)
+dataTransfer对象有两个属性：
+
+dropEffect：被拖动的元素能够执行哪种放置行为
+effectAllowed：被拖动的元素允许哪种dropEffect
+元素是否能够被拖动
+
+属性draggable
+
+详情见另一篇博客：HTML5中的元素的拖放
+
+(3) 音频和视频
+
+<video>
+<audio>
+(4) 历史状态管理
+
+HTML5更新了history对象
+
+为history对象新增了2个方法
+
+pushState()
+replaceState()
+(5) 离线存储localStorage、sessionStorage
+
+(6) web socket
+
+(7) web worker
