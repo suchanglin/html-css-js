@@ -1,0 +1,98 @@
+数组中找出和为N的两个数
+
+要求输入：数组，例如： numbers = [1,7,9,10,16]，target = 17;
+
+输出： index1 = 1, index2 = 3
+
+1. 如果数组是无序的
+
+方法一
+
+思想：
+
+先将数组进行排序
+然后使用2个指针，一个从数组头部进行遍历，一个从数组尾部进行遍历
+
+如果两个数相加 = 输入的值，那么就返回当前的数，跳出循环
+
+如果两个数相加 != 输入的值，当两个数的和 > 目标值，则后面一个指针向前移动；当两个数的和 < 目标值，则前面一个指针向后移动
+
+然后再在排序之前的数组中找到该值对应的下标作为程序的输出
+
+需要考虑的几种特殊情况：
+
+在数组中找不到两个数的和等于给定的数
+在程序中会找到两对数相加都等于给定的数?????下面的两个程序没有考虑这个问题
+
+var twoSum = function(arr, target) {
+	//复制数组
+	var temp = arr.slice(0);
+	
+	//对数组副本进行排序
+	temp = temp.sort(function(a,b) {
+		return a - b;
+	});
+	
+	//设定两个指针，一个从数组头部开始移动，一个从数组尾部开始移动
+	var i = 0;
+	var j = temp.length - 1;
+
+	//如果首尾两个数相加不等于目标值，判断它们的和与目标值的大小
+	while(i < j) {
+
+		//两个数的和比目标值大的话，后面一个指针往前移
+		//两个数的和比目标值小的话，前面一个指针往后移
+		if(temp[i] + temp[j] > target) {
+			j--;
+		} else if(temp[i] + temp[j] < target) {
+			i++;
+		} else {
+			break;
+		}
+	}
+	
+	//当两个数的和等于目标值时，跳出循环
+	if(i == j) {		
+		console.log('找不到这样的2个数');
+		return;
+	}
+	
+	//找到原数组对应的序号
+	var index = [];
+	index[0] = arr.indexOf(temp[i]);
+	index[1] = arr.indexOf(temp[j]);
+	console.log(index);
+}
+方法二
+
+使用hash表
+
+var twoSum = function(arr,target) {
+var subArr = arr.map(function(item, index, arr) {
+return target - item;
+});
+
+var hash = {};
+
+for(var i = 0; i < arr.length; i++) {
+
+    //这里的i+1是为了让hash表里面的每个存在的元素，都为真
+    hash[arr[i]] = i + 1;
+}
+
+var index = [];
+
+for(var i = 0; i < subArr.length; i++) {
+    if(hash[subArr[i]]) {
+        index[0] = hash[target - subArr[i]] - 1;
+        index[1] = hash[subArr[i]] - 1;
+        break;
+    }
+}
+
+console.log(index);
+}
+
+2. 如果数组是有序的
+
+比无序的解法少了排序的步骤
