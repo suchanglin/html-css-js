@@ -1,0 +1,93 @@
+一. 为什么要清除浮动
+
+给元素设置了float属性之后，元素就会脱离文档流，这样就会引起排版的混乱。
+
+元素脱离文档流的结果：
+
+元素从普通布局排版中拿走，其他盒子在定位的时候，会把脱离文档流的元素当做不存在来进行定位。
+
+eg:
+
+<div class="outer">
+    <div class="div1">1</div>
+</div>
+
+.outer{border: 1px solid #ccc;background: #fc9;color: #fff; margin: 50px auto;padding: 50px;}
+.div1{width: 80px;height: 80px;background: red;float: left;}
+如上例所示，如果子元素不浮动的话，那么这个外层的高是会自动被撑开的。但是当内层元素浮动后，就出现了以下影响：
+
+背景不能显示
+边框不能撑开
+margin 设置值不能正确显示
+
+
+二. 清除浮动的方法
+
+1. 在浮动的元素下面加一个空的<div>，设置clear:both;属性
+
+这个也是我最常使用的一种方法，但是这种方法有一个缺点就是，会增加一个多余的DOM节点。
+
+<div class="outer">
+    <div class="div1">1</div>
+    <div class="div2">2</div>
+    <div class="div3">3</div>
+    <div class="clear"></div>
+</div>
+
+.clear{clear:both; height: 0; line-height: 0; font-size: 0}
+
+插播clear属性：
+
+clear:left; /* 元素左边不允许有浮动的元素 */
+
+clear:right; /* 元素右边不允许有浮动元素*/
+
+2. 父元素定义 overflow：hidden；zoom:1;
+
+不能定义height，使用overflow:hidden;时，浏览器会自动检查浮动区的位置
+
+<div class="outer">
+    <div class="div1">1</div>
+    <div class="div2">2</div>
+    <div class="div3">3</div>
+</div>
+
+.outer{overflow:hidden;zoom:1;}
+
+与这个类似的一个方法是：
+
+父元素定义 overflow:auto;zoom:1; —— 这里是利用元素的BFC特性
+
+注意：这里的zoom:1;是用来解决浏览器的兼容性。
+
+3. 给父元素加一个:after{clear:both;}
+
+.outer:after {
+    clear:both;//清除浮动
+    content:'';
+    display:block;//这个属性是必须的
+    visibility:hidden;//允许浏览器渲染，但是不显示出来
+}
+
+插播一个visibility:hidden;和display:none;的区别：
+
+visibility:none; **在页面中**看不见摸得着，页面中会留出空间，只是不可见
+
+display:none; **在页面中**看不见摸不着，存在dom节点，但是在页面中没有这个对象。
+
+:after指的是在该标签里面的所有元素之后，添加内容（而不是标签之后！！！注意）
+:before指的是在该标签里面的所有元素之前，添加内容
+
+4. 给父元素加一个高度
+
+解决父元素无法自动获取高度的问题
+
+但是这种方法使用太局限了，不建议使用
+
+5. 父元素也一起浮动
+
+不建议使用
+
+6.父元素定义display:table
+
+不建议使用
