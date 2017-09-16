@@ -1,0 +1,186 @@
+this在面向对象编程里十分重要。this是js中的关键字，指示的是函数的上下文对象。this是动态绑定，或称为运行期绑定的，
+指的是在运行时基于函数的执行环境绑定的。
+
+this可以是全局对象、当前对象或者任意对象，这完全取决于函数的调用方式
+
+JavaScript中函数的调用有以下几种方式：
+
+作为对象方法调用
+作为函数调用
+作为构造函数调用
+使用apply或call调用
+作为事件的回调函数调用(onclick、addEventListener、attachEvent)
+作为setTimeout/setInterval里的回调函数调用
+下面我们将按照调用方式的不同，分别讨论 this 的含义
+
+1. 函数作为对象的方法被调用时，this指向当前对象
+
+当一个函数保存为对象的一个属性时，称之为对象的一个方法。
+
+var point = { 
+     x : 0, 
+     y : 0, 
+     moveTo : function(x, y) { 
+     this.x = this.x + x; 
+     this.y = this.y + y; 
+     } 
+ }; 
+
+ point.moveTo(1, 1)//this 绑定到当前对象，即 point 对象
+                    //point.x、point.y都变成了 1
+2. 作为函数调用时，this指向全局对象
+
+当一个函数并非为一个对象的属性的时候，他就是被当做一个函数来调用的。
+
+eg1:
+function makeNoSense(x) { 
+    this.x = x; 
+}     
+makeNoSense(5); 
+console.log(x);// x 已经成为一个值为 5 的全局变量
+
+eg2:
+var point = { 
+ x : 0, 
+ y : 0, 
+ moveTo : function(x, y) { 
+     // 内部函数
+     var moveX = function(x) { 
+         this.x = x;//this 绑定到了哪里？
+    }; 
+    // 内部函数
+    var moveY = function(y) { 
+        this.y = y;//this 绑定到了哪里？
+    }; 
+
+    moveX(x); //作为函数调用，所以moveX里面的this指向的是全局对象
+    moveY(y); //作为函数调用，所以moveY里面的this指向的是全局对象
+    } 
+ }; 
+ point.moveTo(1, 1); 
+ point.x; //==>0 
+ point.y; //==>0 
+ x; //==>1 
+ y; //==>1
+
+eg3:
+var point = { 
+ x : 0, 
+ y : 0, 
+ moveTo : function(x, y) { 
+      var that = this; 
+     // 内部函数
+     var moveX = function(x) { 
+         that.x = x; //使用了闭包 
+     }; 
+     // 内部函数
+     var moveY = function(y) { 
+         that.y = y; 
+     } 
+     moveX(x); 
+     moveY(y); 
+     } 
+ }; 
+ point.moveTo(1, 1); 
+ point.x; //==>1 
+ point.y; //==>1
+3. 作为构造函数调用时，this 绑定到新创建的对象上
+
+JavaScript 中的构造函数也很特殊，如果不使用 new 调用，则和普通函数一样。作为又一项约定俗成的准则，构造函数以大写字母开头，
+提醒调用者使用正确的方式调用。
+
+function Point(x, y){ 
+    this.x = x; 
+    this.y = y; 
+ }
+var obj = new Point(1,2);//this指向obj
+4. 使用apply或者call调用
+
+利用apply和call可以改变this的指向
+
+ function Point(x, y){ 
+    this.x = x; 
+    this.y = y; 
+    this.moveTo = function(x, y){ 
+        this.x = x; 
+        this.y = y; 
+    } 
+ } 
+
+ var p1 = new Point(0, 0); 
+ var p2 = {x: 0, y: 0}; 
+ p1.moveTo(1, 1); 
+ p1.moveTo.apply(p2, [10, 10]);//moveTo 的this又指向了p2
+
+var name="A";
+var obj = {
+  name:"B",
+  child:{
+            name:"C",
+            conName:function(){
+                console.log(this.name);
+              }    
+  }
+
+};
+
+obj.child.conName();//C 作为对象的方法调用，指向当前的对象
+
+var output = obj.child.conName;
+output();//A output作为函数调用时，this指向全局变量
+举个栗子：
+
+var name = 'yuan'
+var info = {
+    name: "yuanzm",
+    sayName: function() {
+        console.log(this.name);
+    }
+}
+var sayName = info.sayName;
+// 我们本身是希望得到yuanzm的，但是确得到了yuan这个结果。为什么会得到这个结果，前面的长篇大论起作用了。
+// 如果是采用info.sayName()这种调用方式，符合对象的方法调用模式，this指的是info对象；
+// 如果令一个变量sayName为info.sayName，这个时候再调用函数，就是普通的函数调用模式了，结果自然为yuan。
+sayName();    // yuan 
+5. 作为事件的回调函数调用时，指向的是绑定事件的dom节点（或者window，attachEvent指向window）
+
+<input value="click" id="btn" type="button"/>
+
+<script>  
+  var nam = "some";
+  var btn = document.getElementById("btn");
+  var ad = {
+    nam: "ad",
+    say: function() {
+      console.log(this);
+    }
+  }
+  ad.say();//作为对象的方法调用，this指向ad
+  btn.onclick = ad.say;//this指向<input>
+  btn.addEventListener("click",ad.say,false);//this指向<input>
+</script>
+注意：addEventListener和attachEvent绑定事件时，this指向不同
+addEventListener绑定事件时，this指向绑定该事件的dom元素
+attachEvent绑定事件时，this指向window
+
+ie10（不包括ie10）以上就只支持addEventListener绑定事件了
+ie9,ie10支持addeventListener和attachEvent
+ie8及其以下都只支持attachEvent
+
+6. 作为setTimeout、setInterval的回调函数调用时，指向window
+
+作为setTimeOut、setInterval的回调函数调用，其实和普通函数调用是一样的，所以指向的是window
+
+<script>  
+  var nam = "some";
+  var btn = document.getElementById("btn");
+  var ad = {
+    nam: "ad",
+    say: function() {
+      console.log(this);
+    }
+  }
+  ad.say();//作为对象的方法调用，this指向ad
+  setTimeout(ad.say,1000);//this指向window
+  setInterval(ad.say,1000);//this指向window
+</script>
