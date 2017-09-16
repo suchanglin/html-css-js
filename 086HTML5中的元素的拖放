@@ -1,0 +1,143 @@
+一. 拖放过程中所涉及到的事件
+
+针对被拖放的元素：dragstart、drag、dragend
+
+dragstart事件：按下鼠标键并开始移动时触发
+drag事件：元素在被拖动过程中一直触发
+dragend事件：拖动停止时触发
+
+针对放置目标：dragenter、dragover、dragleave/drop
+
+dragenter事件：有元素被拖动到放置目标上触发
+dragover：被拖动的元素在放置目标范围内移动
+dragleave：元素被拖出放置目标时触发
+drop：元素被放到放置目标内时触发
+
+二. 将一个元素变成可以拖放的元素
+
+设置元素的属性draggable为true
+
+三. 将一个元素变成拖放的目标元素
+
+dragenter、dragover事件的默认行为是不允许元素成为被放置的元素
+
+因此为了让一个元素成为放置目标，需要阻止这个两个事件的默认行为
+
+
+   //获得拖放的目标元素
+var target = document.getElementById("trash");
+//关闭默认处理；
+target.ondragenter = function(event){
+	event.preventDefault();//阻止默认事件的默认行为
+}
+target.ondragover = function(event){
+	event.preventDefault(); 
+}
+四. 拖放元素的数据交换
+
+实现拖放的原理就是，删除原来的元素，在目标元素里添加这个元素
+
+因此需要使用id获取这个被拖放的元素
+
+数据交换dataTransfer
+
+dataTransfer对象是事件对象event的属性
+
+dataTransfer对象有两个方法：
+
+setData(“数据保存类型”，”保存的值”)
+getData(“数据保存类型”)
+dataTransfer对象有两个属性：
+
+dropEffect：被拖动的元素能够执行哪种放置行为
+effectAllowed：被拖动的元素允许哪种dropEffect
+五. 举个栗子
+
+eg:
+
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>HTML5实现拖拽操作</title>
+		<meta charset="utf-8"/>
+		<style>
+			.album {
+				border: 3px dashed #ccc;
+				float: left;
+				margin: 10px;
+				min-height: 400px;
+				padding: 10px;
+				width: 220px;
+			}
+			.dragImg {
+				width: 200px;
+				height: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="info">
+			<h2>温馨提示：可将照片直接拖到垃圾箱中</h2>
+		</div>
+		<div id="album" class="album">
+			<h2>相册</h2>
+			<img draggable="true" class="dragImg" id="img1" src="img/img1.jpg" />
+			<img draggable="true" class="dragImg" id="img2" src="img/img1.jpg" />
+			<img draggable="true" class="dragImg" id="img3" src="img/img1.jpg" />
+		</div>
+		<div id="trash" class="album">
+			<h2>垃圾箱</h2>
+		</div>
+
+		<script>
+			function init() {
+				var info = document.getElementById("info");
+				//获得被拖放的元素，本示例为相册所在的DIV
+				var src = document.getElementById("album");
+				//开始拖放操作
+				src.ondragstart = function (e) {
+					//获得被拖放的照片ID
+					var dragImgId = e.target.id;
+					//获得被拖动元素
+					var dragImg = document.getElementById(dragImgId);
+					//拖放操作结束
+					dragImg.ondragend = function(e){
+						//恢复提醒信息
+						info.innerHTML="<h2>温馨提示：可将照片直接拖到垃圾箱中</h2>";
+					};
+					e.dataTransfer.setData("text",dragImgId);//将拖动的元素的id保存下来
+				};
+
+				//拖放过程中
+				src.ondrag = function(e){ 
+					info.innerHTML="<h2>--照片正在被拖动--</h2>";
+				}
+
+				//获得拖放的目标元素
+				var target = document.getElementById("trash");
+				//关闭默认处理；
+				target.ondragenter = function(e){
+					e.preventDefault();//阻止默认事件.比如当你点击带有href值的a标签时,元素响应click事件后,还会发生页面跳转.如果加上这个方法(属性)后,
+          浏览器只会响应click事件,不会发生跳转.
+				}
+				target.ondragover = function(e){
+					e.preventDefault(); 
+				}
+				//有东西拖放到了目标元素
+				target.ondrop = function (e) {
+					var draggedID = e.dataTransfer.getData("text");
+					//获取相册中的DOM对象
+					var oldElem = document.getElementById(draggedID);
+					//从相册DIV中删除该照片的节点
+					oldElem.parentNode.removeChild(oldElem);
+					//将被拖动的照片DOM节点添加到垃圾桶DIV中；
+					target.appendChild(oldElem);
+					info.innerHTML="<h2>温馨提示：可将照片直接拖到垃圾箱中</h2>";
+					e.preventDefault();
+				}
+			}
+			init();
+		</script>
+</body>
+</html>
