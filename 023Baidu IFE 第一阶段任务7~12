@@ -1,0 +1,215 @@
+三. 我的任务
+
+我的任务列表http://panpanfish.com/baiduIFE/
+
+7. 任务七
+
+(1). 任务七需要完成的示意图
+
+(2). 任务七demo
+
+(3). 任务七代码
+
+(4). 任务七笔记
+
+8. 任务八
+
+(1). 任务八需要完成的示意图
+
+
+
+任务要求：
+
+使用 HTML 和 CSS 实现网格布局。根据屏幕宽度调整元素大小。
+参考 BootStrap 的网格系统DOM 元素类名。
+(2). 任务八demo
+
+http://panpanfish.com/baiduIFE/task1-8.html
+
+(3). 任务八代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task1-8.html
+
+(4). 任务八笔记
+
+这个任务中主要使用到的一个知识点是CSS3中的媒体查询，加深了我对bootstrap栅格布局的理解。
+
+媒体查询media
+
+简单来说：就是根据不同的媒体环境情况，来设置不同的样式
+
+使用方法：
+
+在标签里加上media属性
+
+在CSS文件中应用
+
+@media screen and (max-width: 600px) {
+.class {
+background: #ccc;
+}
+}
+
+注意：这里的screen and经常会被省略；max-width是条件，当媒体屏幕宽度小于600px时，条件成立，执行{}中的代码~~
+
+兼容性问题：
+
+IE8既不支持HTML5也不支持CSS3 Media，所以我们需要加载两个JS文件，来保证我们的代码实现兼容效果：
+
+首先我们在使用Media的时候需要先设置下面这段代码，来兼容移动设备的展示效果：
+
+width = device-width：宽度等于当前设备的宽度
+initial-scale：初始的缩放比例（默认设置为1.0）
+minimum-scale：允许用户缩放到的最小比例（默认设置为1.0）
+maximum-scale：允许用户缩放到的最大比例（默认设置为1.0）
+user-scalable：用户是否可以手动缩放（默认设置为no，因为我们不希望用户放大缩小页面）
+媒体查询常用的3个特性：
+
+设备宽度等于
+
+@media screen and (max-device-width:960px){
+
+}
+
+设备宽度小于
+
+@media screen and (max-width:960px){
+
+}
+
+设备宽度大于
+
+@media screen and (min-width:960px){
+
+}
+
+如果容易把大于和小于记混，可以这样理解：执行这个样式的最小的宽度为960px(min-width:960px),那么大于960px的屏幕就会添加这个样式；反之亦然。
+
+在这个任务中还用到了box-sizing的设置。
+
+9. 任务九
+
+见博客《模拟文件报表排版》
+
+10. 任务十
+
+(1). 任务十需要完成的示意图
+
+
+
+任务要求：
+
+只需要完成HTML，CSS代码编写，不需要写JavaScript
+屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，而不要改动第一个元素的边框颜色与高度实现效果图。
+(2). 任务十demo
+
+http://panpanfish.com/baiduIFE/task1-10.html
+
+(3). 任务十代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task1-10.html
+
+(4). 任务十笔记
+
+任务十主要是练习使用Flexbox进行布局，学习笔记见《CSS3 Flexbox布局》
+
+11. 任务十一
+
+(1). 任务十一需要完成的示意图
+
+
+
+任务要求：
+
+本任务只涉及 HTML 及 CSS
+实现的页面和设计图在iOS Safari，微信，Android浏览器中均基本一致
+HTML 及 CSS 代码结构清晰、规范
+尝试在适合的地方使用CSS 3中的flex布局
+(2). 任务十一demo
+
+http://panpanfish.com/baiduIFE/task1-11.html
+
+(3). 任务十一代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task1-11.html
+
+(4). 任务十一笔记
+
+12. 任务十二
+
+(1). 任务十二需要完成的示意图
+
+
+
+任务要求：
+
+实现单双行列不同颜色，且前三行特殊表示的表格
+实现正常状态和focus状态宽度不一致的input文本输入框，且鼠标焦点进入输入框时，宽度的变化以动画呈现
+不使用JavaScript，实现一个Banner图轮流播放的效果，且点击右下角的1，2，3可以切换到对应Banner图片
+(2). 任务十二demo
+
+http://panpanfish.com/baiduIFE/task1-12.html
+
+(3). 任务十二代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task1-12.html
+
+(4). 任务十二笔记
+
+任务十二主要是学习CSS3的一些新的特性，涉及到的特性有
+transition、:target
+
+transition属性
+
+transition是CSS3里面的一个新属性，可以用来设置过渡效果
+
+transition属性是一个综合属性
+
+transition: property duration timing-function delay;
+
+transition-property:设置过渡效果的css属性的名称
+
+transition-duration:过渡效果的时长（始终都要设置）
+
+transition-timing-function:速度效果的速度曲线
+
+transiition-delay:过渡效果的执行时延
+eg:
+
+div
+{
+width:100px;
+height:100px;
+background:blue;
+transition:width 2s;
+-moz-transition:width 2s; /* Firefox 4 */
+-webkit-transition:width 2s; /* Safari and Chrome */
+-o-transition:width 2s; /* Opera */
+}
+
+div:hover
+{
+width:300px;
+}
+:target选择器
+
+突出显示活动的锚
+
+
+当点击<a>时，会指向<div>，那么此时div:target便是指的这个div
+
+eg:
+
+<ul>
+    <li><a href="#news1">跳转至内容 1</a></li>
+    <li><a href="#news2">跳转至内容 2</a></li>
+</ul>
+
+<div id="news1">内容 1...</div>
+<div id="news2">内容 2...</div>
+
+div:target
+{
+    border: 2px solid #D4D4D4;
+    background-color: #e5eecc;
+}
