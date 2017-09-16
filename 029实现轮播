@@ -1,0 +1,174 @@
+之前用bootstrap里面的collapse（轮播）插件实现过轮播效果，但是一直只知其然而不知其所以然，于是今天就研究了一下怎么实现和bootstrap轮播插件一样的
+轮播效果。
+
+一. 轮播图的demo
+
+轮播图demo地址
+http://panpanfish.com/myDemo/collapse.html
+
+轮播图的代码地址
+https://github.com/panpan040828/myDemo/blob/gh-pages/collapse.html
+
+二. 轮播图的原理
+
+先上一段HTML代码
+
+<div class="container" id="container" >
+    <div class="img-list" id="imgList" style="left:-450px;">            
+        <img src="img/1.jpg" />
+        <img src="img/2.jpg" />
+        <img src="img/3.jpg" />
+        <img src="img/4.jpg" />
+        <img src="img/5.jpg" />        
+    </div>
+</div>
+id为container的容器可以看成是轮播的框，给container设定一定的宽度，并且设置overflow:hidden;
+
+.container{position:relative;
+    width:450px;
+    height:300px;
+    overflow:hidden;
+}
+id为imgList的div里面是需要轮播的图片（图片一排显示）
+
+.img-list{position:absolute;
+    z-index:1;
+    width:3150px;/*很重要，让图片连续显示*/   
+}
+.img-list img {float:left;
+                width:450px;
+                height:300px;
+}
+轮播的过程可以想象成，把imgList的div向左移动的过程，每次改变left值，可以实现在container里面显示不同的图片。
+
+小圆点标签控制图片播放 和 左右箭头控制图片播放，都是基于改变imgList的left值。
+
+图片自动播放功能是采用定时器，定时触发右箭头点击事件
+
+三. 实现过程中用到的知识点
+
+1. DOM操作
+
+document.getElementById("container")；//由id获取dom节点
+
+document.getElementById("buttons").getElementsByTagName("span");//由标签名获取dom节点
+2. 定时器
+
+setTimeout
+
+setTimeout(code,time);  表示在时间time之后执行code里面的代码
+
+setTimeout只执行code一次，如果想多次调用，可以让code自身再次调用setTimeout(一种递归的思想)
+在这个例子中，让图片缓慢向左移动的函数go里面使用到了setTimeout
+
+setInterval
+
+setInterval(code,interval); 表示每隔interval时间调用一次code
+
+setInterval会执行code无数次，直到取消了这个定时器为止
+在这个例子中，就是使用setInterval这个函数来制作图片自动播放这个功能。
+
+clearTimeout
+
+clearTimeout(定时器的名称); 取消定时执行的事件操作
+eg：
+
+function autoPlay(){
+        timer = setInterval(function(){
+            next.onclick();
+
+        },interval);
+    }
+
+    function stop(){
+        clearTimeout(timer);//取消timer，图片不再自动播放
+    }
+3. 实现图片可以向两边循环滚动
+
+在二的轮播图的原理中，我讲到轮播图可以看成是imgList向左移，或者向右移，那么假设一种情况，当移到最左边（第一张图片），或者最右边（第二张图片）时，
+如果还想循环播放图片，应该怎么办？
+
+这就是图片的无限循环播放问题
+
+这里的解决方案是：
+
+<div class="img-list" id="imgList" style="left:-450px;">
+    <img src="img/5.jpg" /><!-- left:0px;为了实现无限滚动 -->
+    <img src="img/1.jpg" /><!-- left:-450px; -->
+    <img src="img/2.jpg" /><!-- left:-900px; -->
+    <img src="img/3.jpg" /><!-- left:-1350px; -->
+    <img src="img/4.jpg" /><!-- left:-1800px; -->
+    <img src="img/5.jpg" /><!-- left:-2250px; -->
+    <img src="img/1.jpg" /><!--left:-2700px; 为了实现无限滚动 -->
+</div>
+在图片1的左边加一个图片5的副本，在图片5的右边加一个图片1的副本。
+我在上段代码中标出了，当left值为多少时，显示哪一张图片。
+检测left值，当检测到left值不在[-450px,-2250px]这个范围内时，执行调回操作。具体如下：
+
+当left>-450px时，使left=-2250px，跳回第5张
+当left<-2250px时，时left=-450px，跳回第1张
+
+增加两个图片副本主要是为了用户在视觉上没有发现。
+
+4. 程序的一些优化
+
+(1). 考虑到用户在当前图片页，仍然点击对应的标签的情况，可以设置return，跳出当前函数
+
+for(var i = 0;i < buttons.length;i++)
+{
+    buttons[i].onclick = function(){
+
+        /*优化工作，当当前页面是要显示的页面时，点击对应按钮，不执行下面的语句*/
+        if(this.className == "buttonOn")
+        {
+            return;//return的意思是，当程序跑到这里时，就会退出当前函数
+        }
+
+        var myIndex = parseInt(this.getAttribute("index"));
+        var offset = -450 * (myIndex - index);            
+        animate(offset);
+        index = myIndex;
+        showButtons();
+        //debugger;
+    }
+}
+(2). 图片的自动播放功能
+
+这里的图片自动播放功能使用的是js，让imgList的left的值在一定时间内增加或者减少到目标值。
+
+我想利用css3的一些新的属性来制作轮播的动画。
+
+css3动画属性：animation
+
+.img-list{-webkit-animation: slide 8s linear infinite;
+-o-animation: slide 8s linear infinite;
+animation: slide 8s linear infinite;}
+slide是动画的名字
+infinite表示动画应该无限次播放
+
+ @-webkit-keyframes slide {
+0%,10% {
+    left: -450px;
+}
+ 20% ,30%{
+    left: -900px;
+}
+40%,50%{
+    left: -1350px;
+}
+60%,70% {
+    left: -1800px;
+}
+80%,100% {
+    left: -2250px;
+}
+
+}
+用animation来实现自动播放时，有一个问题就是，当播放到最后一张，如何平滑地滑到第一张。这个问题还有待思考。
+
+(3). 图片左右移动也可以使用css3的新属性
+
+transform:translateX(450px);
+(4). 图片过渡效果也可以使用css3的新属性
+
+transition:left 0.6s;
