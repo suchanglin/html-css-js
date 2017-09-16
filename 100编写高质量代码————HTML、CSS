@@ -1,0 +1,213 @@
+web标准：结构（HTML）、样式（CSS）、行为（javascript）分离
+
+代码注释：要养成添加注释的好习惯，能增加代码的可读性。
+
+公共组件和私有组件的维护：提高代码的重用性。
+公共组件：接口保持弹性，且高度模块化。
+
+如何组织公有组件：
+
+两种方法：集中和分散。
+
+将所有的公共组件打包好，一次性载入：jQuery
+将公共组件划分成一个个小的模块，按需加载:YUI
+
+一. 高质量的HTML
+
+1. 注意标签的语义性
+
+使用语义化的标签，在去掉网页的样式之后，网页依然有很好的结构和可读性。
+
+(1) 标题和内容
+
+<h1></h1>
+(2) 表单<form>
+
+表单域用<fieldset>标签包起来，<fieldset>的border设为none
+用<legend>标签说明表单的用途，<legend>的display设为none
+每一个<input>的说明文字需要用<label>标签，<label>的for属性设置为<input>的id值
+eg:
+
+
+<form>
+	<fieldset border="none">
+		<legend display="none">登录表单</legend>
+
+		<p><label for="name">姓名:</label><input type="text" id="name"></p>
+
+		<p><label for="name">密码：</label><input type="password" id="name"></p>
+	</fieldset>
+</form>
+(3) 表格<table>
+
+<table>
+<thead>
+<tbody>
+<tfoot>
+<tr>
+<td>
+<th>
+
+表格标题用<caption>
+
+表头用<thead>，表头里面的单元格用<th>
+表格主题部分用<tbody>,每行用<tr>,每个单元格用<td>
+表格尾部用<tfoot>
+eg:
+
+
+<table>
+	<caption>几种实现页面的比较</caption>
+	<thead>
+		<th>实现方式</th>
+		<th>代码量</th>
+		<th>兼容性</th>
+	</thead>
+	<tbody>
+		<tr>
+			<th>tabel布局</th>
+			<td>多</td>
+			<td>一般</td>
+		</tr>
+		<tr>
+			<th>CSS布局</th>
+			<td>少</td>
+			<td>好</td>
+		</tr>
+	</tbody>
+</table>
+二. 高质量的CSS
+
+css的使用分为两个层面：使用css的API、如何组织css
+
+1. 组织css的方法
+
+将网页中的样式按照职能分为3大类：
+
+base.css
+common.css
+page.css
+base.css会被所有页面引用，是页面样式所需要的最底层，与具体的UI无关。
+
+common.css里面放的是大量重复的模块，以组件的形式提取出来。
+
+page.css里面放的每个页面独有的样式，每个页面都会有自己的page.css（也可以将每个页面的page.css放在同一个css文件里，然后根据页面配上注释）
+
+举一个base.css的例子：
+
+
+/css reset/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td{
+	margin: 0;
+	padding: 0
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+fieldset, img {border: 0;}
+address, caption, cite, code, dfn, em, strong, th, var {
+	font-style: normal;
+	font-weight: normal;
+}
+ol, ul {list-style: none;}
+caption, th {text-align: left;}
+h1, h2, h3, h4, h5, h6 {font-size: 100%; font-weight: normal;}
+q:before, q:after {content: ""}
+abbr, acronym {border: 0}
+
+/*文字排版*/
+.f12 {font-size: 12px;}
+.f13 {font-size: 13px;}
+.f14 {font-size: 14px;}
+.f15 {font-size: 15px;}
+
+/*定位*/
+.tl {text-align: left;}
+.tc {text-align: center;}
+
+/*宽度高度*/
+.w {width: 100%;}
+.w10 {width: 10px;}
+.w100 {width: 100px;}
+
+/*边距*/
+.m10 {margin: 10px;}
+.mt10 {margin-top: 10px;}
+.mb10 {margin-botton: 10px;}
+.ml10 {maegin-left: 10px;}
+.mr10 {margin-right: 10px;}
+.p10 {padding: 10px;}
+.pt10 {padding-top: 10px;}
+.pb10 {padding-bottom: 10px;}
+.pl10 {padding-left: 10px;}
+.pr10 {padding-right: 10px;}
+上面的代码没有给出全部的来，详细的见
+
+其中，base.css包括两个部分：css reset和通用原子类。
+
+css reset部分是出自雅虎的前端框架YUI。用来覆盖掉浏览器的默认样式。
+
+通用原子类包括文字、定位、长宽、边距。通用性，原子性（不可再分）。
+
+2. 模块化css
+
+借用面向对象的思想，将相同的组件的样式提取成一个模块。
+
+提取模块的思想：多用组合，少用继承。将一个复杂的类拆分成：容易产生变化的类和相对稳定的类。
+
+将模块中不稳定的类单独变成一个类，例如：margin-top值
+
+注意：不要同时使用margin-top,margin-bottom;相邻模块的margin-top和margin-bottom可能会重合。
+3. css的命名
+
+为了方便区分单词，可使用的两种命名方式
+
+驼峰命名法 firstWord
+划线命名法 first-word
+虽然说命名并没有什么特殊的规定，但是好的命名会使代码的可读性更高。
+
+推荐一种命名方式：
+
+使用驼峰命名法区分不同的单词，使用划线表示从属关系。
+
+举个栗子：
+
+
+<ul class="timeList">
+	<li>1</li>
+	<li>2</li>
+	<li class="timeList-lastItem">3</li>
+</ul>
+若团队合作中两个人的css代码冲突了，可以使用加前缀的方式：
+
+
+pan-timeList {...}
+pan-timeList-lastItem {...}
+
+4. css选择器的权重
+
+行内样式style:1000
+ID选择器：100
+类class/属性选择器/伪类(:hover/:focus等)：10
+元素(标签)/伪元素：1
+注意：伪类指的是一种状态，例如hover，active；伪元素指的是文档的某个特定部分的表现。
+权重的计算：
+
+body #content .data img:hover
+
+权重为：1 + 100 + 10 + 1 + 10 = 122
+
+不同的权重，权重高的有效；
+相同的权重，后定义的有效。
+5. CSS hack
+
+(1)IE条件注释法
+
+针对IE浏览器，下面这个css文件只会被IE浏览器下载。
+
+(2)选择符前缀法
+
+(3)属性前缀法
+
+a标签的4个伪类的顺序：lovehate(:link，visited，hover，active)
