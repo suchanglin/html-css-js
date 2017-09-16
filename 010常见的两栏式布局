@@ -1,0 +1,47 @@
+. 需要完成的示意图
+
+模拟报纸排版
+
+任务要求：
+
+只需要完成HTML，CSS代码编写，不需要写JavaScript
+示例图仅为参考，不需要完全实现一致，其中的图片、文案均可自行设定
+尽可能多地尝试不同的、更多的样式设定来实践各种CSS属性
+HTML 及 CSS 代码结构清晰、规范
+头部和底部的黑色区域始终是100%宽
+页面右侧部分为固定宽度，左侧保持与浏览器窗口变化同步自适应变化
+左侧的各个模块里面的内容宽度跟随左侧整体宽度同步自适应变化
+10张图片需要永远都完整展现，所以会随着宽度变窄，从两行变成三行甚至更多，也有可能随着宽度变宽，变成一行
+二. 两栏式布局demo
+
+http://panpanfish.com/myDemo/two-column.html
+
+三. 两栏式布局代码
+
+https://github.com/panpan040828/myDemo/blob/gh-pages/two-column.html
+
+四. 实现过程中的笔记
+
+任务五要实现的效果有两个：
+
+1. 左边自适应，右边固定宽度的布局
+
+关于这个布局的实现，网上也有好几种方法，我还是选取了我觉得比较好的一种：固定宽度区域float，设置自适应宽度区域的margin
+
+代码如下：
+
+<div id="wrap">
+  <div id="sidebar" style="height:240px;">固定宽度区</div>
+  <div id="content" style="height:340px;">自适应区</div>
+</div>
+
+
+  #sidebar {
+float: right; width: 300px;
+  }
+  #content {
+margin-right: 310px;
+  }
+2. 使用CSS3的弹性盒布局flexbox
+
+这一部分见我写的《CSS3弹性盒布局flexbox》那篇博客
