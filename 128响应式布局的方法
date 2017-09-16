@@ -1,0 +1,55 @@
+流式布局：通过百分比布局
+固定宽度布局：超出部分留白
+响应式布局
+设置viewport进行缩放
+
+一. 什么是响应式布局
+
+根据不同的屏幕宽度自动调整网页的布局
+
+二. 实现响应式的方式
+
+1. 使用媒体查询
+
+css文件中使用媒体查询
+
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+	.class {
+		background: #fff;
+	}
+}
+在link文件中使用媒体查询判断设备的尺寸，然后引用不同的css文件
+
+
+<link rel='stylesheet' type='text/css' href='index.css' media='screen and (min-width: 1200px)'>
+2. 使用百分比和auto
+
+3. 使用rem
+
+4. 使用js获取设备宽度，然后动态创建标签，将css插入
+
+5. 使用flex-box
+
+三. 移动端如何屏幕适配的几种方法
+
+1. 使用view-port
+
+viewport是网页默认宽度和高度的意思
+
+移动端禁止缩放
+
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+width=device-width 宽度等于设备的宽度
+minimum-scale=1.0 最小缩放为1.0（不允许缩小）
+maxinum-scale=1.0 最大缩放为1.0（不允许放大）
+user-scalable=no 不允许缩放
+2. 使用transform:scale;进行缩放
+
+用px为单位按视觉进行开发，然后通过计算屏幕与网页的宽高比，用transform:scale来对网页进行全局缩放。
+
+3. 使用rem
+
+设置html标签上的font-size，然后使用rem
+
+不同屏幕宽度设置不同的font-size，可以使用js动态获取，也可以使用媒体查询
