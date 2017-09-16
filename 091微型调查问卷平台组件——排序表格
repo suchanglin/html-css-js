@@ -1,0 +1,80 @@
+一. 排序表格任务要求
+
+实现一个支持列排序的表格组件
+提供生成表格的接口，表格中的数据，表格样式尽量低耦合
+可以配置对哪些列支持排序功能，并在表头进行排序按钮的显示，图中的样式为示意参考，可自行设定样式及交互方式
+提供点击排序按钮后的响应接口，并提供默认的排序方法，当提供的接口没有具体实现时，按默认的排序方法进行排序操作，并更新表格中的数据显示
+demo地址：http://panpanfish.com/myDemo/research/sortTable.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/research/sortTable.html
+
+代码描述：
+
+RankTable的原型添加了3个方法：init()、addThead()、addTbody()
+
+init()初始化了表格
+
+addThead()根据提供的配置信息中的可以排序的列号，对可以排序的列进行设定，并绑定相应的事件监听函数,排序时，会调用addTbody()更新表格中的数据显示。
+
+addTbody()显示表格中的内容
+
+表格头部和表格内容显示时，都涉及到两个问题：
+
+dom节点的添加
+dom节点内容的添加
+二. 实现过程中遇到的问题
+
+1. 往页面中插入dom节点的问题
+
+之前涉及到向页面中添加dom节点时，我都是通过document.createElement();然后再通过appendChild()来实现。
+
+在这个demo中，使用的是拼接字符串的形式：
+
+
+var item = "<tr>" + "</tr>";
+var mydiv = document.getElementById("mydiv");
+mydiv.innerHTML = item;
+感觉这样会简单一些。
+
+2. 巧妙地使用map()函数和join()
+
+使用拼接字符串的形式添加dom节点时，可以配合使用map()函数和join()
+
+map()函数的作用是将数组的每一项都执行map()里面的函数，并返回一个新的数组。
+
+join()函数的作用是将数组以某种特殊的符号连接起来，变成字符串（这里使用的是空字符串连接）
+
+
+function fn(con) {
+	return "<td>" + con + "</td>";
+}
+
+var th = this.th.map(fn).join("");
+3. children和childNodes的区别
+
+childNodes：是标准属性。返回指定元素的所有子节点的集合（包括HTML节点、属性节点、文本节点）
+
+可通过判断nodeType==1来判断是否为元素节点：
+
+
+function getFirst(elem){
+    for(var i=0,e;e=elem.childNodes[i++];){
+        if(e.nodeType==1)
+            return e;
+    }
+}
+children：非标准属性。返回指定元素的所有元素节点的集合。（几乎得到了所有浏览器的支持）
+
+注意：children在IE中包含注释节点。
+
+4. 表格中的border-spacing和border-collapse属性
+
+border-spacing：设置相邻单元格的边框间的距离。
+
+一般如果需要去掉表格默认的边框，可以设置border-spacing:0;
+
+border-collapse：设置表格的边框是否被合并为一个单一的边框。
+
+border-collapse:collapse;边框合并为一个单一的边框。
+
+5. 二维数组按照某一列进行排序
