@@ -1,0 +1,102 @@
+一. 需要完成的示意图
+
+模拟文件报表排版
+
+任务要求：
+
+只需要完成HTML，CSS代码编写，不需要写JavaScript
+tab只需要实现样式，有能力余力的同学可以尝试实现不使用JavaScript的情况下，实现Tab切换
+所有的下拉菜单（Select）均要求按照设计稿样式实现，下拉后的样式自定义，不需要实现下拉选择的功能，但样式要实现
+在Chrome中完美实现与设计稿的除了文字以外的各项图片、字体、颜色、布局、内外边距等样式
+二. 文件报表排版demo
+
+http://panpanfish.com/myDemo/report-form.html
+
+三. 文件报表排版代码
+
+https://github.com/panpan040828/myDemo/blob/gh-pages/report-form.html
+
+四. 实现过程中的笔记
+
+终于把任务九做完了，任务九挺复杂的，比之前的任务都要复杂一点。
+
+主要涉及到的模块有：
+
+1. 面包屑导航
+
+<ul class="breadcrumb-nav">
+      <li><a href="#">C站</a></li>
+      <li><a href="#">个人报表</a></li>
+      <li><a href="#">文件一</a></li>
+      <li class="active">文档一</li>
+</ul>
+css样式：
+
+.breadcrumb-nav {
+padding:10px 0px 10px 20px;
+background: #fff;
+}
+.breadcrumb-nav li{display:inline-block;}
+.breadcrumb-nav > li + li:before {
+color: #CCCCCC;
+content: "/ ";
+padding: 0 5px;
+
+}
+.breadcrumb-nav li a{color:#9E9C9C;
+                    text-decoration: none;
+}
+.breadcrumb-nav li a:hover{color:#4291cc;}
+.active {color:#4291cc;}
+A > B 是选择A下面的第一代为B的子元素
+
+A + B 是选择A后面相邻的第一个为B的兄弟元素
+
+A:before 允许在A元素的前面插入内容
+
+因此：.breadcrumb-nav > li + li:before 表示的是除了第一个li之外的每一个li的前面都加上”/“。
+
+2. css3进度条
+
+<div class="barControl-space">
+    <span class="orange-bgcolor" style="width:70%"></span>
+</div>
+静态进度条的实现原理很简单，就是一个外层div和里面的span的颜色设成不一样即可，通过控制span的宽度来显示进度。
+
+3. 仅仅用css实现tab页的切换
+
+这一块见博客《使用纯CSS实现tab页的切换》
+
+4. 然后就是学习到了一些之前没用过的css选择器
+
+这一块见博客《CSS选择器总结》
+
+5. 一些之前没遇到过的问题
+
+verticle-align属性
+
+verticle-align用来设置元素的垂直对齐方式，一般要设置在元素本身上才有用。
+
+在设置了float属性的元素的内部使用verticle-align会失效
+
+一般verticle-align：middle属性会经常失效，因此设置行内居中一般使用 height=line-height
+
+隐藏select的箭头
+
+appearance是css3的新属性
+
+appearance:none;/* 清除系统默认原生样式 */
+-moz-appearance:none; /* Firefox */
+-webkit-appearance:none; /* Safari 和 Chrome */
+表格
+
+边框有空格，如何清除
+设置 border-spacing:0px;
+
+border-spacing：水平间距 垂直间距；
+/* 是用来设置表格边框之间的空白 */
+select让文字居中显示，设置text-align:center;无效
+
+可以设置div:hover的样式
+
+可通过设置cursor属性来改变光标的形状
