@@ -1,0 +1,226 @@
+一. 节点类型
+
+1. 节点的分类
+
+HTML页面中，总共有12种节点：
+
+文档节点 document类型
+元素节点 element类型
+特性节点 Attr类型
+文本节点 Text类型
+注释节点 Comment类型
+文档类型节点 DocumentType类型
+文档片段类型 DocumentFragment类型
+CDATASection类型 只有XML文档有
+2. 所有节点的公共属性
+
+上述节点都继承自Node类型
+
+（1）. 节点的类型 nodeType
+
+判断一个节点的类型
+
+eg:
+
+if(someNode.nodeType == 1)
+{
+	alert("Node is an element")
+}
+
+（2）. 若节点为元素节点，获得节点的标签名 nodeName
+
+
+eg:
+   
+   if(someNode.nodeType == 1)//首先要判断节点是否为元素节点
+   {
+   	console.log(someNode.nodeName);
+   }
+
+注意：由nodeName获得的节点名称是大写！！！
+（3）. 节点的直接子节点 childNodes firstChild lastChild
+
+childNodes是一个NodeList对象，NodeList是一种类数组对象（类似arguments对象）。
+
+childNodes里面保存了该节点的所有直接子节点
+
+注意：不同浏览器处理空白符的方式不一样，IE9版本之前不会为空白符创建节点。
+
+
+eg:
+
+	<div id="myid">
+           <a></a>
+           <div>
+               <a></a>
+           </div>
+       </div>
+
+var my = document.getElementById("myid");
+   console.log(my.childNodes.length);//会输出5，而不是2
+
+解决方法：通过判断一下nodeType属性
+
+
+for(var i=0,len=element.childNodes.length;i<len;i++){
+	if(element.childNodes[i].nodeType == 1){
+		//执行某些操作
+	}
+}
+
+可通过[]或者item()来访问某一个子节点
+
+
+访问第一个子节点
+my.childNodes[0]
+my.childNodes.item(0)
+
+firstChild指向子节点列表中的第一个子节点
+
+lastChild指向子节点列表中的最后一个子节点
+
+（4）. 节点的父节点 parentNode
+
+（5）. 节点的上一个兄弟节点 previousSibling
+
+若节点为第一个节点，则node.previousSibling为null
+
+（6）. 节点的下一个兄弟节点 nextSibling
+
+若节点为最后一个节点，则node.nextSibling为null
+
+2. 操作节点
+
+（1）. 在子节点列表中插入节点 appendChild()
+
+1
+向childNodes列表的末尾添加一个节点，并且会返回插入的节点
+
+（2）. 在子节点列表中某一个节点的前面插入一个节点 insertBefore()
+
+1
+2
+insertBefore(要插入的节点，参照节点)
+同时返回要插入的节点
+
+（3）. 替换子节点 replaceChild()
+
+
+   replaceChild(替换节点，被替换的节点)
+同时返回被替换的节点
+
+（4）. 移除子节点 removeChild()
+
+
+removeChild(被移除的子节点)
+同时返回被移除的子节点
+
+（5）. 复制节点 cloneNode()
+
+
+cloneNode(bool)
+bool为true时，深复制，复制节点以及节点的所有子节点
+bool为false时，浅复制，只复制节点本身
+
+（6）. 规范化文本节点 normalize()
+
+
+如果在一个包含两个或多个文本节点的父元素上调用normalize()，则会将所有文本节点合并成一个节点
+
+（7）. 分割文本节点 splitText()
+
+二. document类型
+
+文档的子节点（直接）可能有的类型如下：
+
+
+文档类型节点：document.doctype  指的是<!DOCTYPE HTM>
+文档元素节点：document.documentElement 指的是<html>
+processingInstruction 或者 注释
+
+document对象的属性：
+
+
+   body属性：document.body 指向body元素
+   title属性：document.title
+   URL属性：页面的URL值（地址栏中显示的 http://panpanfish.com/myblog/index.html）
+   domain属性：域名（panpanfish.com）
+   referrer属性
+document.anchors 所有带name特性的a
+document.forms 所有的表单
+document.images 所有的图片
+
+document对象的方法：
+
+
+获取节点:
+   document.getElementById() 如果有两个id一样的节点，只返回第一次出现的那个节点
+   document.getElementByTagName() 返回一个集合，可以用item()和[]来访问（与NodeList类似）
+   document.getElementByName() 返回带有给定name的所有元素
+
+向文档中动态添加内容：
+document.write("字符串") 文档写入，直接将字符串写入文档
+document.writeln("字符串") 文档写入，会在字符串末尾自动添加换行符\n
+
+创建元素节点
+document.createElement():接收一个参数，要创建的元素标签名
+
+创建文本节点
+document.createTextNode()
+
+创建注释节点
+document.createComment()
+
+创建特性节点
+document.createAttribute()
+
+三. Element类型
+
+Element类型的属性：
+
+1.id
+2.title
+3.className
+4.attributes
+element类型的attributes属性是一个NamedNodeMap（包含一系列节点）
+
+nodeName是属性的名称
+nodeValue是属性的值
+Elemant类型的方法：
+
+getAttribute()
+setAttribute()
+removeAttribute()
+getAttribute()访问元素的属性
+
+对于html标签本身就有的属性，可以通过.来访问，也可以通过getAttribute()来访问。一般情况下，两种访问方式得到的属性值是相同的，
+但是style和onclick得到的不一样，建议使用.操作符。
+
+对于自定义属性，只能通过getAttribute()访问。
+
+setAttribute()设置属性
+
+
+eg:
+<div id="myid"></div>
+   
+   var mydiv = document.getElementById("myid");
+   mydiv.setAttribute("id","myid2");
+
+如果是已经存在的属性名，则修改属性；如果不存在的属性名，则创建属性。
+
+removeAttribute()删除属性
+
+四. DOM操作技术
+
+1. 动态脚本
+
+
+function loadScript(url){
+	var script = document.creatElement("script");
+	script.type = "text/javascript";
+	script.src = url;
+	document.body.appendChild(script);
+}
+
+loadScript("myjs.js");
