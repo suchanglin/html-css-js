@@ -1,0 +1,302 @@
+这个demo是一个日历查询的控件，兼容移动端和PC端（PC端支持chrome/QQ浏览器/搜狗浏览器/IE9及以上），由于时间有限，只测了一小部分的浏览器。
+
+一. 万年历demo地址
+
+万年历demo地址
+http://panpanfish.com/myDemo/calendar.html
+
+万年历的代码地址
+https://github.com/panpan040828/myDemo/blob/gh-pages/calendar.html
+
+二. 万年历的功能
+
+PC端：
+
+显示当前年、月、日、星期、北京时间、农历24节气、基本的国际节假日、2016年假日安排；
+通过年（1901 ~ 2049）、月、日来查询相应的星期、农历日期、该年生肖、该天星座、农历年月日的天干地支、该天宜忌事项；
+通过假日名称来查询节假日安排；
+点击“返回今天”能够回到当前日期。
+
+
+移动端(隐藏了一部分功能)：
+
+显示当前年、月、日、北京时间、农历24节气、基本的国际节假日、2016年假日安排；
+通过年（1901 ~ 2049）、月、日来查询相应的星期、农历日期；
+通过假日名称来查询节假日安排；
+1. 每个功能的实现思路
+
+(1) 显示当前年、月、日、星期
+
+创建一个Date对象，分别通过Date对象的getFullYear()、getMonth()、getDate()、getDay()来获取当前的年、月、日、星期。
+
+(2) 显示北京时间
+
+创建一个Date对象，分别通过Date对象的getHours()、getMinutes()、getSeconds()来获取当前的时、分、秒。并以1000毫秒为一个周期来调用这些函数。
+
+(3) 通过年、月、日来查询对应的农历日期
+
+基本原则：1900年1月31日为农历1900年的正月初一，利用农历和公历经过的总的时间相等这个原则，来推断查询日期的农历日期。
+
+计算当前时间到1900年1月31日的时间差，利用Date.UTC()函数，这个函数返回的是毫秒数
+
+时间差 =( Date.UTC(当前时间)-Date.UTC(1900年1月31日) )/每一天的毫秒数
+
+农历日期简介：农历分为大小月，大月30天，小月29天，大约每19年加7个闰月，才能保证和公历的天数对应。
+
+农历每年是否有闰月，每个月的对应天数都保存在lunarInfo这个数组里面。日期信息lunarInfo数组中，后四位代表这一年是否有闰月，
+以及润几月；若后四位为1111，则代表前一年的闰月为大月（30天）。
+
+农历年份的推算：
+
+利用查询的年月日距离1900年1月31日的天数依次减去农历每一年的天数，当差值为负数时跳出循环，可得到对应的农历年份。
+
+农历月份的推算：
+
+利用当前日期当年已经过去了的天数依次减去这一年每个农历月的天数，当差值为负数时跳出循环，可得到对应的农历月份。（在循环的过程中要注意判断是否为闰月）
+
+农历日期的推算：
+
+当月过去了的日期即为对应的农历日期。
+
+(4) 24节气判断规则
+
+每个公历月有两个节气，节气的信息存在数组solarTerm中，数组termInfo存放的是节气日期的定气常数（各个节气到小寒的分钟数）。
+
+1900年小寒是1月6日2时5分，通过计算每一年的小寒距离1900年小寒的分钟数，来判断每一年小寒在哪一天，然后再根据节气日期的气定常数来判断每一年的其余的
+节气在哪一天。
+
+(5) 判断某一天是否为基本的国际节假日
+
+国际节假日分为公历节日、农历节日、非公历农历节日（如母亲节：5月的第二个星期天）。公历节日的信息存放在CalFestival数组里面，
+农历节日的信息存放在LunarFestival数组里面，非公历农历节日信息放在OtherFestival数组里面。
+
+通过判断要显示的这一天是否与数组中对应的信息一致，来决定是否显示节假日。
+
+(6) 通过年份来查询对应的生肖
+
+12生肖信息存放在SXLibrary这个数组中。1900年是鼠年，通过当前输入的年份与1900年的差值除以12的余数，即可得到年份对应的生肖。
+
+(7) 通过月份、日期来查询星座
+
+星座是根据阳历日期来的，星座信息放在XZLibrary这个数组中。通过输入的月份和、日期判断是否在各个星座的区间内，得出对应的星座。
+
+(8) 农历年、月、日的天干地支
+
+天干地支信息分别放在GLibrary、ZLibrary这两个数组中。
+
+年份的干支计算：
+
+天干 = （年份 – 3）%10
+地支 = （年份 – 3）%12
+月份的干支计算：
+
+若遇甲或己的年份 ，正月是丙寅；遇上乙或庚之年，正月为戊寅；遇上丙或辛之年，正月为庚寅；遇上丁或壬之年，正月为壬寅；遇上戊或癸之年，正月为甲寅。
+依照正月之干支，其余月份按干支数组中的顺序推算即可。
+
+日期的干支计算：
+
+G = 4 （世纪数 - 1）+ [（世纪数 - 1） / 4] + 5 （年份后两位） + [年份后两位/ 4] + [3 (月份 + 1) / 5] + 日期 - 3
+Z = 8（世纪数 - 1） + [（世纪数 - 1） / 4] + 5（年份后两位）+ [（年份后两位） / 4] + [3 (月份 + 1) / 5] + 日期 + 7 + i (奇数月i=0，偶数月i=6)
+天干 = G%10
+地支 = Z%12
+
+(9) 2016年假日安排
+
+将2016年放假信息（假期截止日期和假期天数）存放在holidayPlan数组里，通过输入的月份和日期与数组中日期进行比较的，来对应显示是否是假期，若是假期，
+需要显示几天。
+
+通过选择select框里面的假期来动态调用checkHolidayPlan()函数，显示当前所选假期的日期。
+
+(10) 该天宜、忌事项
+
+由于没有找到对应的计算方式，于是自己制定了一个规则。
+
+随机产生宜事项、忌事项的个数，然后通过该天的农历日期在gBLibrary中查找。
+
+(11) 返回今天
+
+给“返回今天”按钮添加点击事件，点击按钮之后，让年份和月份的select的selectedIndex都指向今天的年份和月份。
+
+(12) 根据年、月选择框实现月份的查询
+
+将年份、月份select框的selectedIndex值传给显示月份信息的函数displayTable(year,month)。
+
+三. 实现过程中的遇到的问题
+
+1. 兼容性问题
+
+手机端隐藏了一部分功能。
+
+由于时间有限，PC端（不支持IE8及以下的浏览器）只调整了万年历在IE9下的兼容性问题，如下所示：
+
+(1) 由于布局中使用的是flex box，IE9不支持flexbox的一些属性。
+
+在IE9中采用的是display:table;和display:table-cell；来代替flexbox布局，用border-spacing:5px 0px;代替margin值。
+最终布局在IE9中也展示良好。
+
+(2) 由于在PC端，点击相应的日期，右边的信息模块也会跟着变化，
+
+js中用到了event.currentTarget属性，IE9也不支持这个属性
+在IE中使用event.srcElement来代替event.currentTarget，有一个问题是，event.srcElement获取的是当前触发事件的元素，可能不是我们期望的元素，
+因此需要添加一个判断，event.srcElement获取的是否是我们需要的元素。
+
+程序如下：
+
+/点击每一天显示右边的信息栏/
+function clickBox(boxObj,x,year,month){
+boxObj[x].onclick = function(){
+var box = event.currentTarget ? event.currentTarget : event.srcElement;//解决IE9下没有currentTarget这个属性的问题
+while(box.nodeName!=”TD”)
+{
+box = box.parentNode;
+}
+var targetDay = parseInt(box.firstChild.innerHTML);
+
+        var dayClick = new oneDayAll(year,month,targetDay);
+        displayRDayInfo(year,month,targetDay,dayClick.week);
+    }
+}
+之前实现时，思路是给每一个box绑定一个onclick事件，但是后来发现，无论点击哪一个box，显示的都是最后一个方块的基本信息，这是一个闭包的问题，
+后来将i作为参数传进函数里，让闭包按照想要的方式运行了；这里可以使用事件委托机制。
+
+2. 其他问题
+
+(1) 如何用js获取当前系统时间
+
+Date()对象
+
+自动获得当前日期和时间：
+
+var timeNow = new Date();
+获得当前时间的年份：
+
+timeNow.getFullYear();
+获得当前时间的月份：
+
+timeNow.getMonth();//注意：月份是从0开始的
+获得当前时间的星期：
+
+timeNow.getDay();//注意：0表示星期天
+获得当前时间的日期：
+
+timeNow.getDate();
+获得当前时间的小时数：
+
+timeNow.getHours();
+获得当前时间的分钟数：
+
+timeNow.getMinutes();
+获得当前时间的秒数：
+
+timeNow.getSeconds();
+如何显示当前北京时间：
+
+定义一个计时器，每隔1000毫秒调用一次获得当前系统时间的函数
+
+/*获取当前时间的函数*/
+function getTimeNow() {
+
+var today = new Date(); //创建一个日期对象，新创建的对象自动获取当前系统的时间    
+var ThourNum, TminuteNum, TsecondNum;
+ThourNum = today.getHours(); //得到当前小时
+TminuteNum = today.getMinutes(); //得到当前分钟
+TsecondNum = today.getSeconds(); //得到当前秒钟                            
+displayBjTime(ThourNum,TminuteNum,TsecondNum);//这是自己定义的一个以一定格式显示时间的函数
+
+}
+window.setInterval("getTimeNow();", 1000);//每隔一秒钟调用一次getTimeNow函数
+上面讲的都是如何获得当前系统时间，其实Date()对象也可以自己创建日期对象。
+
+var someDate = new Date(2016,3,19);//基于本地时间创建日期对象
+
+var someDate = new Date(Date.UTC(2016,3,19));//基于GMT时间创建日期对象
+(2) 不同进制数之间的转化
+
+多进制转化为十进制
+
+eg: 二进制数11 转化为 十进制
+
+parseInt("11",2); //3
+十进制数转化为多进制
+
+eg: 十进制数4 转化为 二进制
+
+(4).toString(2); //100
+(3) 位的操作
+
+~ 按位非
+
+& 按位与
+
+| 按位或
+
+^ 按位异或
+
+<< 左移
+
+>> 右移(有符号)
+
+>>右移(无符号)
+使用位操作写的一个函数getbit()
+
+/*得到m的二进制的右边数第n+1位（为0或者1）*/
+function getBit(m,n){
+    return (m >> n) & 1;
+}
+(4) this作为构造函数
+
+所谓构造函数，就是通过这个函数生成一个新对象（object）。这时，this就指这个新对象
+
+function test(){
+　　　　    this.x = 1;
+　　}
+　　var o = new test();
+　　alert(o.x); // 1
+(5) eval()函数的使用
+
+eval() 函数可计算某个字符串，并执行其中的的 JavaScript 代码。
+
+<script type="text/javascript">
+
+    eval("x=10;y=20;document.write(x*y)");
+
+    document.write(eval("2+2"));
+
+    var x=10
+    document.write(eval(x+17));
+
+</script>
+(6) 一些小的知识点
+
+select框的每个可选值，都有一个selectedIndex属性，从0开始
+
+实现div hover之后加边框效果，出现抖动问题，可以首先给div加一个白色的边框占位。
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+这是个是IE8的专用标记,用来指定IE8浏览器去模拟某个特定版本的IE浏览器的渲染方式
+移动端的问题：
+
+移动端需要加上
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+width - viewport的宽度 
+height - viewport的高度
+initial-scale - 初始的缩放比例
+minimum-scale - 允许用户缩放到的最小比例
+maximum-scale - 允许用户缩放到的最大比例
+user-scalable - 用户是否可以手动缩放
+css中的1px并不等于设备的1px
+
+css中的像素只是一个抽象的单位，在不同的设备或不同的环境中，css中的1px所代表的设备物理像素是不同的。
+
+移动设备的屏幕像素密度越高，在同样大小的屏幕上，像素越多，这时，一个css像素是不等于一个物理像素的。
+
+移动端中用户缩放也会引起css中px的变化，当用户把页面放大一倍，那么css中1px所代表的物理像素也会增加一倍；反之把页面缩小一倍，css中1px所代表的物理像素
+也会减少一倍。
+
+在移动端浏览器中以及某些桌面浏览器中，window对象有一个devicePixelRatio属性，它的官方的定义为：设备物理像素和设备独立像素的比例，
+也就是 devicePixelRatio = 物理像素 / 独立像素。
+
+css中的px就可以看做是设备的独立像素，所以通过devicePixelRatio，我们可以知道该设备上一个css像素代表多少个物理像素。但是，
+devicePixelRatio在不同的浏览器中还存在些许的兼容性问题。
