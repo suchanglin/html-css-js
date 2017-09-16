@@ -1,0 +1,35 @@
+一. 什么是浏览器跨标签页通信
+
+举个栗子：
+
+同一个浏览器，使用一个标签页打开淘宝，并登陆上去；
+然后再打开另外一个标签页，也打开淘宝的网页，
+你会发现，在第二个页面上，你也是处于登陆的状态。
+当在第二个页面注销登陆时，在第一个页面再刷新页面或者进行下面的操作时，就会重定向到登陆页面。
+
+二. 实现浏览器的跨标签页通信
+
+1. 使用localStorage
+
+不论在哪个浏览器的标签页里访问了localStorage，所有其它的标签页都能通过 window 对象监听到这个事件。
+
+window.addEventListener('storage', function (event) {
+  console.log(event.key, event.newValue);
+});
+
+2. 使用cookie
+
+一个浏览器的所有标签页都是可以共享持久cookie的，但是只有同源的标签页可以共享
+
+3. 使用HTML5的window.postMessage方法跨域
+
+跨文档通信
+
+window.postMessage(message,targetOrigin) 方法是html5新引进的特性，允许跨窗口通信，无论这两个窗口是否同源
+
+4. 使用window.name
+
+window对象有个name属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个window.name的，
+每个页面对window.name都有读写的权限，window.name是持久存在一个窗口载入过的所有页面中的。
+
+无论这些页面是否同源，前一个网页设置了window.name，后一个网页就可以访问。
