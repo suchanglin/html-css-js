@@ -1,0 +1,341 @@
+一. js中的数组的特点
+
+js中的数组类型，与其他语言的不同之处有两点：
+
+数组中的每一项可以保存任何类型的数据
+
+数组的大小可以动态调整（随着数组中数据的添加而动态增长）
+
+二. js中的数组的创建
+
+var myArr = new Array(3);
+
+var myArr = new Array(“1”,”2”);
+
+var myArr = [];
+
+var myArr = [1,2];
+
+二维数组的创建：
+
+我经常使用的一个方法如下
+
+var myArr = [];//首先创建一个一维数组
+for(var i=0;i<10;i++)
+{
+    myArr[i] = new Array(10);//创建的数组中的每一项都是一个数组
+}
+这样就得到了一个10X10的数组
+三.js中数组的操作
+
+1. myArr.length 获得数组的长度、或者给数组指定长度
+
+myArr.length = 4；//数组长度为4
+2. 检测是否为数组(两种方法)
+
+myArr instanceof Array
+Array.isArray(myArr)
+3. 将数组转换为字符串 toString()、toLcaleString()、join()
+
+toString()、toLcaleString():数组中每项以逗号连接
+
+join(“?”):数组中的每项以?连接（可以自定义分隔符号），若不传参数，默认用逗号连接
+
+var colors = [1,2,3];
+colors.toString();// 1,2,3
+colors.join("|");// 1|2|3
+4. 数组中增加或者删除项的操作 push()、pop()、shift()、splice()、concat()、slice()、
+
+push()、pop()、shift()、unshift()这几个方法是在原数组上操作
+
+var myArr = ["1","2","3"];
+
+myArr.push("4"); //数组末尾添加一项
+["1","2","3","4"]，或多项
+//注意：push 方法的返回值是新增的那一项
+myArr.pop(); //删除数组的最后一项,并返回移除项 4
+myArr.unshift();//数组的最前面添加一项 或 多项 但传入的只能是参数，不能是数组
+myArr.shift();//删除数组的第一项,并返回移除项 4
+splice()从数组中间位置添加或删除元素
+
+这个方法是在原数组上操作，并返回删除的数组
+
+删除功能：splice(start,要删除的项数)
+插入功能：splice(start,0，"4")
+替换功能：splice(start,1，"4")
+concat()、slice()
+
+这两个方法都是会生成一个新的数组，而不是在原数组上操作
+
+var myArr = ["1","2","3"];
+var myArr2 = myArr.concat("4");// myArr2 = ["1","2","3","4"]首先复制原数组，然后在复制的数组末尾添加一项或多项
+var myArr3 = myArr.slice(1,2);// myArr3 = ["2"]
+
+slice(start,end)返回起始位置到终止位置(但不包括终止位置)的项，组成一个新的数组；若只有起始位置，则一直取到数组末尾
+注意：由于slice()和concat()都是会生成一个新的数组，因此可以利用这两个函数让数组传值
+由于数组是复杂的数据类型，是引用类型，因此将一个数组赋值给另外一个数组时，是按引用进行传递。
+
+eg:
+
+var a = [1,2,3];
+var b = a;
+b.push(4);
+console.log(a);//[1,2,3,4]，a也发生了变化
+console.log(b);//[1,2,3,4]
+
+利用slice()或者concat()让数组实现传值
+var a = [1,2,3];
+var b = a.slice();
+var c = a.concat();
+
+b.push(4);
+c.push(5);
+console.log(a);//[1,2,3]
+console.log(b);//[1,2,3,4]
+console.log(c);//[1,2,3,5]
+5. 数组中元素的位置 sort()、reverse()
+
+myArr.sort();//会将数组的元素进行排序(按照字符串进行排序)，是直接将原数组进行排序。
+
+sort()方法会调用数组中每一项的toString()方法，然后比较得到的字符串，来确定如何排序。
+eg:
+
+var values=[0,1,5,10,15]
+values.sort();
+alert(values);
+
+结果是：0，1，10，15，5 //不是对数值进行排序，而是对数字转换成的字符的编码顺序进行排序
+给sort()传入一个比较函数，可以按照数值大小进行排序
+
+values.sort(compare);
+
+compare为比较函数
+
+function compare(value1,value2)
+{
+    if(value1 < value2)
+    {return -1;}
+
+    if(value1 = value2)
+    {return -1;}
+
+    if(value1 > value2)
+    {return 1;}
+}
+
+**比较函数返回参数解释：**
+- 若为正数：第一个参数位于第二个参数之后
+- 若为0：两个参数相等
+- 若为负数：第一个参数位于第二个参数之前
+
+所以上面举例的比较函数是升序排列的比较函数
+
+简化的比较函数
+
+升序排列的比较函数 function compare(a,b){return a-b}
+
+降序排列的比较函数 function compare(a,b){return b-a}
+reverse()方法，反转数组项的顺序
+
+6. 数组中的元素的位置 indexOf()、lastIndexOf()
+
+传入的参数在数组中是否存在，如果存在，返回下标，不存在，返回－1
+
+indexOf()：从数组的第一项开始查找
+
+lastIndexOf():从数组的最后一项开始查找
+
+var myArr = ['a','b','c','d'];
+alert(myArr.indexOf('b'));//1
+alert(myArr.lastIndexOf('c'));//2
+7. 数组中的迭代方法
+
+every()
+some()
+filter()
+map()
+forEach()
+(1) every()用于检测数组是否每一项都满足某个条件，如果是，则返回true;否则返回false
+
+eg:
+
+var num = [1,2,3,4,5];
+
+var numRes = num.every(function(item,index,array){
+        return (item >= 1);
+
+});//numRes为true
+(2) some()用于检测数组中是否有一项满足某个条件，如果是，则返回true;否则返回false
+
+eg:
+
+var num = [1,2,3,4,5];
+
+var numRes = num.some(function(item,index,array){
+        return (item >= 5);
+
+});//numRes为true
+(3) filter()用于选出数组中满足某个条件的项，并形成一个新的数组
+
+eg:
+
+var num = [1,2,3,4,5];
+
+var numRes = num.filter(function(item,index,array){
+        return (item >= 3);
+
+});//numRes为[3,4,5]
+(4) map()用于将数组中的每一项都做一个操作，并形成一个新的数组
+
+eg:
+
+var num = [1,2,3,4,5];
+
+var numRes = num.map(function(item,index,array){
+        return (item + 3);
+
+});//numRes为[4,5,6,7,8]
+(5) forEach()用于将数组中的每一项都做一个操作（原数组发生了改变）
+
+eg:
+
+var num = [1,2,3,4,5];
+
+num.forEach(function(item,index,array){
+        return (item + 3);
+
+});//num为[4,5,6,7,8]
+8. 数组中的归并方法 reduce()、reduceRight()
+
+将数组中的每一项进行迭代，最终返回一个值；两者的区别是迭代的方向不同，reduce()是从数组的第一项开始，reduceRight()是从数组的最后一项开始。
+
+reduce(“回调函数”,”初始值”);
+
+一般来讲prev是从数组中第一个元素开始的，next是第二个元素。但是当你传入初始值(initialValue)后，第一个prev将是initivalValue，next将是数组中的
+第一个元素
+
+eg:
+
+var num = [1,2,3,4,5];
+
+var numRes = num.reduce(function(prev,cur,index,array){
+
+return prev + cur;
+
+})//numRes为15
+
+四. js合并数组的几种方法
+
+1. 使用concat
+
+var a1 = [0,1,2];
+var a2 = [3,4];
+var c = a1.concat(a2);//c = [0,1,2,3,4];
+缺点：会生成一个新的数组，当两个数组的元素个数较多时，会占用很多内存
+
+2. 循环插入
+
+var a1 = [0,1,2];
+var a2 = [3,4];
+
+for(var i=0;i<a2.length;i++)
+{
+    a1.push(a2[i]);
+}
+
+a1则为合并后的数组
+缺点：当a2数组很大时，for循环需要遍历很多次
+
+3. reduce()和reduceRight()方法
+
+reduce()是数组归并的方法
+
+reduce()可以实现一个累加器的功能，将数组的每个值（从左到右）将其降低到一个值
+
+var a1 = [0,1,2];
+var a2 = [3,4];
+
+//给prev传入了初始值，那么prev则是指的是a1
+a1 = a2.reduce(function(prev,next){
+    prev.push(next);
+    return prev;
+},a1)
+
+//a1 = [0,1,2,3,4];
+一般来讲prev是从数组中第一个元素开始的，next是第二个元素。但是当你传入初始值(initialValue)后，第一个prev将是initivalValue，next将是数组中的
+第一个元素
+
+reduceRight()与reduce()同理，只是从数组的右边开始归并
+
+缺点：需要对每个数组元素执行函数调用
+
+4. push.apply
+
+(1) js中的apply()和call()的用法
+
+apply:应用某一对象的一个方法，用另一个对象替换当前对象。
+
+apply(obj,参数数组)
+
+<script type="text/javascript">
+      /*定义一个人类*/
+      function Person(name,age)
+      {
+          this.name=name;
+          this.age=age;
+      }
+      /*定义一个学生类*/
+      functionStudent(name,age,grade)
+      {
+          Person.apply(this,arguments);
+          this.grade=grade;
+      }
+      //创建一个学生类
+      var student=new Student("qian",21,"一年级");
+      //测试
+      alert("name:"+student.name+"\n"+"age:"+student.age+"\n"+"grade:"+student.grade);
+      //大家可以看到测试结果name:qian  age:21  grade:一年级
+      //学生类里面我没有给name和age属性赋值啊,为什么又存在这两个属性的值呢,这个就是apply的神奇之处.
+ </script>
+call:与apply的作用一样，只是参数列表不一样
+
+call(obj,参数1,参数2…)
+
+将上一段的Person.apply(this,arguments) 变成 Person.call(this,name,age)
+(2) apply的作用
+
+当一个数组作为参数传入一个函数时，使用apply可以将数组解析为一个一个的参数
+
+(3) 使用apply将数组合并
+
+var a1 = [0,1,2];
+var a2 = [3,4];
+a1.push(a2);//结果是a1=[0,1,2,[3,4]]，并不是我们需要的结果
+
+我们需要将a2这数组拆成一个个元素，然后push进入a1
+
+因此可以采用apply方法
+
+Array.prototype.push.apply(a1,a2);//使用a1调用push方法，并将a2数组拆成一个个参数传进去,a1=[0,1,2,3,4]
+
+Array.prototype.unshift.aplly(a2,a1);//a2=[0,1,2,3,4]
+aplly的其他使用
+
+Math.max 可以实现得到数组中最大的一项
+
+因为Math.max 参数里面不支持Math.max([param1,param2]) 也就是数组
+
+但是它支持Math.max(param1,param2,param3…),所以可以根据刚才apply的那个特点来解决 var max=Math.max.apply(null,array),这样轻易的可以得到
+一个数组中最大的一项(apply会将一个数组装换为一个参数接一个参数的传递给方法)
+
+这块在调用的时候第一个参数给了一个null,这个是因为没有对象去调用这个方法,我只需要用这个方法帮我运算,得到返回的结果就行,.所以直接传递了一个null过去
+缺点：如果a2很大，就会出现内存溢出的情况
+
+(4) 使用ES6的扩展操作符spread operator ...
+
+ES6是javascript的下一个版本，ES6中包含了许多新的语言特性，它们将使JS变得更加强大，更富表现力。
+
+ES6的扩展操作符的作用和apply类似
+
+a1.push(...a2)
+a2.unshift(...a1)
