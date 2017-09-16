@@ -1,0 +1,165 @@
+一. css3中新增的特性
+
+新增选择器
+做出一些视觉效果（边框、文本、背景）
+弹性盒子布局
+媒体查询
+转换
+过渡
+动画
+
+1. css3中新增的选择器
+
+新增的选择器能够快速地指定到某一个HTML元素，能够更好地使表现与结构分离
+
+:nth-child()
+:not()
+:first-child()
+:last-child()
+
+:checked
+:disabled
+
+2. 使用css3可以做出一些视觉效果
+
+以前需要用图片来实现的一些效果，直接用css3可以实现
+
+例如：圆角、阴影、渐变背景、半透明、图片边框
+
+边框
+
+border-radius 边框圆角
+box-shadow 阴影
+border-image 边框带图片
+背景
+
+background-size 用来指定背景图片的大小
+
+background-origin: border-box/padding-box/content-box
+
+与background-position配合使用，主要是指定从哪里开始计算position的x值和y值
+
+background-clip: border-box/padding-box/content-box
+可以用来设置背景图的占盒子的哪几部分，默认是占border+padding+content
+
+阴影
+
+text-shadow
+box-shadow
+
+文字
+
+@Font-face 可以用来加载服务器上的字体样式
+
+
+@font-face {
+	font-family: BorderWeb;
+	src:url(...)
+}
+
+.class {
+	font-family: BorderWeb;
+}
+文字截断 text-overflow:clip/ellipsis
+
+颜色和透明度
+
+color: rgba(255, 0, 0, 0.75);
+
+渐变
+
+4. 弹性盒子flex-box
+
+5. 盒容器的转换transform
+
+transform: translate() 平移
+transform: rotate() 旋转
+transform: scale() 放大缩小
+transform: skew() 翻转
+
+6. 过渡transition
+
+transition：属性 时间 延迟执行的时间 过渡的类型
+
+通过给transition设置属性值，然后通过js修改那个属性值，就会呈现一种过渡的效果。
+
+可以将transform和transition结合起来，产生很多动画的效果
+
+7. 动画animation
+
+animation: 动画名 动画执行一次的时间 变化的模式 动画重复次数 动画执行完一次后方向的变化方式
+
+animation-iteration-count: infinite; //可以定义动画无限次的播放
+
+利用关键帧keyframes定义动画
+
+一个旋转的正方形
+
+<div class='circle'>		
+</div>
+
+.circle {
+		width: 100px;
+		height: 100px;
+		background: red;
+		animation: myfirst 5s;
+	}
+
+@keyframes myfirst {
+		from {transform: rotate(0deg);}
+		to {transform: rotate(360deg);}
+}
+使用纯CSS实现轮播图
+
+
+<div class='window'>
+	<div class='slider'>
+		<div class='item1'></div>
+		<div class='item2'></div>
+		<div class='item3'></div>
+	</div>
+</div>
+
+.window {
+		width: 100px;
+		height: 100px;
+		overflow: hidden;
+	}
+
+	.slider{
+		width: 300px;
+		height: 100px;			
+		animation: myfirst 2s linear infinite alternate;
+	}
+
+	.item1, .item2, .item3 {
+		float: left;
+		width: 100px;
+		height: 100px;
+	}
+
+	.item1 {
+		background: red;
+	}
+
+	.item2 {
+		background: black;
+	}
+
+	.item3 {
+		background: blue;
+	}
+
+	@keyframes myfirst
+	{
+		50% {transform: translateX(-100px);}
+		100% {transform: translateX(-200px);}
+	}
+8. 媒体查询
+
+二. 使用css3的好处
+
+让页面看起来更加的绚丽
+使用css中的新特性代替之前需要使用图片才能完成的一些效果，减少开发和维护成本
+更少的脚本、图片使用户加载的内容减少，能够提高页面性能
+# css
