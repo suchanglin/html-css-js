@@ -1,0 +1,181 @@
+一. js引擎是单线程
+
+js是以单线程的方式执行，但是其运行环境浏览器却是多线程的。
+
+1. 浏览器是多线程的
+
+浏览器多线程包括：
+
+javascript引擎线程
+界面渲染线程
+浏览器事件触发线程
+Http请求线程
+js引擎线程只是浏览器多线程中的一个线程。
+
+2. js引擎是单线程的
+
+我理解的单线程指的是，某一时刻内只能执行特定的一个任务，就像排队一样，某一时间只有一个人在办理业务。所以只有等一个任务执行完了之后才会执行另外一个任务。
+
+单线程执行的原因：由于js主要是与用户互动、操作DOM，若以多线程的方式执行，会造成操作中的冲突。
+
+单线程造成的问题：单线程执行很容易造成线程阻塞，当遇到一个很费时的任务时，这时其他的任务就被阻塞了。
+
+因此，当遇到一个很费时的操作时，不必等他们执行完之后再执行后面的操作；在这些任务完成前，JavaScript完全可以往下执行其他操作，
+当这些耗时的任务完成后则以回调的方式执行相应处理。这些就是JavaScript与生俱来的特性：异步与回调。
+
+当然对于不可避免的耗时操作（如：繁重的运算，多重循环），HTML5提出了Web Worker，它会在当前JavaScript的执行主线程中利用Worker类新开辟一个额外的
+线程来加载和运行特定的JavaScript文件，这个新的线程和JavaScript的主线程之间并不会互相影响和阻塞执行，而且在Web Worker中提供了这个
+新线程和JavaScript主线程之间数据交换的接口：postMessage和onMessage事件。但在HTML5 Web Worker中是不能操作DOM的，
+任何需要操作DOM的任务都需要委托给JavaScript主线程来执行，所以虽然引入HTML5 Web Worker，但仍然没有改线JavaScript单线程的本质。
+
+二. js中的同步执行和异步执行
+
+1. js的执行引擎分两个序列：
+
+主线程：任务都会在主线程中执行
+事件队列：onclick, ajax, setTimeout, setInterval都会将任务放到事件队列里，然后等到主线程为空时，将队列中的任务取出，放在主线程中执行
+
+2. 为了方便描述与理解，作出以下约定：
+
+Stack栈为主线程
+Queue队列为任务队列（等待调度到主线程执行）
+
+3. Javascript将任务的执行模式分成两种：同步、异步。
+
+同步、异步指的是代码顺序和任务执行顺序是否是同步的。
+
+同步模式：后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的。
+
+异步模式：每一个任务有一个或多个回调函数（callback），前一个任务结束后，不是执行后一个任务，而是执行回调函数，
+后一个任务则是不等前一个任务结束就执行，所以程序的执行顺序与任务的排列顺序是不一致的、异步的。
+
+js引擎单线程执行的,它是基于事件驱动的语言。
+
+它的执行顺序是遵循一个叫做事件队列的机制。
+
+浏览器有各种各样的线程,比如事件触发器（onclick）,网络请求(ajax),定时器(setTimeout、setInterval)等等。线程的联系都是基于事件的。
+
+js引擎处理到与其他线程相关的代码,就会分发给其他线程,他们处理完之后,需要js引擎计算时就是在事件队列里面添加一个任务。
+
+这个过程中,js并不会阻塞代码等待其他线程执行完毕,而且其他线程执行完毕后添加事件任务告诉js引擎执行相关操作.这就是js的异步编程模型。
+
+4. js中对dom的操作是异步的
+
+浏览器的另外一个引擎——>GUI渲染引擎。 在js中渲染操作也是异步的，比如dom操作的代码会在事件队列中生成一个任务,js执行到这个任务时就会去调用GUI引擎渲染。
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <table border=1>
+        <tr><td><button id='do'>Do long calc - bad status!</button></td>
+            <td><div id='status'>Not Calculating yet.</div></td>
+        </tr>
+        <tr><td><button id='do_ok'>Do long calc - good status!</button></td>
+            <td><div id='status_ok'>Not Calculating yet.</div></td>
+        </tr>
+    </table>    
+<script>
+
+function long_running(status_div) {
+
+    var result = 0;
+    for (var i = 0; i < 1000; i++) {
+        for (var j = 0; j < 700; j++) {
+            for (var k = 0; k < 300; k++) {
+                result = result + i + j + k;
+            }
+        }
+    }
+    document.querySelector(status_div).innerHTML = 'calclation done' ;
+}
+
+document.querySelector('#do').onclick = function () {
+    document.querySelector('#status').innerHTML = 'calculating....';
+    long_running('#status');
+};
+
+document.querySelector('#do_ok').onclick = function () {
+    document.querySelector('#status_ok').innerHTML = 'calculating....';
+    window.setTimeout(function (){ long_running('#status_ok') }, 0);
+};
+
+</script>
+</body>
+</html>
+
+我们希望能看到计算的每一个过程,我们在程序开始,计算,结束时,都执行了一个dom操作,插入了代表当前状态的字符串,Not Calculating yet.和calculating….和
+calclation done.计算中是一个耗时的3重for循环. 在没有使用settimeout的时候,执行结果是由Not Calculating yet 直接跳到了calclation done.
+这显然不是我们希望的.而造成这样结果的原因正是js的事件循环单线程机制.dom操作是异步的,for循环计算是同步的.异步操作都会被延迟到同步计算之后执行.
+也就是代码的执行顺序变了.calculating….和calclation done的dom操作都被放到事件队列后面而且紧跟在一起,造成了丢帧.无法实时的反应.这个例子也告诉了我们,
+在需要实时反馈的操作,如渲染等,和其他相关同步的代码,要么一起同步,要么一起异步才能保证代码的执行顺序.在js中,就只能让同步代码也异步.
+即给for计算加上settimeout.
+
+三. js中的回调
+
+回调不一定是异步的
+
+/****************** 同步回调 ************************/
+var syncFun = function(callback) {
+    var start = new Date();
+    while(new Date() - start < 1000) { // delay 1 sec
+        ;
+    }
+    callback();
+    console.log('同步方法返回'); // 2
+};
+
+syncFun(function() {
+    console.log('这是同步回调'); // 1
+});
+console.log('同步方法会阻塞当前逻辑'); // 3
+
+/****************** 异步回调 ************************/
+var asyncFun = function(callback) {
+    setTimeout(callback, 1000); // delay 1 sec
+    console.log('异步方法返回'); // 4
+};
+asyncFun(function() {
+    console.log('这是异步回调'); // 6
+});
+console.log('异步方法不会阻塞当前逻辑'); // 5
+不能光看调用的形式，要看实际调用代码的实现方式
+
+eg1:
+function A(){
+ setTimeout(function(){
+   console.log('~~A~~');
+  },1000);
+}
+
+function B(){
+ setTimeout(function(){
+   console.log('~~B~~');
+  },100);
+}
+
+function C(){
+ setTimeout(function(){
+   console.log('~~C~~');
+  },2000);
+}
+
+function D(){
+    console.log('~~D~~');
+}
+
+function E(){
+    console.log('~~E~~');
+}
+
+A();
+B();
+C();
+D();
+E();
+//输出结果为 ~~D~~/~~E~~/~~B~~/~~A~~/~~C~~
+
+例一中，A/B/C/D/E函数将按代码的书写顺序顺序执行，但并不是说各个函数的内部代码的执行顺序和调用顺
