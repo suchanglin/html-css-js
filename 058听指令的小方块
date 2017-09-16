@@ -1,0 +1,115 @@
+一. 听指令的小方块
+
+Demo地址：http://panpanfish.com/myDemo/instruct-block.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/instruct-block.html
+
+二. 遇到的问题
+
+1. setTimeout问题
+
+实现小方块的功能：让小方块移动之后再让让小方块旋转
+
+为了说明遇到的问题，下面是一个简化版程序
+
+
+   <div id="box" style="position:absolute;left:100px;width:200px;height:200px;background:#000;transform:rotate(5deg);">
+   </div>
+
+function A(i){
+	//旋转
+	var j = parseInt(box.style.left);
+	function Af(){
+	    j++;
+	    box.style.left = j +"px";
+	    console.log("j"+box.style.left);
+	    //console.log((Af());
+	    if(j < 205){
+	    			setTimeout(Af,20);
+	    }
+	    			
+	 }
+
+	 if(i == 1){
+	    		 Af();
+	 }
+	    		
+}
+
+function B(i){
+		//移动
+	    var k = parseFloat(box.style.transform.substring(box.style.transform.indexOf("(")+1,box.style.transform.indexOf(")")));
+
+	    function Bf(){
+	    			k++;
+	    			box.style.transform = "rotate("+k+"deg)";
+	    			console.log("k"+box.style.transform);
+	    			if(k < 10){
+	    				setTimeout(Bf,20);
+	    			}
+	    			
+	    }
+
+	    if(i == 1){
+	    			Bf();
+	    }
+}
+
+A(1);//
+console.log("分割");
+B(1);//
+这样写之后，发现小方块并不是先移动，后旋转的
+
+输出为：
+j201px 
+分割 
+krotate(6deg) 
+j202px 
+krotate(7deg) 
+j203px 
+krotate(8deg) 
+j204px 
+krotate(9deg) 
+j205px 
+krotate(10deg)
+出现上面的情况的原因：
+
+setTimeout捣的鬼，由于setTimeout是将回调函数放在任务队列中，在指定的时间之后执行（如果任务队列前没有其他任务，且主线程处于空闲状态）。
+
+上述代码执行过程为：
+
+A(1) -> Af()[将Af()放到任务队列，时延为20ms] -> 输出分割 -> B(1) -> Bf()[将Bf()放到任务队列，时延为20ms]  
+
+主线程为空
+
+执行任务队列里面的最前面的一个任务Af()[将Af()放到任务队列，时延为20ms]
+
+.
+.
+.
+依此类推
+若要让程序按照我们想要的方式执行，可采用如下方法：
+
+setTimeout(function(){
+    A(1);
+},0);
+
+console.log("分割");
+
+setTimeout(function(){
+    B(1);
+},120);//让B在A中插入任务队列的任务执行完之后再执行
+这样运行的效果就是我们想要的，输出结果如下：
+
+
+分割 
+j201px 
+j202px 
+j203px 
+j204px 
+j205px 
+krotate(6deg) 
+krotate(7deg) 
+krotate(8deg) 
+krotate(9deg) 
+krotate(10deg)
