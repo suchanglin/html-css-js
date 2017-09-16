@@ -1,0 +1,84 @@
+一. 什么是lazyload？
+
+lazyload也叫延迟加载，按需加载
+
+lazyload的应用举例：
+
+一个页面中有很多张图片，但是只将页面中可见的图片加载进来，而页面中不可见的图片不加载。
+
+页面滚动到底部才动态加载数据
+
+lazyload的好处：
+
+网页优化，提高网页加载速度
+减少服务器压力
+二. 如何实现图片的lazyload？
+
+原理：判断图片是否出现在视窗内，如果是，则给图片的src赋值。
+
+懒加载实现的过程：
+
+可以将网页中的图片都设置为同一张图片
+给图片增加自定义属性data-origin=’img/example.jpg’
+当滚动条到达用户可视区之后，改变图片的src属性为我们缓存的地址
+浏览器加载可视区域图
+如何判断图片是否在视窗内：
+
+img.offsetTop 是否小于 document.body.scrollTop + document.body.clientHeight
+
+原生的js实现：
+
+var imgs = document.getElementsByTagName('img');
+
+function lazyload() {
+	var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+	var viewportSize = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+	for(var i = 0; i < imgs.length; i++) {
+		var y = scrollTop + veiwportSize - img[i].offsetTop;
+		
+		if(y > 0) {
+			imgs[i].src = imgs[i].getAttribute('data-origin');
+		}
+	}
+}
+
+setInterval(lazyload, 1000);
+三. 滚动条滚动到底部，加载更多内容
+
+需要判断是否到达了文件的底部
+
+document.body.scrollTop + clientHeight 是否大于 document.body.scrollHeight
+
+实现代码：
+
+//给窗口绑定一个滚动事件
+window.onscroll = function() {
+    //垂直滚动的距离
+	var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+	
+	//可视窗口的高度
+	var clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
+
+    //文档的完整高度
+	var scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+	
+	//判断是否到达了文档的最底部，如果是，那么再动态添加元素
+	if(scrollTop + clientHeight == scrollHeight) {
+		var xhr = new XMLHttpRequest();
+		if(!xhr) {
+			xhr.open('get', '/...', 'true');
+			xhr.onreadystatechange = function() {
+				if(xhr.readystate == 4) {
+					if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+						var newNode = document.createElement('div');
+						newNode.innerHTML = xhr.responseText;
+						document.body.appendChild(newNode);
+					}
+				}
+			}
+			xhr.send(null);
+		}
+	}
+}
