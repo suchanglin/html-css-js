@@ -1,0 +1,38 @@
+之所以总结了这篇博客，是因为遇到了scrollTop的问题。
+
+在标准模式下，不同浏览器获取页面滚动条滚动的高度值的方法不一样。具体可以参考博客《元素视图属性》。
+
+那么什么是标准模式呢？
+
+一. 文档类型声明DOCTYPE
+
+DOCTYPE:document type declaration，文档类型声明，缩写为DTD
+
+通常位于一个HTML文档的最前面。
+
+浏览器根据一个文档的DTD来决定需要采用的解析模式。
+
+二. 不同的DOCTYPE对应的渲染模式
+
+混杂模式
+近似标准模式
+标准模式（严格模式）
+
+1. 混杂模式
+
+不声明DOCTYPE的文档使用混杂模式进行渲染，这种不可取。
+
+2. 近似标准模式
+
+尽可能遵循标准的基础上兼容部分非标准代码，比如一些弃用的标签。
+
+3. 标准模式（严格模式）
+
+声明为：<!DOCTYPE HTML>
+
+三. 用js判断浏览器当前的模式
+
+获取浏览器当前的模式 document.compatMode 
+
+标准模式：document.compatMode = CSS1Compat;
+混杂模式：document.compatMode = BackCompat;
