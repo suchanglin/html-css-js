@@ -1,0 +1,145 @@
+一. 第二阶段任务
+
+百度前端技术学院的第一阶段主要是针对HTML和CSS的学习和训练，第二阶段就进入javascript的学习了。
+
+进入js之后发现很多基础的东西虽然之前看过，但是用起来时候还是得再返回去看一下，希望自己能在做任务的过程中不断进步~~
+
+第二阶段任务
+
+二. 我的任务
+
+我的任务列表http://panpanfish.com/baiduIFE/
+
+1. 任务十三
+
+(1). 任务十三需要完成的功能
+
+任务要求：
+
+本任务完成的功能为：用户可以在输入框中输入任何内容，点击“确认填写”按钮后，用户输入的内容会显示在“您输入的值是”文字的右边
+
+(2). 任务十三demo
+
+http://panpanfish.com/baiduIFE/task2-13.html
+
+(3). 任务十三代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task2-13.html
+
+(4). 任务十三笔记
+
+a. (function(){})();
+
+这个代表一个自执行的匿名函数，function(){}代表一个函数，但是没有对函数命名，于是用()将其括起来，后面的()代表函数自动执行
+
+b. click()和onclick的区别
+
+click()是一个方法，对某一个DOM节点调用这个方法之后，就会执行click这个动作。
+
+onclick是一个事件，我们可以给这个事件添加响应这个事件的函数（事件处理程序）。
+
+onclick = function(){}
+
+函数里面的内容代表：当执行这个事件时（click这个动作时）会做出什么样的响应
+c. 利用id名获取DOM节点
+
+document.getElementById("myid")
+d. 获取input框的输入值
+
+document.getElementById("myinput").value
+e. DOM 的innerHTML属性
+
+获取或者设置标签内部的HTML
+
+2. 任务十四
+
+(1). 任务十四需要完成的功能
+
+任务要求：
+
+页面加载后，将提供的空气质量数据数组，按照某种逻辑（比如空气质量大于60）进行过滤筛选，最后将符合条件的数据按照一定的格式要求显示在网页上
+
+<li>第一名：福州（样例），10</li>
+  <li>第二名：福州（样例），10</li> 
+(2). 任务十四demo
+
+http://panpanfish.com/baiduIFE/task2-14.html
+
+(3). 任务十四代码
+
+https://github.com/panpan040828/baiduIFE/blob/gh-pages/task2-14.html
+
+(4). 任务十四笔记
+
+a. 数组的重排序方法
+
+sort() 会将数组的元素进行排序，是直接将原数组进行排序。
+
+直接调用array.sort()时，将会按照字符编码的顺序进行升序排序。
+
+sort()方法会调用数组中每一项的toString()方法，然后比较得到的字符串，来确定如何排序。
+
+eg:
+
+var values=[0,1,5,10,15]
+values.sort();
+alert(values);
+
+结果是：0，1，10，15，5 //不是对数值进行排序，而是对数字转换成的字符的编码顺序进行排序
+给sort()传入一个比较函数，可以按照数值大小进行排序
+
+values.sort(compare);
+
+compare为比较函数
+
+function compare(value1,value2)
+{
+    if(value1 < value2)
+    {return -1;}
+
+    if(value1 = value2)
+    {return -1;}
+
+    if(value1 > value2)
+    {return 1;}
+}
+
+**比较函数返回参数解释：**
+- 若为正数：第一个参数位于第二个参数之后
+- 若为0：两个参数相等
+- 若为负数：第一个参数位于第二个参数之前
+
+所以上面举例的比较函数是升序排列的比较函数
+
+简化的比较函数
+
+升序排列的比较函数 function compare(a,b){return a-b}
+
+降序排列的比较函数 function compare(a,b){return b-a}
+reverse()方法，反转数组项的顺序
+
+b. 数组的迭代方法
+
+这里只记录用到filter()方法和map()方法
+
+filter是满足条件的留下，是对原数组的过滤；
+map则是对原数组的加工，映射成一一映射的新数组
+filter() 顾名思义，可以理解成用某种条件来过滤数组的方法，用某种条件来选出符合该条件的项，并组成一个新的数组。
+
+eg:
+
+var numbers = [1,2,3,4,5,6,7];
+
+var filterResult = numbers.filter(function(item,index,array){
+    return (item > 2);//返回数组中大于2的项
+
+});
+map() 映射，新数组中的每一项都是由原数组的对应项经过某种操作得来的
+
+eg:
+
+var numbers = [1,2,3,4,5];
+
+var mapResult = numbers.map(function(item,index,array){
+    return item * 2;
+});
