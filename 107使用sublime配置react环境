@@ -1,0 +1,173 @@
+由于很多的react不支持sublime text2，只支持sublime text3，于是又重新下载了sublime text3，并安装了相关的插件。
+
+一. 安装并破解sublime text3
+
+直接在网上下载的sublime text3需要注册码
+
+破解方法：
+
+help ——> Enter License
+
+然后输入从网上找来的破解码
+
+
+Michael Barnes
+Single User License
+EA7E-821385
+8A353C41 872A0D5C DF9B2950 AFF6F667
+C458EA6D 8EA3C286 98D1D650 131A97AB
+AA919AEC EF20E143 B361B1E7 4C8B7F04
+B085E65E 2F5F5360 8489D422 FB8FC1AA
+93F6323C FD7F7544 3F39C318 D95E6480
+FCCC7561 8A4A1741 68FA4223 ADCEDE07
+200C25BE DBBC4855 C4CFB774 C5EC138C
+0FEC1CEF D9DCECEC D3A5DAD1 01316C36
+二. sublime安装插件
+
+Sublime安装插件有两种方式:
+
+直接下载安装包解压缩到Packages目录
+通过Package Control组件来安装组件(更方便)
+一般使用第二种方法安装插件，方便快捷~~
+
+1. 安装package control
+
+（1）打开控制台
+
+view ——> show console
+
+（2）在控制台中输入
+
+import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; 
+pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); 
+urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); 
+by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); 
+print('Error validating download (got %s instead of %s), 
+please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)
+
+2. 使用package control安装插件的一般方法
+
+同时按下：ctrl+shift+P
+
+然后选择：package:install
+
+在出来的输入框中输入需要安装的插件，例如：emmet
+
+三. 使用sublime安装react相关插件
+
+1. babel
+
+功能：支持jsx语法高亮
+
+安装：在package control中查找babel
+
+将某一种的文件扩展名添加为使用ES6语法：
+
+打开.js或者.jsx文件
+选择view ——> syntax ——> Open all with current extension as... ——> Babel ——> JavaScript (Babel)
+
+2. sublime-react
+
+功能：自动补全代码的react插件
+
+安装：在package control中查找ReactJS
+
+使用：输入简写的命令，按下tab键即可自动补全
+
+
+cdm→  componentDidMount: fn() { ... }
+cdup→  componentDidUpdate: fn(pp, ps) { ... }
+cs→  var cx = React.addons.classSet;
+cwm→  componentWillMount: fn() { ... }
+cwr→  componentWillReceiveProps: fn(np) { ... }
+cwu→  componentWillUpdate: fn(np, ns) { ... }
+cwun→  componentWillUnmount: fn() { ... }
+cx→  cx({ ... })
+fdn→  React.findDOMNode(...)
+fup→  forceUpdate(...)
+gdp→  getDefaultProps: fn() { return {...} } 
+gis→  getInitialState: fn() { return {...} } 
+ism→  isMounted()
+props→  this.props.
+pt→  propTypes { ... }
+rcc→  component skeleton
+refs→  this.refs.
+ren→  render: fn() { return ... }
+scu→  shouldComponentUpdate: fn(np, ns) { ... }
+sst→  this.setState({ ... })
+state→  this.state.
+个人觉得使用这种代码自动补全的插件，虽然让我们开发变得更简便了，但是也有一些不好的方面。
+
+3. Sass代码高亮sass
+
+功能：使sass代码也有高亮显示
+
+安装：在package control中查找sass
+
+4. 将Sass编译成css —— sass build
+
+功能：将Sass编译成css代码
+
+安装：在package control中查找sass build
+
+使用：ctrl + B进行编译
+
+二. sublime插件之Sass自动编译成.css
+
+sublime的插件安装方法大同小异，都是将下载好的安装包放在.../Data/Packages文件夹里。
+
+sass自动编译插件下载地址：
+
+https://github.com/jaumefontal/SASS-Build-SublimeText2
+
+插件使用方法：
+
+首先，将编译系统调成SASS
+
+点击 工具(T) ——> 编译系统(U) ——> SASS
+然后在.scss文件页面，使用ctrl + B
+
+三. sublime插件之sublimeLinter自动检测js语法错误
+
+js自动检测语法错误插件的下载地址：
+
+https://github.com/SublimeLinter/SublimeLinter-for-ST2
+
+修改插件配置：
+
+点击 首选项(N) ——> 插件设置 ——> sublimeLinter ——> setting-User 打开配置文件
+
+参数配置中的各个参数的意思：
+运行模式
+
+"sublimelinter": "save-only"
+
+SublimeLinter 的运行模式，总共有四种，含义分别如下：    
+- true 在用户输入时在后台进行即时校验；
+- false 只有在初始化的时候才进行校验；
+- "load-save" 当文件加载和保存的时候进行校验；
+- "save-only" 当文件被保存的时候进行校验；
+
+推荐设置为 “save-only”，这样只在编写完代码，保存的时候才校验，Sublime Text 运行会更加流畅。
+
+sublime text3破解码
+
+安装package control
+
+打开控制台view ——> show console
+
+输入
+
+import urllib.request,os,hashlib; h = ‘2915d1851351e5ee549c20394736b442’ + ‘8bc59f460fa1548d1514676163dafc88’; 
+pf = ‘Package Control.sublime-package’; ipp = sublime.installed_packages_path(); 
+urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); 
+by = urllib.request.urlopen( ‘http://packagecontrol.io/‘ + pf.replace(‘ ‘, ‘%20’)).read(); dh = hashlib.sha256(by).hexdigest();
+print(‘Error validating download (got %s instead of %s), 
+please try manual install’ % (dh, h)) if dh != h else open(os.path.join( ipp, pf), ‘wb’ ).write(by)
+
+babel
+
+https://github.com/babel/babel-sublime
+
+sublime-React
+
