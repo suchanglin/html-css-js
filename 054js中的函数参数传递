@@ -1,0 +1,159 @@
+函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。
+
+一. js里面变量的类型
+
+js里变量类型包括两种：基本类型值、引用类型值。
+
+基本类型：简单的数据段。包括：undefined、Null、Boolean、Number、String（按值访问）
+
+引用类型：指的是可能由多个值构成的对象。包括：对象、数组、日期、正则表达式、函数（按引用访问）
+
+二. 复制变量
+
+1. 复制基本类型的变量
+
+var num1 = 5;
+var num2 = num1;//num2中保存的值也是5，但是这个与num1中的值是完全独立的。
+
+2. 复制引用类型的变量
+
+var obj1 = {
+    age: 2;
+}//创建了一个对象，并存储这个对象的内存地址赋给obj1
+
+var obj2 = obj1;//将obj1指向的内存地址赋给obj2，因此obj1和obj2指向同一个内存
+
+//若改变obj2.age的值
+obj2.age = 3;
+console.log(obj1.age);//3 因为obj1和obj2引用的是同一个对象
+
+三. js中函数参数的传递
+
+1. 传递的是基本类型的参数
+
+函数传递的是基本类型的参数时，只是将传递的值复制给一个函数内部的局部变量（arguments对象中的一个元素），而原来那个变量没有变化。
+
+eg:
+function addTen(num){
+  num+=10;
+  return num;
+}
+var count=20;
+var reslut=addTen(count);//30
+alert(count);//20 并没有变化
+2. 传递的是引用类型的参数时
+
+在向参数传递引用类型的值时，会把这个值在内存中的地址复制给函数中的局部变量（arguments对象中的一个元素），因此这个局部变量的变化会反映在函数的外部。
+
+ eg1:
+ function setName(obj){
+   obj.name="ss";
+ }
+ var person=new Object();
+ setName(person);//把person在内存中的地址复制给了obj，所以对obj的修改其实就是对外部person的修改
+ alert(person.name);//"ss"
+
+eg2:
+function setName(obj){
+  obj.name="ss";
+  obj=new Object();//相当于把新创建的对象地址赋值给了obj，因此下面对obj.name进行赋值不回影响person
+  obj.name="dd";
+}
+var person=new Object();
+setName(person);//将person的地址传给了obj
+alert(person.name)//"ss"
+
+
+eg3:
+var a={b:1};
+var c=1;
+var foo1 = function(value){
+   value=2;
+}
+
+foo1(a.b);
+foo1(c);
+console.log(a.b);//1
+console.log(c);//1
+
+var foo2 = function(value){
+    value.b = 2;
+}
+foo2(a);
+console.log(a.b);//2 按引用传
+
+四. 如何让引用类型赋值时也实现传值
+
+1. 遍历数组或对象，拆成一个个基本类型，然后进行赋值
+
+利用for… in…进行遍历
+
+eg:
+//遍历数组
+var a = ['o','p','q'], c = [];
+
+for(var i in a) {
+    c[i] = a[i];
+    typeof i; //String
+}
+
+c[2] = 's';
+console.log(a[2]); //q
+
+//遍历对象
+var b = {name: "xiaoming",
+         age: 7,
+         tel: 12345
+    },
+e = {};
+
+for(var i in b) {
+    e[i] = b[i];
+}
+
+e[name] = 'lala';
+
+console.log(b[name]); // xiaoming
+但是一般还是不要使用for-in对数组进行遍历，其缺点有：
+
+（1）循环变量i的值不是数字，而是字符串“0”、“1”、“2”，此时很可能在无意之间进行字符串算数计算，例如：“2” + 1 == “21”，这给编码过程带来极大的不便。
+
+（2）作用于数组的for-in循环体除了遍历数组元素外，还会遍历自定义属性。举个例子，如果你的数组中有一个可枚举属性myArray.name，循环将额外执行一次，
+遍历到名为“name”的索引。就连数组原型链上的属性都能被访问到。
+
+（3）最让人震惊的是，在某些情况下，这段代码可能按照随机顺序遍历数组元素。
+
+总之，for-in是为普通对象设计的，你可以遍历得到字符串类型的键，因此不适用于数组遍历。
+
+2. 数组实现传值的简单做法
+
+利用slice()和concat()函数
+
+由于slice()和concat()都是会生成一个新的数组，因此可以利用这两个函数让数组传值
+
+eg:
+
+var a = [1,2,3];
+var b = a;
+b.push(4);
+console.log(a);//[1,2,3,4]，a也发生了变化
+console.log(b);//[1,2,3,4]
+
+利用slice()或者concat()让数组实现传值
+var a = [1,2,3];
+var b = a.slice();
+var c = a.concat();
+
+b.push(4);
+c.push(5);
+console.log(a);//[1,2,3]
+console.log(b);//[1,2,3,4]
+console.log(c);//[1,2,3,5]
+
+//concat／slice对数组是深复制，但是对数组里面的对象是浅复制
+var a = [{a:1}];
+var b = a.slice();
+var c = a.concat();
+
+b[0].a = 2;
+console.log(a[0].a); //2
