@@ -1,0 +1,93 @@
+一. 表单独有的属性和方法
+
+属性：
+
+
+acceptCharset：服务器能够处理的字符集
+action：接受请求的URL
+elements：表单中所有控件的集合
+length：表单中控件的数量
+enctype：请求的编码类型
+method：要发送的HTTP请求类型
+target：用于发送请求和接收响应的窗口名称
+方法：
+
+reset()：将表单域重置为默认值
+submit()：提交表单
+
+二. 获取表单元素的方法
+
+1. 通过id值
+
+2. 通过document.forms可以获取页面中所有的表单，然后通过数值索引或者name属性来获取表单
+
+
+eg:
+var firstForm = document.forms[0];
+var myForm = document.forms["表单的name值"]
+
+三. 提交表单的方法
+
+1. 使用按钮<input>、<button>
+
+将<input>或者<button>的type属性值设为submit，那么按下按钮或者按下回车键都会提交表单。
+
+有一种特殊情况：图像按钮，将<input>的type值设为image
+
+
+<input type="submit">
+<input type="image" src="img.jpg">
+<button type="submit">
+用这种方式提交表单时，会触发submit事件，这个事件的默认行为是将表单数据发送给服务器.
+
+这种方法来提交表单时会触发表单的onsubmit()事件。
+因此，可以在这个事件的监听函数里验证表单数据，如果数据无效，则取消事件的默认行为。
+
+
+var form = document.getElementById("myForm");
+
+form.addElementListener("submit",function(event){
+	//验证表单的一些数据是否正确
+	event.preventDefault(event);//阻止表单提交
+})
+或者
+
+
+<form onsubmit="return submitFun();"> 
+//注意此处不能写成 onsubmit="submitFun();"否则将表单总是提交
+//原因：由于这个onsubmit是html中的事件属性，所以onsubmit的属性值应该为一个函数，写成 onsubmit="submitFun();"那么每次提交表单都会
+触发 submitFun()函数
+</form> 
+
+<script>  
+	function submitFun(){  
+	    //逻辑判断  
+	    return true; //允许表单提交  
+	    //逻辑判断  
+	    return false;//不允许表单提交  
+	}  
+</script>
+
+2. 在js里使用submit()方法来提交表单
+
+
+var form = document.getElementById("myForm");
+//需要在提交之前验证表单数据
+form.submit();
+直接使用form.submit()方法提交表单时，不会触发表单的onsubmit()事件。
+举个栗子验证一下：
+
+
+<form id="myForm" onsubmit="fun()">  
+    <input type="submit" id="aaa" value="submit">//能弹出“触发了表单的onsubmit()事件”
+      
+	<input type="button" id="bbb" value="oncliCk_submit" onclick="document.forms[0].submit()"> //不能出现弹出框
+  
+    <input type="button" id="bb1" value="oncliCk_onsubmit" onclick="document.forms[0].onsubmit()"> //能弹出“触发了表单的onsubmit()事件” 
+</form>  
+
+<script>  
+    function fun(){  
+         alert("触发了表单的onsubmit()事件");  
+    } 
+</script>
