@@ -1,0 +1,253 @@
+一. 什么是SQL
+
+结构化查询语言Structured Query Language
+
+SQL的功能
+
+数据查询
+数据定义
+数据操纵
+数据控制
+SQL的特点
+
+非过程
+面向集合
+类似英语的自然语言
+基本表：
+
+一个关系对应一个基本表
+一个或多个基本表对应一个存储文件
+视图：
+
+视图是从一个或几个基本表导出的表，是一个虚拟的表
+二. 创建与使用数据库
+
+1. 创建数据库
+
+
+CREATE DATABASE Teach
+ON
+(	NAME=Teach_Data,
+	FILENAME='D:\TeachData.mdf',
+	SIZE=10,
+	MAXSIZE=50,
+	FILEGROWTH=5)
+LOG ON
+(	NAME=Teach_Log,
+	FILENAME='D:\TeachLog.ldf',
+	SIZE=5,
+	MAXSIZE=25,
+	FILEGROWTH=5)
+
+2. 修改数据库
+
+
+ALTER DATABASE Northwind
+MODIFY FILE
+(	NAME = Northwind,
+ 	FILEGROWTH = 2mb 
+)
+
+3. 删除数据库
+
+1
+DROP DATABASE Teach
+
+4. 查看数据库信息
+
+用系统存储过程显示数据库结构
+
+1
+Sp_helpdb[[@dbname=]'name']
+
+用系统存储过程显示文件信息
+
+1
+Sp_helpfile [[@filename =] 'name']
+
+用系统存储过程显示文件组信息
+
+1
+Sp_helpfilegroup [[@filegroupname =] 'name']
+
+三. 创建和使用数据表
+
+1. 数据类型
+
+2. 创建数据表
+
+
+eg:
+
+用SQL命令建立一个学生表S。
+CREATE TABLE S
+(	SNo CHAR(6),
+   SN VARCHAR(8),
+   Sex CHAR(2) DEFAULT '男',
+   Age INT,
+   Dept VARCHAR(20))
+
+3. 定义数据表的约束
+
+[CONSTRAINT <约束名> ] <约束类型>
+
+约束类型：
+
+NULL/NOT NULL：NULL 是空值；NOT NULL 是不允许出现空值
+UNIQUE：取值唯一
+PRIMARY KEY ：主键。主键不能为NULL、不能重复
+FOREIGN KEY ：外键
+CHECK：检查字段值所允许的范围
+4. 修改数据表
+
+添加
+
+
+ALTER TABLE <表名>
+ADD <列定义> | <完整性约束定义>
+
+修改
+
+ALTER TABLE <表名>
+ALTER COLUMN <列名> <数据类型> [NULL|NOT NULL]
+删除某一列
+
+
+ALTER TABLE <表名>
+DROP COLUMN <列名>
+
+5. 删除基本表
+
+```js
+DROP TABLE <表名>
+```js
+只能删除自己建立的表，不能删除其他用户所建的表
+
+三. 创建和使用索引
+
+为什么要用索引？
+
+索引可以看成是我们一本书的目录，使用索引会加快查询的速度。
+
+索引的分类：聚集索引/非聚集索引、唯一索引、复合索引
+
+1. 创建索引
+
+```js
+CREATE [UNIQUE] [CLUSTERED] INDEX <索引名> ON <表名> (<列名> [次序] [{,<列名>}] [次序]…)
+```js
+2. 查看修改索引
+
+EXEC Sp_helpindex [@objname =] 'name'
+
+3. 删除索引
+
+DROP INDEX数据表名.索引名 
+
+四. 数据查询
+
+SELECT [ALL|DISTINCT][TOP N [PERCENT][WITH TIES]]
+    〈列名〉[AS 别名1] [{，〈列名〉[ AS 别名2]}]
+    [INTO 新表名]
+FROM〈表名1或视图名1〉[[AS] 表1别名] [{，〈表名2或视图名2〉[[AS] 表2别名]}]
+[WHERE〈检索条件〉]
+[GROUP BY <列名1>[HAVING <条件表达式>]]
+[ORDER BY <列名2>[ASC|DESC]] 
+条件查询
+
+优先级 NOT > AND > OR 
+
+范围查询 BETWEEN
+
+是否在某一个集合内 IN
+
+模糊查询 LIKE或NOT LIKE
+
+空值查询 IS NULL 
+常用数据库函数（聚集函数）
+
+AVG：按列计算平均值 
+
+SUM：按列计算值的总和
+
+MAX：求一列中的最大值
+
+MIN：求一列中的最小值
+
+COUNT：按列值计个数
+
+分组查询
+
+GROUP BY
+
+HAVING 分组后还要按照一定的条件进行筛选
+对查询的结果进行排序
+
+ORDER BY
+
+DESC为降序，ASC为升序，缺省时为升序
+连接查询
+
+若查询涉及到两个以上的表，则称为连接查询
+
+子查询（嵌套查询）
+
+在WHERE子句中包含一个形如SELECT-FROM-WHERE的查询块，此查询块称为子查询或嵌套查询。
+集合操作
+
+UNION 并
+INTERSECT 交
+EXCEPT 差
+
+五. 视图
+
+视图是虚表，其数据不进行存储，其记录来自基本表，只在数据库中存储其定义 。
+
+1. 创建视图
+
+CREATE VIEW <视图名>[(<视图列表>)]
+        AS <子查询> 
+2. 修改视图
+
+ALTER VIEW <视图名>[(<视图列表>)]
+        AS <子查询> 
+3. 删除视图
+
+DROP VIEW <视图名>
+4. 更新视图
+
+INSERT
+UPDATE
+DELETE
+
+六. SQL数据控制
+
+权限：系统权限、对象权限
+
+角色：是多种权限的集合
+
+系统权限
+
+系统权限授予
+
+GRANT <系统权限>|<角色> [,<系统权限>|<角色>]…
+TO <用户名>|<角色>|PUBLIC[,<用户名>|<角色>]…
+[WITH ADMIN OPTION]
+
+系统权限收回
+
+REVOKE <系统权限>|<角色> [,<系统权限>|<角色>]…
+FROM <用户名>|<角色>|PUBLIC[,<用户名>|<角色>]…
+对象权限
+
+对象权限授予
+
+GRANT ALL|<对象权限>[(列名[,列名]…)][,<对象权限>]…ON <对象名>
+TO <用户名>|<角色>|PUBLIC[,<用户名>|<角色>]…
+[WITH GRANT OPTION] 
+
+对象权限收回
+
+REVOKE <对象权限>|<角色> [,<对象权限>|<角色>]…
+FROM <用户名>|<角色>|PUBLIC[,<用户名>|<角色>]…
+# 数据库
