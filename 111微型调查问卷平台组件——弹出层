@@ -1,0 +1,461 @@
+一. 弹出层
+
+Demo地址：http://panpanfish.com/myDemo/research/floatdiv.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/research/js/floatDiv/common_floatDiv.js
+
+需要实现的功能有：
+
+弹出层的中心默认在屏幕正中
+当弹出层显示时，屏幕滚动时，弹出层始终保持位置固定在屏幕正中，不随屏幕滚动而变化位置。或者禁止页面在有弹出层出现时滚动
+当弹出层显示时，点击弹出层以外的部分，默认为关闭弹出层。可以实现一个半透明的遮罩来挡住弹出层外的部分
+弹出层的样式、内容和逻辑尽量解耦
+提供使用JavaScript控制弹出层展现和关闭的接口
+弹出层的窗口大小可以是一个默认固定值，也可以是随内容变化而自适应变化，也可以是通过接口参数进行调整，自行根据自己能力进行选择
+有能力的同学可以实现弹出层的拖拽移动浮出窗口位置以及拖拽边缘来放大缩小浮出窗口的功能
+
+1. 做弹出层遇到的问题
+
+弹出层包括两个部分：灰色遮罩层、弹出框
+
+(1) this指代的问题
+
+setTimeout,setTimeout里面的回调函数内的this指的是全局对象，因此需要用var that = this;，再利用闭包，在setTimeOut里面使用that。
+
+关于this指代对象的问题，可看相关博客
+
+http://panpanfish.com/2016/05/08/2016-05-08-js%E4%B8%AD%E7%9A%84this%E5%AF%B9%E8%B1%A1/
+
+(2)css3中的transform、transition
+
+transform:translate(x,y);//x轴，y轴平移
+
+transform:scale(x,y);//放大或者缩小
+
+transition：需要变化的属性的名称 变化持续的时间 变化函数曲线 执行变化延迟的时间;
+
+transition: transform 200ms linear 0ms;
+
+(3)选取某一个标签下class为myclass的标签
+
+
+eg: p.myclass{}//中间不能空格
+(4) 监听事件，兼容浏览器
+
+if(mydiv.addEventListener) {
+	mydiv.addEventListener("click",fn);//fn为一个函数
+} else if(mydiv.attachEvent){
+	mydiv.attachEvent("onclick",fn);
+} else {
+	mydiv['on' + 'click'] = fn;
+}
+
+2. 弹出层扩展的功能————拖拽
+
+注意：这个拖拽功能和HTML5里面的原生拖放是不一样的两种功能。
+
+拖拽功能的好处：
+
+在输入一些信息的时候，常需要查看页面上的一些内容，有了拖拽功能，就可以把弹出框移到一边，以便可以看到挡在下面的信息。
+
+(1)拖拽实现的基本思想
+
+拖拽中涉及到的事件有三个：onmousedown、onmousemove、onmouseup
+
+鼠标按下：onmousedown事件触发时，获取当前弹出框（绝对定位）的left、top值；获取鼠标的在可见区域内距离浏览器左边、
+上边的距离：event.clientX、event.clientY。
+
+注意：鼠标按下时，监听鼠标按下事件的div是我们需要移动的div（这个例子里是弹出框的头部）
+鼠标移动：onmousemove事件触发时，获取鼠标的在可见区域内距离浏览器左边、上边的距离：event.clientX、event.clientY；
+并减去鼠标按下时的event.clientX、event.clientY，计算出鼠标在横轴和纵轴分别走了多远；并将弹出框的left和top值分别移动相应的值。
+
+注意：
+
+按照实现原理来讲，鼠标移动时，监听鼠标移动事件的div也是我们需要移动的div（这个例子里是弹出框的头部）
+
+但是，由于mousemove事件并不是连续的，不是每次移动1px鼠标指针，就会触发mousemove事件，而是windows会周期性检查mouse的位置来触发mousemove事件。
+因此会出现一个问题：
+
+在一个比较小的dom对象执行拖拽时，鼠标已经拖动走了，但是div还停留在原地，如果这个时候，还是给当前的div绑定的mousemove事件，
+就会出现问题（因为鼠标下次移动就不是在当前的div对象上了）
+
+如何解决这个问题：
+
+**在ie中：**可以使用setCapture()和releaseCapture()来解决这个问题。
+
+- setCapture():某一对象调用这个函数之后，之后的所有的mouse事件都发送给这个对象（相当于在这个对象上执行事件，调用这个对象绑定的事件监听函数）
+- relaeaseCapture():某一对象调用这个函数之后，将mouse事件还回去。
+
+**在其他浏览器中：**让document代替div监听这个事件
+其实可以在所有浏览器中，都可以使用document代替div监听这个事件。
+
+鼠标松开：onmouseup事件触发时，获取当前弹出框（绝对定位）的left、top值。
+
+注意：这个事件是在鼠标移动之后发生，因此会出现与鼠标事件一样的问题，解决方法如上。
+(2)实现拖拽中遇到的问题
+
+获取html元素样式
+
+具体见http://panpanfish.com/2016/06/07/2016-06-07-js%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0%E7%9A%84%E6%A0%B7%E5%BC%8F/
+
+注意：使用getComputedStyle时，获取的是计算后的样式，在这里使用了百分比和translate(-50%, -50%);但使用ie中的currentStyle.attr只能获取到百分比，
+而不是px值。
+
+当前鼠标的在可见区域里的位置
+
+鼠标事件的两个属性：event.clientX、event.clientY
+
+鼠标变成可移动的光标
+
+设置css中的cursor属性：
+
+n-resize 此光标指示矩形框的边缘可被向上（北）移动。
+s-resize 此光标指示矩形框的边缘可被向下移动（南）。
+w-resize 此光标指示矩形框的边缘可被向左移动（西）。
+e-resize 此光标指示矩形框的边缘可被向右（东）移动。
+
+
+se-resize 此光标指示矩形框的边缘可被向下及向右移动（南/东）。
+sw-resize 此光标指示矩形框的边缘可被向下及向左移动（南/西）。
+ne-resize 此光标指示矩形框的边缘可被向上及向右移动（北/东）。
+nw-resize 此光标指示矩形框的边缘可被向上及向左移动（北/西）。
+
+offsetTop,offsetParent
+
+obj.offsetTop 指 obj 距离上方或上层控件的位置
+
+offsetTop返回的并不一定是元素距离浏览器上方的位置，如果元素的上层元素有定位的话，返回的是元素距离上层元素的位置。
+
+offsetParent：返回一个元素离其最近的已经定位的元素，如果没有就返回body
+
+获取元素位置的函数：
+
+
+var GetPosition= function(obj) {
+	var left = 0;
+	var top = 0;
+	while(obj.offsetParent) {//如果obj的有最近的父级定位元素就继续
+		left += obj.offsetLeft;//累加
+		top += obj.offsetTop;
+		obj = obj.offsetParent;//更新obj,继续判断新的obj是否还有父级定位，然后继续累加
+	}
+	return {
+			"left":left,
+			"top":top
+			}//返回json格式
+}
+
+
+#### 3. 弹出框扩展功能————拉动弹出框边缘，使之扩大缩小
+
+由于拖拽和放大缩小的实现原理类似，我将此功能和上一功能封装到一个dynamic函数里了。
+
+注意：在鼠标按下监听事件，在鼠标释放时应该清除事件绑定，要不然会出现同时拖拽和放大缩小的问题。
+
+—————————————————————————————————————————————————————————-————————————————————————————————————————————————————
+
+
+
+
+
+
+
+在看了几天书之后，觉得自己之前写的弹出框复用性太差，结构有些混乱，于是又重构了一下代码。
+
+三. 利用requireJS和Sass来优化弹出框组件
+
+1. css部分
+
+其实css部分改动不多，毕竟是个小组件，就是把颜色和弹出框的宽、高用变量表示，便于以后修改。
+
+2. js部分
+
+(1)将一些扩展的API和兼容浏览器的写法都封装到了一个base.js模块中，便于以后复用
+
+base.js里的方法根据命名空间的不同，分为2类：
+
+Dom：与Dom操作有关的方法
+    —— $(node)：根据id名获取节点
+    —— insertAfter(targetNode,newNode)：[在一个节点之后插入一个节点]
+    —— getElementsByClassName(attr,root,tag)：通过className获取节点
+    —— addClass(node,attr)：增加一个类
+    —— removeClass(node,attr)：删除一个类
+    —— getPoint(node)：获取某元素以浏览器左上角为原点的坐标
+    —— getCssAttr(node,attr)：获取计算后的DOM属性功能
+
+Eve：与事件有关的方法
+    —— addEvent(node,type,fn)：绑定事件，兼容ie
+    —— removeEvent(node,type,fn)：移除事件，兼容ie
+    
+(2)将弹出框的js代码进行整理
+
+首先，由于一个页面可能出现有多处按钮点击出现弹出框，因此就不能通过id名获取激发弹出框的<input>
+
+html修改如下：
+<input class="float-button J_floatBtn" type="submit" value="弹出浮出层" />
+通过className: J_floatBtn来获取input框，注意这样获取的是一个数组
+然后，将js中的内容抽离成两个js：common_floatDiv.js和main.js
+
+common_floatDiv.js里面就是封装好的弹出框的一些属性和方法
+main.js里面是和页面有关的
+
+通过main.js里面输入的参数可以定制相应的弹出框
+
+弹出框属性的注释：
+
+config = {
+    popupBtn: 点击显示弹出框的按钮,
+    root: 弹出框外层包裹的div,
+    isMove: 是否允许弹出框移动,
+    isZoom: 是否允许弹出框扩大缩小,
+    floatContent: [{//弹出框的内容，分为标题和正文内容
+        title: "这是一个浮出层",
+        content: "这是浮出层的内容"
+    },{
+        title: "这是第二个浮出层",
+        content: "这是浮出层的内容"
+    }],
+    _handler: 回调函数,        
+}
+
+弹出框方法的注释：
+
+init()：初始化弹出框的HTML结构
+initContent()：初始化弹出框的内容
+initSize()：初始化弹出框的宽高，还有在页面中的位置
+show()：显示弹出框
+hide()：隐藏弹出框
+dragDiv()：拖拽弹出框
+resizeDiv()：扩大缩小弹出框
+dynamic()：实现拖拽和扩大缩小需要用到的一个函数
+这里使用了requireJS，使页面结构更加清晰了。
+
+使用原型+构造函数的方式创建对象
+
+
+//common_floatDiv.js
+
+var FloatLayer = function(config) {
+		this.popupBtn = config.popupBtn;
+		this.root = config.root;
+		this.isMove = config.isMove || true;
+		this.isZoom = config.isZoom || true;	
+		this._handler = config._handler;
+		this.floatContent = config.floatContent;
+		this._alertDiv = {};
+		this.params = {
+			left: 0,
+			top: 0,
+			width: 0,
+			height: 0,
+			currentX: 0,
+			currentY: 0,
+			flag: false
+		};
+		
+		//初始化，生成浮出层
+    
+		this.init();
+
+		//给按钮绑定事件
+    
+		var that = this;
+		for(var i = 0; i < this.popupBtn.length; i++) {
+			(function(_i) {
+				GLOBAL.Eve.addEvent(that.popupBtn[_i],"click",function() {
+					that.initContent(_i);
+					that.initSize();
+					that.show(_i);
+				});
+
+				GLOBAL.Eve.addEvent(that.root,"click",function() {
+					that.hide(_i);
+				});
+
+				//阻止弹出框上的点击事件冒泡到浮出层上
+				GLOBAL.Eve.addEvent(that.root.children[0],"click",function(e) {
+					e.stopPropagation();
+				});	
+
+				GLOBAL.Eve.addEvent(that._alertDiv.btnSure,"click",function() {
+					that.hide(_i);
+				});
+
+				GLOBAL.Eve.addEvent(that._alertDiv.btnCancel,"click",function() {
+					that.hide(_i);
+				});
+
+				if(that.isMove[_i] == true) {
+					console.log("1");
+					that.dragDiv();
+				};
+
+				if(that.isZoom[_i] == true) {
+					that.resizeDiv();
+					console.log("2");
+				}			
+			})(i);
+		}
+}
+
+FloatLayer.prototype = {
+	constructor: FloatLayer,
+	//初始化
+	init: function() {	
+		var alertDiv = document.createElement("div");
+		alertDiv.className = "alert";
+		alertDiv.id = "alertDiv";
+		alertDiv.style.visibility = "hidden";
+
+		alertDiv.innerHTML = "<div id='alertHeader' class='alert-header'>" 
+							+ "</div>"
+							+ "<div id='alertBody' class='alert-body'>"
+							+ "</div>"
+							+ "<div class='alert-footer'>"
+							+ "<input id='btnSure' class='alert-button' type='submit' value='确认' />"
+							+ "<input id='btnCancel' class='alert-button' type='submit' value='取消' />"
+							+ "</div>"
+							+ "<div id='resizeRig' class='resize-right'></div>"
+							+ "<div id='resizeBot' class='resize-bottom'></div>"
+							+ "<div id='resizeDiv' class='resize-div'></div>";
+			this.root.appendChild(alertDiv);
+
+			var elehead = GLOBAL.Dom.$("alertHeader");
+			var elebody = GLOBAL.Dom.$("alertBody");
+			var resizeRig = GLOBAL.Dom.$("resizeRig");
+			var resizeBot = GLOBAL.Dom.$("resizeBot");
+			var resizeDiv = GLOBAL.Dom.$("resizeDiv");
+			var btnSure = GLOBAL.Dom.$("btnSure");
+			var btnCancel = GLOBAL.Dom.$("btnCancel");
+			this._alertDiv = {
+				wrap: alertDiv,
+				head: elehead,
+				body: elebody,
+				resizeRig: resizeRig,
+				resizeBot: resizeBot,
+				resizeDiv: resizeDiv,
+				btnSure: btnSure,
+				btnCancel: btnCancel
+			};			
+		},
+
+		//初始化弹出框的内容
+		initContent: function(i) {
+			var alertDiv = this._alertDiv;
+			var title = this.floatContent[i].title;
+			var content = this.floatContent[i].content;			
+			alertDiv.head.innerHTML = title;
+			alertDiv.body.innerHTML = content;		
+		},
+
+		//初始化弹出框的位置和长宽
+		initSize: function() {
+			var alertWrap = this._alertDiv.wrap;
+			alertWrap.style.left = "";
+			alertWrap.style.top = "";
+			alertWrap.style.width = "";
+			alertWrap.style.height = "";
+		},
+
+		//弹出框出现
+		show: function(i) {	
+			var that = this.root;		
+			var alert = this._alertDiv.wrap;
+			that.style.visibility = "visible";
+			setTimeout(function(){
+				alert.style.visibility = "visible";
+				alert.style.transition = "transform 200ms linear";
+				alert.style.transform = 'translate(-50%, -50%) scale(1,1)';
+			}, 200);				
+		},
+
+		//弹出框隐藏
+		hide: function(i) {	
+			var that = this.root;
+			var alert = this._alertDiv.wrap;	
+			alert.style.transition = "transform 200ms linear";
+			alert.style.transform = 'translate(-50%, -50%) scale(0,0)';
+			alert.style.visibility = "hidden";				
+			setTimeout(function(){
+				that.style.visibility = "hidden";
+			}, 200);	
+		},
+
+		//定义一个方法，实现拖拽功能
+		dragDiv: function() {
+			var needParams = this.params;
+			var alert = this._alertDiv.wrap;
+			var eleHead = this._alertDiv.head;			
+			this.dynamic(eleHead,alert,"left",needParams);
+			this.dynamic(eleHead,alert,"top",needParams);
+				
+		},
+
+		//实现扩大缩小弹出框
+		resizeDiv: function() {
+			var needParams = this.params;
+			var alert = this._alertDiv.wrap;
+			var eleRig = this._alertDiv.resizeRig;
+			var eleBot = this._alertDiv.resizeBot;
+			var eleDiv = this._alertDiv.resizeDiv;
+			this.dynamic(eleRig,alert,"width",needParams);
+			this.dynamic(eleBot,alert,"height",needParams);
+			this.dynamic(eleDiv,alert,"width",needParams);
+			this.dynamic(eleDiv,alert,"height",needParams);
+		},
+
+		//实现拖拽和放大缩小功能
+		dynamic: function(bar,target,attr,par) {
+					var startDrag = function(event) {
+						var e = event ? event: window.event;
+						if(par.flag) {
+							//鼠标在移动时，鼠标同时是处于按下的状态
+							var now = new Array(2), dis = new Array(2);
+							now[0] = e.clientX;
+							now[1] = e.clientY;
+							dis[0] = now[0] - par.currentX;
+							dis[1] = now[1] - par.currentY;
+
+							if(attr == "left" || attr == "width") {
+								target.style[attr] = parseInt(par[attr]) + dis[0] + "px";
+							}else {
+								target.style[attr] = parseInt(par[attr]) + dis[1] + "px";
+							}							
+						}
+					}
+
+					var stopDrag = function() {
+						par.flag = false;//鼠标释放
+						par[attr] = GLOBAL.Dom.getCssAttr(target, attr);//获取此时的样式值
+						if(bar.releaseCapture) {
+							bar.onmousemove = null;
+							bar.onmouseup = null;
+							bar.releaseCapture();
+						}else {
+							GLOBAL.Eve.removeEvent(document,"mousemove",startDrag);
+							GLOBAL.Eve.removeEvent(document,"mouseup",stopDrag);
+						}				
+					}
+
+					GLOBAL.Eve.addEvent(bar, "mousedown", function(event) {
+
+						//首先获取当前的Div的left，right值存放起来
+						par[attr] = GLOBAL.Dom.getCssAttr(target, attr);
+					
+						var e = event ? event: window.event;
+						//鼠标按下，记录当前鼠标所在的位置
+						par.flag = true;
+						par.currentX = e.clientX;
+						par.currentY = e.clientY;
+						//ie中才有setCapture
+						if(bar.setCapture) {										
+							GLOBAL.Eve.addEvent(bar, "mousemove", startDrag);
+							GLOBAL.Eve.addEvent(bar, "mouseup", stopDrag);
+							bar.setCapture();
+						}else {										
+							GLOBAL.Eve.addEvent(document, "mousemove", startDrag);
+							GLOBAL.Eve.addEvent(document, "mouseup", stopDrag);
+						}
+					});		
+		}
+	}
