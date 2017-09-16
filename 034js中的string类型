@@ -1,0 +1,169 @@
+一. js中的string类型
+
+string类型是字符串的对象包装类型（与字符串对应的引用类型）
+
+var stringObj = new String("Hi");
+
+二. js中对字符串的一些操作
+
+1. 创建字符串
+
+var myStr = "Hi";
+2. myStr.length 获得字符串的长度
+
+var myStr = "Hi";
+alert(myStr.length)；//字符串长度为2
+3. 将字符串转换成数组 split()
+
+split()以特定的分隔符将字符串分割成多个子字符串，并将结果存在一个数组中。
+
+eg:
+
+var myStr = "car,mar";
+var myRes = myStr.split(",");//myRes=["car","mar"]
+
+4. 对字符串的操作
+
+拼接字符串 +号操作符、concat()
+
+用+号用得比较多
+
+concat()会生成一个新的字符串
+
+var myStr1 = "Hello";
+var myRes = myStr.concat("!");
+alert(myRes);//"Hello!"
+截取字符串 slice()、substr()、substring()、
+
+这三个方法也不会修改原字符串，会生成一个新的字符串
+
+slice(a,b)
+
+a为截取的起始位置，b为截取的结束位置+1
+
+b可以省略，若省略，则一直截取到字符串末尾
+
+var myStr1 = "Hello";
+var myRes = myStr.slice(1,3);
+alert(myRes);//"el"
+若a,b为负值，则slice(a,b) = slice(a+字符串长度，b+字符串长度)
+
+substring(a,b)
+
+a为截取的起始位置，b为截取的结束位置+1
+
+b可以省略，若省略，则一直截取到字符串末尾
+
+var myStr1 = "Hello";
+var myRes = myStr.substring(1,3);
+alert(myRes);//"el"
+若a,b为负值，则substring会将为负值的参数转化为0
+
+substr(a,b)
+
+a为截取的起始位置，b为截取的长度
+
+b可以省略，若省略，则一直截取到字符串末尾
+
+var myStr1 = "Hello";
+var myRes = myStr.substr(1,3);
+alert(myRes);//"ell"
+若a,b为负值，则substr会将a加上字符串的长度，将b转化为0
+
+5. 字符串中字符的位置
+
+由字符得到位置：indexOf()、lastIndexOf()
+
+indexOf()：从字符串的第一个字符开始查找
+
+lastIndexOf():从字符串的最后一个字符开始查找
+
+var myStr1 = "Hello";
+var myRes = myStr.indexOf("l");//2
+var myRes = myStr.lastIndexOf("l");//3
+若有第二个参数，则可从指定位置开始查找
+
+var myStr1 = "Hello";
+var myRes = myStr.indexOf("l"，2);//2
+var myRes = myStr.lastIndexOf("l"，2);//2
+由位置得到字符 charAt()、charCodeAt()
+
+charAt()：获得指定位置的字符
+charCodeAt()：获得指定位置的字符编码
+
+var myStr = “Hello”;
+alert(myStr.charAt(1))；// e 字符串的位置以0开始
+alert(myStr.charCodeAt(1))；//101 字符串的位置以0开始
+
+6. 字符串删除前后空格的方法 trim()
+
+原字符串不变，会生成一个新的字符串
+
+var myStr1 = " Hello";
+var myRes = myStr.trim();//"Hello"
+
+做表单验证时，我们需要验证表单是否为空。
+
+如果输入空格、缩进等字符，使用input.value == ""并不能判断出来（因为空格、缩进也是一个字符）。
+
+这时，我们就需要将输入字符串的前后空格删掉的`trim()`函数
+
+7. 字符串大小写转换 toLowerCase()、toUpperCase()、toLocaleLowerCase()、toLocaleUpperCase()
+
+toLocaleLowerCase()、toLocaleUpperCase()是针对地区的实现
+
+var myStr1 = "Hello";
+var myRes = myStr.toLowerCase();//hello
+var myRes = myStr.toUpperCase();//HELLO
+8. 字符串的模式匹配match()、replace()、search()
+
+replace()用于替换指定字符串或者满足正则表达式的字符串，会返回一个新的数组
+
+.replace(reg/str, replacement／function)
+
+a可以为指定字符串或者正则表达式
+b可以为字符串、特殊的字符序列、函数
+
+eg:
+
+var myStr = “car,mar”;
+var result = myStr.replace(“ar”,””);//“c,mar”
+
+如果第二个参数是函数
+
+正则表达式中只有一个匹配项时：函数的参数分别为（模式的匹配项，模式匹配项在字符串中的位置，原始字符串）
+
+正则表达式中有多个匹配项时：函数的参数分别为（模式的匹配项，第一个捕获组，…，第n个捕获组，模式匹配项在字符串中的位置，原始字符串）
+
+eg:
+
+document.cookie.replace(/(.*?)=(.*?)($|;)\s?/g, function(_, name, value){
+ 	console.log(unescape(name), unescape(value));
+});
+//name = (.*?)=(.*?)
+//unescape() 函数可对通过 escape() 编码的字符串进行解码。
+match()会返回一个数组，数组里面是第一个匹配的字符串，数组只有一项
+
+eg:
+
+var myStr1 = "car,mar";
+var myRes = myStr.match("ar");//myRes[0] = ar
+var myRes = myStr.match(/.ar/);//myRes[0] = car
+search()返回字符串中第一个匹配项的索引，没有找到，返回-1
+
+eg:
+
+var myStr1 = "car,mar";
+var myRes = myStr.search("a");//1
+var myRes = myStr.search("t");//-1
+10. localeCompare()
+
+比较两个字符串的在字母表中的先后顺序
+
+eg:
+
+var myStr = "car";
+var myRes = myStr.localeCompare("aar");//1
+11. fromCharCode()
+
+将字符编码转换成字符串
