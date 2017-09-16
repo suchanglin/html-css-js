@@ -1,0 +1,119 @@
+动态改变div的高度，分两种情况：
+
+知道变化后的div的高度
+不知道变化后的div的高度
+一. 知道变化后的div的高度
+
+这种情况比较简单，有2种实现方式：
+
+使用css3里的transition
+
+
+1. 使用css3里的transition
+
+eg:
+
+<div class="myDiv" id="myDiv"></div>
+<input id="btn" type="button" value="click" />
+
+<style>
+	.myDiv {
+		background-color: red;
+		height: 20px;
+		//使用css3里的transition进行过渡
+	    transition: height 2s;
+	}
+</style>
+
+<script>
+	var div = document.getElementById("myDiv");
+	var btn = document.getElementById("btn");
+
+	btn.onclick = function() {
+		div.style.height = 100px;
+	}
+</script>
+
+2. 使用setTimeout
+
+
+eg:
+
+<div class="myDiv" id="myDiv"></div>
+<input id="btn" type="button" value="click" />
+
+<style>
+	.myDiv {
+		background-color: red;
+		height: 20px;
+	}
+</style>
+
+<script>
+	var div = document.getElementById("myDiv");
+	var btn = document.getElementById("btn");
+	
+	var changeSize = function() {
+		var height = parseFloat(div.style.height);
+		height += 10;
+		if(parseFloat(div.style.height) <= 100) {
+			div.style.height = height + "px";
+			setTimeout(function() {
+				changeSize();
+			}, 100);
+		}
+	}
+	btn.onclick = function() {
+		changeSize();
+	}
+</script>
+
+
+二. 不知道变化后的div的高度
+
+如果不知道变化之后的高度的具体值，用css3里面的transition属性，是不起作用的。
+
+基本思想是首先用一个变量height保存外层div的初始高度，然后将外层div的高度设为auto，让其根据内层div的高度变化，
+再用一个变量targetHeight保存此时外层div的高度,将外层div的高度设置为height（初始值），然后利用setTimeout函数，进外层div高度设置为targetHeight，
+并设置transition属性。
+
+注意：这里一定要使用setTimeout函数，这样div的高度才会有一个变化的过程，transition属性才会起作用。
+
+
+<div id="box" class="box"></div>
+<input type="button" id="button" value="点击我">
+
+<style>
+	
+</style>
+
+<script>
+	(function() {
+
+		var box = document.getElementById("box"), 
+			button = document.getElementById("button");
+		button.onclick = function() {			        
+			 // 随机高度内容    
+			
+			 box.innerHTML = '<div class="in" style="height:'+ Math.round(400 * Math.random()) +'px;"></div>';
+
+			 //用变量height保存最开始的高度值 
+			 var height = document.defaultView.getComputedStyle(box,null).height;
+			 //让div随着内部元素的高度而变化
+			 box.style.height = "auto";
+			 //计算div现在的高度值
+			 var targetHeight = window.getComputedStyle(box).height;
+
+			 box.style.height = height;
+			 //这里的延时是为了让高度有一个变化的过程，这样transition才能起作用
+			 setTimeout(function() {
+			      box.style.transition = "height "+"3s";
+			      box.style.height = targetHeight;
+			 }, 10);
+		 };
+			
+		//初始化高度
+		box.style.height = "0px";    
+		 
+	})();
+</script>
