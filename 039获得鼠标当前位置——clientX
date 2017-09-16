@@ -1,0 +1,19 @@
+lientX/clientY、pageX/pageY、screenX/screenY的区别
+
+1. clientX、clientY
+
+clientX、clientY是事件event的属性，用于返回鼠标指针相对于浏览器可见页面的水平坐标和垂直坐标。
+
+参照点是：可见内容区域的左上角，参照点会随着滚动条而移动
+
+2. pageX、pageY
+
+pageX、pageY也是事件event的属性，用于返回鼠标指针相对于document左上那个点的水平坐标和垂直坐标。
+
+参照点是：网页最上方的左边的那个点，参照点不会随着滚动条而移动
+
+3. screenX、screenY
+
+screenX、screenY也是事件event的属性，用于返回鼠标指针相对于电脑屏幕左上那个点的水平坐标和垂直坐标。
+
+参照点是：电脑屏幕最上方左边的那个点
