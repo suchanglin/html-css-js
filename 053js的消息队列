@@ -1,0 +1,113 @@
+一. js中的消息队列
+
+JavaScript是单线程的,在执行时必须等前面的任务处理完以后才会处理后面的,而且是一个一个连续同步执行的，不象多线程可以同时处理多个任务。
+
+每一个消息都可以理解为一个代码片段，有很多消息被放在一个消息队列中，他们也是一个个顺序执行过来的，无法同时处理两个消息。
+这些消息中有很大一部分是系统消息，一般是用来处理页面渲染之类的。比如拖动滚动条时候会触发滚动条事件，同时页面也需要重绘，这些事件、重绘、都是消息。
+
+我们当然也可以使用setTimeout之类的函数来往消息队列中添加自己的消息，setTimeout的功能就是把一个函数作为一个新的消息放入消息队列中
+
+setInterval则是每隔一个设置的时间就把指定函数作为消息往消息队列中添加一次。
+
+消息添加到消息队列中并不是立即处理，因为消息队列中的消息也是一个个顺序处理的
+
+setTimeout，xhr.send，包括其他的异步函数，都是注册了一个事件回调，没有马上执行
+
+JavaScript中的任务分为同步任务和异步任务，同步任务就是主线程上一个个排队执行的任务；相反的异步任务则不进入主线任务而是被加入到“任务队列”中，
+任务队列的任务只有在主线任务执行完成之后才去处理任务队列中的任务。
+
+这样就可以解释上面的问题了：setTimeout(function(){console.log(1);}, 0);这里的0代表的是0秒后加入到任务队列并没有执行，
+他要等主线程上面的任务console.log(2)执行完成后才会执行。
+
+二. js中的定时器
+
+js是运行在单线程环境中的，定时器是在指定的时间内将代码添加进消息队列里面，不一定会立刻执行。
+
+定时器的意思是：计划在某个时间执行某段代码，但实际的执行时间是不一定的。
+
+1. setTimeOut
+
+eg:
+
+setTimeOut(function(){},200ms);
+例如上面的function并不是在200ms之后马上执行，而是在200ms之后添加到消息队列里面，如果这个时候，主线程上是空闲状态，并且这个消息之前没有消息在等待，
+那么这段代码就会被执行。
+
+关于setTimeout的第一个参数：
+
+第一个参数是一个回调函数，传入的应该是一个函数
+
+function a(){}
+
+setTimeout(a,1000);//这里应该是a而不是a()，a()就成了函数的返回值
+那么，问题来了，如何传入一个带参数的回调函数呢？
+方法一：
+
+function a(i){}
+
+setTimeout("a(1)",1000);
+方法二：
+
+function a(i){}
+
+function b(i){
+    return function a(i){};
+}
+
+setTimeout("b(1)",1000);
+关于setTimeout的第2个参数：
+
+默认为0
+当指定时间小于4ms时，则增加到4ms（HTML5标准指定）
+(1). 当指定第二个参数为0时
+
+并不是立刻执行，取决于主线程当前是否空闲、“消息队列”里前面是否有等待的任务。
+
+eg1:
+(function () {
+
+  console.log('this is the start');//1
+
+  setTimeout(function cb() {
+        console.log('this is a msg from call back');//4
+  });
+
+  console.log('this is just a message');//2
+
+  setTimeout(function cb1() {
+        console.log('this is a msg from call back1');//5
+  }, 0);
+
+  console.log('this is the  end');//3
+
+})();
+
+// 输出如下：
+this is the start
+this is just a message
+this is the end
+undefined // 立即调用函数的返回值
+this is a msg from callback
+this is a msg from a callback1
+2. setInterval
+
+setInterval(function(){},interval);
+按指定的时间，将代码规则地插入消息队列
+
+如果消息队列中已经有一个等待的执行的定时器代码，那么定时器代码就不会被插入
+
+使用setInterval产生的2个问题：
+
+定时器代码可能会连续执行
+某些间隔会被跳过
+解决方法：使用链式的setTimeOut
+
+eg:
+
+setTimeOut(function(){
+    //处理代码
+
+    //arguments.callee指向当前正在执行的函数
+    setTimeOut(arguments.callee,interval);
+
+},interval)
