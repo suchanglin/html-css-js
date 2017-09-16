@@ -1,0 +1,39 @@
+一. charles简介
+
+charles是Mac下的网络抓包工具
+
+Charles是通过将自己设置成代理服务器来完成封包截取的
+
+Charles 主要提供两种查看封包的视图，分别名为 “Structure” 和 “Sequence”。
+
+Structure 视图将网络请求按访问的域名分类。
+Sequence 视图将网络请求按访问的时间排序。
+二. 破解Charles
+
+没有被破解的Charles在启动30分钟之后，就会让你重新启动一次，挺烦的，我是按照下面这篇文章进行破解的，替换这个charles.jar文件即可。
+
+Charles破解方法
+
+三. 使用
+
+1. 使用charles截取iPhone上的网络封包：
+
+charles上设置：
+
+“Proxy”->”Proxy Settings”，填入代理端口 8888，并且勾上 “Enable transparent HTTP proxying” 就完成了在 Charles 上的设置
+
+iPhone上的设置：
+
+在无线局域网里添加代理，填入本机的IP地址及端口号
+
+2. 将网络请求重定向到另外一个请求
+
+Map Remote 是将指定的网络请求重定向到另一个网址请求地址
+
+Tools －> Map Remote中填入
+
+3. 使用Charles截取Https的通讯信息
+
+首先，安装证书：选择 “Help” -> “SSL Proxying” -> “Install Charles Root Certificate”；
+
+然后，在该网络请求上右击SSL Proxying
