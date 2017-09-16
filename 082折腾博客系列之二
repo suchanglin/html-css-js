@@ -1,0 +1,192 @@
+之前弄的那个博客是基于jekyll,现在换成的这个博客是基于hexo。两者都是比较常用的静态博客系统。之所以将jekyll换成hexo呢，
+是因为看到了基于hexo的next模板（也就是本博客现在使用的模板），当时看到的时候，确实非常喜欢，简洁明了，再加上觉得之前的博客自己弄的样式太小清新了，
+额。。。当然现在的也还是走的小清新风格，弄成这样主要是为了和原生的next模板那种冷峻的style产生一丢丢辨识度。好了，废话不多说，
+下面简要介绍一下本博客搭建的过程。
+
+想学习如何使用jekyll生成博客，可以看我的上个博客的教程。
+
+一. jekyll和hexo的区别
+
+1. jekyll
+
+jekyll是基于ruby
+
+优点：把原文上传到github上，可以直接生成博客。
+
+缺点：在windows上安装ruby时，非常麻烦，哪一步出错就有可能安装不成功；文件的分类名或者文件名如果是中文，那么在本地调试时就显示不出来。
+
+2. hexo
+
+hexo是基于nodejs
+
+优点:安装nodejs简单，生成起来快很多，主题种类多一些
+
+缺点：需要在本地生成html页面，再上传到git上
+
+二. 用hexo生成博客的过程
+
+1. 用github pages生成自己的博客仓库
+
+2. 安装github
+
+3. 安装nodejs
+
+4. 安装hexo
+
+打开git shell
+
+输入
+
+npm install -g hexo-cli
+进入自己的博客文件夹（自己本地的github仓库your_user_name.github.io）
+
+依次输入
+
+hexo init //初始化一个博客
+npm install
+hexo s --debug //在调试的状态下启动hexo
+
+这样一个博客就生成了，就可以在http://localhost:4000本地查看
+
+三. 本地生成的博客上传到git上
+
+上面也说了，hexo博客是需要自己在本地根据.md文件生成html页面，然后再部署到git上。
+
+1. 修改_config.yml配置文件（站点配置文件）
+
+将URL部分改成
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://panpanfish.com  （自己的博客的域名）
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+将部署的部分改成
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repository: https://github.com/panpan040828/panpan040828.github.io.git   (自己的博客仓库地址)
+  branch: master
+2. 在仓库的git shell中执行如下命令
+
+安装hexo部署到git上的插件
+npm install hexo-deployer-git --save
+
+执行清空之前生成的文件命令
+hexo clean
+
+执行生成对应的页面命令
+hexo generate
+
+执行部署命令
+hexo deploy
+
+不需要再commit pull push了
+三. 修改next主题部分样式
+
+一些next主题自带的东西，在next的文档中都有详细的说明。
+
+为了不把原来的文件改错，我使用的是自定义样式，方法如下：
+
+在themes/next/source/css文件夹中的main.styl中的最后添加如下代码
+
+//my layer
+//-------------------
+@import "_my/mycss"
+然后再在这个css文件夹里添加一个_my文件夹，里面创建一个mycss.styl文件，在文件中写上自己的样式。
+
+
+例如：
+.my-site-meta {
+    padding: 20px 0;
+    color: #fff;
+    background: #E49A9A;
+    margin: 0;
+  	text-align: center;
+}
+然后再在自己的页面引用这些样式就行。
+
+在themes/next/layout这个文件夹里，放的都是html页面文件
+
+_partials文件夹里的都是可以复用的部分
+
+head.swig是html页面的头部
+header.swig是左侧导航栏
+footer.swig是页面底部
+pagination.swig是分页
+_layout.swig是整个页面，每个页面都会使用，其中通过如下形式引用的其他部分
+
+1
+2
+{% include '_scripts/vendors.swig' %}
+{% include '_scripts/commons.swig' %}
+新增的demo页面是在page.swig里面修改的
+
+如果修改样式后，本地预览不对，可以重新启动一下hexo就可以了
+
+当然，还需要继续研究一下模板的各个文件代表的是什么意思，才能更好地去修改，或者自己写一个模板，任重而道远啊~~~
+
+四. 遇见的问题
+
+后来博客又出现了一些问题，捣腾了半天之后又好了。
+
+1. 在执行 hexo deploy 后,出现 error deployer not found:github 的错误
+
+没有安装使用hexo部署到git上的配置文件，在博客文件夹里执行如下命令
+
+1
+npm install hexo-deployer-git --save
+再部署就会成功
+
+2. 明明本地有那个文件夹，但是使用git时老是显示找不到该文件夹
+
+原因：把.git文件夹删掉了，这个文件夹千万不能删，里面含有很多配置信息。
+
+.git文件夹是隐藏显示的，如何让其显示：
+
+点击工具————>文件夹选项————>查看————>显示隐藏文件夹
+3. 域名绑定文件CNAME文件放置的位置
+
+之前用jekyll搭建博客时，是直接将CNAME文件放在博客根目录下，但是使用hexo搭建博客时，应该将CNAME文件放在source文件夹下。
+
+使用hexo搭建博客，是利用source/_posts/文件夹下的.md文件生成.html文件，然后再部署到github上，所以并不是把整个博客文件夹push上去，
+github上只有.html文件，所以如果直接把CNAME文件放在根目录里，就不会被push到github上，因此会导致域名绑定不成功。
+
+4. 往github上部署文件时出现failed to connect to github.com port 443:Timed out
+
+这个可能是由于网速的原因，可以访问一下github.com,在网速比较好的时候再重新提交。
+
+五. 了解hexo
+
+如果要做一些个性化的设置，还是需要对hexo进行全面的了解。
+
+1. 默认生成的文件
+
+scaffolds 脚手架，也就是一个工具模板
+scripts 写文件的js，扩展hexo的功能
+source 存放博客正文内容
+source/_drafts 草稿箱
+source/_posts 文件箱
+themes 存放主题的目录
+themes/landscape 默认的主题
+_config.yml 全局的配置文件
+db.json 静态常量
+全局配置文件：_config.yml 设置的是网站的配置
+
+站点信息: 定义标题，作者，语言
+URL: URL访问路径
+文件目录: 正文的存储目录
+写博客配置：文章标题，文章类型，外部链接等
+目录和标签：默认分类，分类图，标签图
+归档设置：归档的类型
+服务器设置：IP，访问端口，日志输出
+时间和日期格式： 时间显示格式，日期显示格式
+分页设置：每页显示数量
+评论：外挂的Disqus评论系统
+插件和皮肤：换皮肤，安装插件
+Markdown语言：markdown的标准
+CSS的stylus格式：是否允许压缩
+部署配置：github发布
