@@ -1,0 +1,282 @@
+一. 二叉树
+
+1. 什么是二叉树？
+
+树是一种非线性的数据结构，以分层的方式存储数据。
+
+二叉树是一种特殊的树，子节点数不超过2个。
+
+二叉查找树是一种特殊的二叉树，较小的数存在左子节点中，较大的数存在右子节点中。
+
+2. 二叉树的实现
+
+二叉树中的一个节点类：
+
+
+
+function Node(data, left, right, parent, count) {
+
+	//五个属性，分别保存该节点的数值，左子节点，右子节点，父节点，该值出现的次数
+	this.data = data;
+	this.left = left;
+	this.right = right;
+	this.parent = parent;
+	this.count = 1;
+
+	//一个方法，用来得到当前节点的值
+	this.show = show;
+}
+
+Node.prototype = {
+	constructor: Node,
+
+	show: function() {
+		return this.data;
+	}
+}
+二叉查找类BST
+
+function BST() {
+	//二叉查找树当前的根节点（最上面的节点）
+	this.root = null;
+}
+
+BST.prototype = {
+	constructor: BST,
+
+	//插入节点
+	insert: function(){},
+
+	//遍历节点
+	preOrder: fuction(){},
+	inOrder: function(){},
+	beforeOrder: function(){},
+
+	//由给定值获取节点
+	getMin: function(){},
+	getMax: function(){},
+	getNum: function(){},
+
+	//删除节点
+	remove: function(){},
+	removeNode: function(){},
+
+	//统计节点出现的次数
+	updateCount: function(){}		
+}
+(1) 插入节点
+
+//插入给定值
+insert: function(data) {
+
+	//创建当前需要插入的节点
+	var newNode = new Node(data, null, null);
+
+	//如果当前没有根节点，那么将待插入的节点作为根节点
+	if(this.root == null) {
+		this.root = newNode;
+	}else {
+
+		//当前节点初始值是根节点
+		var current = this.root;
+		var parent;
+		while(true) {
+			parent = current;
+		
+			//如果待插入的值<当前节点的数值
+			if(data < current.data) {
+			
+				//将当前节点的左子节点变为新的当前节点
+				current = current.left;
+
+				//当当前节点变为空的时候，就找到了插入的位置，跳出循环
+				if(current == null) {
+					parent.left = newNode;
+					break;
+				}
+			}else {
+				current = current.right;
+				if(current == null) {
+					parent.right = newNode;
+					break;
+				}
+			} 
+		}
+	}
+}
+
+
+//先序遍历，先中，再左，最后右
+preOrder: function(node) {
+	if(!node) {
+		console.log(node.show() + ' ');
+		inOrder(node.left);
+		inOrder(node.right);
+	}
+}
+
+//中序遍历，先左，再中，最后右
+inOrder: function(node) {
+	if(!node) {
+		inOrder(node.left);
+		console.log(node.show() + ' ');
+		inOrder(node.right);
+	}
+}
+
+//后序遍历，先左，后右，再中
+beforeOrder: function(node) {
+	if(!node) {				
+		inOrder(node.left);				
+		inOrder(node.right);
+		console.log(node.show() + ' ');
+	}
+}
+(3) 查找节点
+
+//找最小值，二叉查找树上找最小值，只需要找到最左边的一个子节点即可
+	getMin: function() {
+		var current = this.root;
+		while(!current.left) {
+			current = current.left;
+		}
+		return current.data;
+	}
+
+	//找最大值，二叉查找树上找最大值，只需要找到最右边的一个子节点即可
+	getMax: function() {
+		var current = this.root;
+		while(!current.right) {
+			current = current.right;
+		}
+		return current.data;
+	}
+	
+	//找到给定值
+	getNum: function(data) {
+		var current = this.root;
+		while(!current) {
+			if(current.data == data) {
+				return current;
+			}else if(data < current.data) {
+				current = current.left;
+			}else {
+				current = current.right;
+			}
+		}
+		return null;
+	}
+(4) 删除节点
+
+function remove(data) {
+	this.root = removeNode(this.root, data);
+}
+
+//node指的是遍历的节点，data是需要删除的数据
+function removeNode(node, data) {
+	if(node == null) {
+		return null;
+	}
+
+	//如果该节点的数值等于需要删除的数据
+	if(data == node.data) {
+		
+		//没有子节点的节点
+		if(node.left == null && node.right == null) {
+			return null;
+		}
+
+		//没有左子节点的节点
+		if(node.left == left) {
+			return node.right;
+		}
+
+		//没有右子节点的节点
+		if(node.right == right) {
+			return node.left;
+		}
+
+		//有两个子节点的节点，将node上值变为右子节点中的最小值，然后删除右子节点中的最小值
+		var tempNode = getSmallest(node.right);//获取一层子节点中的最小值
+		node.data = tempNode.data;
+		node.right = removeNode(node.right, tempNode.data);
+		return node;
+
+	//当要删除的值小于该节点的数值时			
+	} else if(data < node.data) {
+		node.left = removeNode(node.left, data);
+		return node;
+
+	//当要删除的值大于该节点的数值时
+	} else {
+		node.right = removeNode(node.right, data);
+		return node;
+	}
+}
+（5）统计节点出现的次数
+
+
+//更新节点出现的次数
+updateCount: function(data) {
+	var grade = this.getNum(data);
+	grade.count++;
+	return grade;
+}
+二. 二叉树的相关问题
+
+1. 统计一个数据集中某个数字出现的次数
+
+function findNumCount(arr,n) {
+	var grades = new BST();
+
+	for(var i = 0; i < arr.length; i++) {
+		var g = arr[i];
+		var grade = grades.getNum(g);
+
+		if(grade) {
+			grades.insert(g);
+		}else {
+			grades.updateCount(g);
+		}
+	}
+
+	var some = grades.getNum(n);
+	return some.count;
+}
+2. 给定一个二叉树，找出和为n的路径
+
+
+function toSumN(sum) {
+	var curSum = 0;
+	var count = 0;
+	var path = [];
+	
+	function findPath(sum, p) {
+		if(p != null) {
+			path.push(p);
+			curSum = curSum + p.value;
+			
+			if(p.leftChild == null && p.rightChild == null) {
+				if(curSum == sum) {
+					console.log(path);
+					count++;
+				}
+				
+				curSum = curSum - path[path.length - 1].value;
+				path.pop();
+				return;
+			} else {
+				if(p.leftChild != null) {
+					findPath(sum, p.leftChild);
+				}
+				
+				if(p.rightChild != null) {
+					findPath(sum, p.rightChild);
+				}
+				curSum = curSum - path[path.length - 1].value;
+				path.pop();
+			}
+
+		}
+	}
+}
