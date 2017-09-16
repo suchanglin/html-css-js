@@ -1,0 +1,141 @@
+一. 什么是对象
+
+对象可以看成是一组无序的名值对。
+
+二. js中的几种创建对象的方式
+
+js创建对象的方式实际上和软件工程中的设计模式有一定的关系。
+
+对象字面量
+工厂模式
+构造函数模式
+原型模式
+组合模式
+
+
+1. 对象字面量
+
+  person={
+	firstname:"Mark",
+	lastname:"Yun",
+	age:25,
+	eyecolor:"black"
+};
+
+
+2. 工厂模式
+
+工厂模式与构造函数模式不同之处：
+
+不使用new调用函数，函数内部显式的返回一个对象
+
+function person(name,age,job){
+	var obj = new Object();
+	obj.name = name;
+	obj.age = age;
+	obj.job = job;
+	return obj;
+}
+
+var myperson1 = person("xiaoming",11,"student");
+var myperson2 = person("xiaohong",12,"student");
+
+与之相对应的有一种设计模式叫做工厂模式，可以理解为：
+将person看成一个工厂函数，每次调用这个函数都会返回一个3个属性的一个对象。
+工厂模式的缺点：没有解决对象识别的问题，如何知道某个对象属于哪一个类型。
+
+
+3. 构造函数模式
+
+function Person(name,age,job){
+	this.name = name;
+	this.age = age;
+	this.job = job;
+	this.sayName = function(){alert(this.name)};
+}
+
+var myperson1 = new Person("xiaoming",11,"student");
+var myperson2 = new Person("xiaohong",12,"student");
+使用构造函数，可以创建某个特定类型的对象，例如： var myObj = new Object();
+
+注意：构造函数首字母始终以大写字母开头。
+
+构造函数模式的缺点：通过构造函数创建的两个对象myperson1和myperson2各自都有一个sayName方法（不同实例上的同名函数是不相等的），完成同一个任务，
+创建2个函数实在是太浪费了。
+
+console.log(myperson2.sayName == myperson1.sayName);//false
+通过new方法调用构造函数：
+
+如果函数没有显示地return表达式，那么就会隐式地返回this；
+如果函数显示地return的是对象，那么返回的是对象
+如果函数显示地return的不是对象，那么还是会隐式地返回this
+
+
+
+4. 原型模式
+
+每个函数都有一个prototype属性，指向原型对象，这个原型对象是通过这个构造函数创建的所有实例的原型。
+
+原型模式的优点：所有对象实例共享原型的属性和方法。
+
+或者
+
+function Person(){};
+
+Person.prototype = {
+	name: "xiaoming",
+	age: 12,
+	job: "student",
+	number: [1,2,3]
+}
+
+var myperson = new Person();
+myperson.number.push(4);
+console.log(Person.prototype.number); //[1,2,3,4]
+原型模式的问题：所有实例都会取得相同的属性值；修改实例的属性中的引用类型
+也会修改了原型中相应的属性值。
+
+举个栗子:
+
+function Person(){}
+
+Person.prototype = {
+	constructor: Person,
+	name: ["xiaoming"]
+}
+
+var myperson1 = new Person();
+var myperson2 = new Person();
+
+myperson1.name.push("xiaohong");//会修改原型中的name
+console.log(myperson2.name);//["xiaoming","xiaohong"]
+
+
+5. 组合使用构造函数模式和原型模式
+
+用原型定义方法和共享的属性
+
+用构造函数定义每个实例自己的属性和方法
+举个栗子：
+
+
+function Person(name,age,job){
+	this.name = name;
+	this.job = job;
+	this.age = age;
+	this.friends = ["1","2"];
+}
+   
+Person.prototype = {
+	constructor: Person,
+	sayName: function(){
+		alert(this.name);
+	}
+}
+
+var myperson1 = new Person("ming",11,"student");
+var myperson2 = new Person("hong",12,"student");
+
+myperson1.friends.push("3");
+console.log(myperson1.friends);
+console.log(myperson2.friends);
