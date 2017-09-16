@@ -1,0 +1,93 @@
+一. 日历选择组件任务要求：
+
+日历组件一：
+
+参考并实现一个日历选择组件
+组件默认一直呈显示状态
+通过某种方式选择年、月，选择了年月后，日期列表做相应切换
+通过单击某个具体的日期进行日期选择
+组件初始化时，可配置可选日期的上下限。可选日期和不可选日期需要有样式上的区别
+提供设定日期的接口，指定具体日期，日历面板相应日期选中
+提供获取日期的接口，获取日历面板中当前选中的日期，返回一个日期对象（或其他形式，自定）
+demo地址：http://panpanfish.com/myDemo/research/date1.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/research/date1.html
+
+日历组件二：
+
+日期选择面板默认隐藏，会显示一个日期显示框和一个按钮，点击这两个部分，会浮出日历面板。再点击则隐藏。
+点击选择具体日期后，面板隐藏，日期显示框中显示选取的日期
+增加一个接口，用于当用户选择日期后的回调处理
+demo地址：http://panpanfish.com/myDemo/research/date2.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/research/date2.html
+
+日历组件三：
+
+增加一个参数及相应接口方法，来决定这个日历组件是选择具体某天日期，还是选择一个时间段
+当设置为选择时间段时，需要在日历面板上点击两个日期来完成一次选择，两个日期中，较早的为起始时间，较晚的为结束时间，选择的时间段用特殊样式标示
+增加参数及响应接口方法，允许设置时间段选择的最小或最大跨度，并提供当不满足跨度设置时的默认处理及回调函数接口
+在弹出的日期段选择面板中增加确认和取消按钮
+demo地址：http://panpanfish.com/myDemo/research/date3.html
+
+代码地址：https://github.com/panpan040828/myDemo/blob/gh-pages/research/date3.html
+
+二. 实现过程中遇到的问题
+
+1. 对象引用的问题
+
+由于在写对象方法时，作为函数调用的内部的this指的并不是当前对象，因此经常会使用闭包来获取当前对象：
+
+var that = this;
+因此产生了一个对象引用的问题，就是我在函数里面改变了that的一些属性值，与之对应的this值也会改变吗？
+
+举个栗子：
+
+var a = {
+    name: "xiaoming",
+    age: 2
+}//可以理解为：我们创建了一个对象，并将这个对象的内存地址赋给a，也就是a指向该内存A
+
+var b = a;//这里是将对象的内存地址又赋给了b，也就是a和b指向同一个内存A
+
+b.age = 3;
+console.log(a.age);//a.age = 3;
+
+b = null;//切断了b与内存A的关系，但此时a仍然可以读写该内存A
+a = null;//也切断了a与内存A的关系，这时内存A就被垃圾回收了
+这就是对象引用。可以简单理解同一银行帐号你拿存折，我拿卡。不管谁取钱了帐号都会减少金额，同理存钱也会涨。
+
+2. 用字符串拼接的方式添加dom时，首先声明的变量应该赋值为一个空的字符串，否则会拼接进一个undefined。
+
+3. select框与div水平无法对齐，给select框添加样式：verticle-align:middle；
+
+4. 用parseInt()将字符串变成数字时，只能将以数字开头的字符串变成数字：
+
+例如：
+
+parseInt("23abc");//23
+parseInt("abc23");//NAN
+5. 文本框输入字符事件 textInput、文本框获取焦点事件 focusin
+
+火狐不支持focusin事件，和textInput事件
+IE支持focusin事件，不支持textInput事件
+chrome对这两个事件都支持
+
+解决这个兼容性的方法：将focusin事件换成了focus事件
+由于一聚焦就触发了，因此textInput事件失效了也没关系
+6. <table>标签里面的padding无效
+
+<table>里面如果要设置padding，只能用<table>标签的属性
+
+cellpadding：单元格外面的一个距离
+cellspacing：表格边框与单元格补白的距离
+7. 用createElement生成的是dom对象
+
+不能通过字符串的方式拼接
+
+只能通过appendChild的方式
+三. 第一次修订
+
+在我学习了requireJS和sass之后，又用requireJS和sass修改了一下日历组件（三）。
+
+将之前css里面用的固定长宽都修改成了百分比的形式，方便扩展。
