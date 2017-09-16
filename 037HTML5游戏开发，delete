@@ -1,0 +1,43 @@
+使用HTML5开发游戏，可以选择canvas和传统的DOM来进行制作。
+
+优缺点：
+
+Canvas的缺点：
+
+没有实现动画的API，你必须依靠定时器和其他事件来更新Canvas
+对文本的渲染支持也是比较差
+由于Canvas里面没有dom节点，当某个元素需要执行交互事件(如click)的时候只能是通过坐标来判断
+
+
+
+
+delete
+
+
+
+elete用来删除一个对象上的属性
+
+
+x = 42;
+var y = 43;
+
+delete x; //隐式声明的全局变量可以被删除，返回true
+delete y; //显示声明的全局变量不能被删除，返回false
+使用delete删除数组元素
+
+该元素完全被删除，但是数组长度不会发生变化。
+
+
+var arr = ['a','b','c','d'];
+delete arr[2];
+
+console.log(arr.length); //数组长度仍然是4
+console.log(2 in arr);  //false，arr[2]已经被完全删除了
+数组元素赋值为undefined
+
+
+var arr = ['a','b','c','d'];
+arr[2] = undefined;
+
+console.log(arr.length); //数组长度仍然是4
+console.log(2 in arr);  //true，arr[2]没有被删除
