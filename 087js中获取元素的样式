@@ -1,0 +1,28 @@
+一. 给HTML中的元素添加样式的方法
+
+内嵌样式：通过style添加
+内联样式：通过写在html页面的<style></style>添加
+外部样式：通过引入一个外部的css文件<link rel="stylesheet" type="text/css" href="/my.css">
+二. 针对这三种添加的样式，在js中获取的方法
+
+1. 针对内嵌样式
+
+这个一般用得比较多
+
+先获取到DOM节点，再通过.style.属性名获得
+
+
+var myDom = document.getElementById("id");
+console.log(myDom.style.width);
+2. 针对内联样式和外部样式（计算后的样式）
+
+在ie中：使用currentStyle.attr或者currentStyle["attr"]
+
+其他浏览器中：使用document.defaultView.getComputedStyle(obj,伪类元素).attr或者document.defaultView.getComputedStyle(obj,伪类元素)[attr]
+
+如果不需要伪元素信息，第二个参数为null。
+
+document.defaultView指的是文档当前关联的window对象：
+
+document.defaultView === window;//true
+这两个属性都是只读的，不能修改计算后的样式。
