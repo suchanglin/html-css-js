@@ -1,0 +1,188 @@
+一. Ajax跨域问题
+
+跨域：只要协议、域名、端口有一个不同，就被当做不同的域。
+
+ajax跨域：利用ajax技术请求不同域名上的数据。
+
+1. 什么是同源策略
+
+同源策略是由Netscape提出的一个著名的安全策略，现在所有的可支持javascript的浏览器都会使用这个策略。
+
+A网页设置的 Cookie，B网页不能打开，除非这两个网页”同源”。
+
+同源策略的作用：防止其他网页对本网页的非法篡改。
+
+同源指的是：协议、域名、端口都相同。
+
+二. 跨域的方法
+
+1. 跨域资源共享（CORS）
+
+CORS（Cross-Origin Resource Sharing）跨域资源共享，定义了在访问跨域资源时，浏览器与服务器应该如何沟通。
+
+注意：跨域资源共享的请求默认都是不包含cookie信息
+
+思想：
+
+使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
+
+在request的请求头部中添加一个origin
+
+eg: origin: http://www.ooooo.net
+
+服务器在response的请求头部中设置Access-Control-Allow-Origin
+
+eg: Access-Control-Allow-Origin: 设置和请求头部中的origin中相同的地址
+
+如果浏览器检测到相应的设置，就可以允许Ajax进行跨域的访问。
+
+CORS在浏览器中的实现：
+
+（1）IE中的CORS
+
+使用XDR对象 XDomainRequest
+
+XDR对象和XHR类似，但是其open(请求方法, url)方法只接收两个参数，XDR的所有请求都是异步的。
+
+（2）其它浏览器中的CORS
+
+直接使用XHR对象
+
+open(请求方法, url, 是否发送异步请求)方法的url传入绝对的url就可以实现跨域资源共享
+
+（3）跨浏览器的CORS
+
+
+
+function createCORSRequest(method, url) {
+	var xhr = new XMLHttpRequest();
+	//检测XHR是否支持跨域请求
+	if('withCredentials' in xhr) {
+	
+		xhr.open(method,url,true);
+		
+	} else if(typeof XDomainRequest != 'undefined') {
+	
+		var xdr = new XDomainRequest();
+		xdr.open(method,url);
+		
+	} else {
+	
+		xhr = null;
+		
+	}
+}
+
+var request = createCORSRequest('get', 'http://....');
+if(request) {
+	request.onload = function() {
+		//对request.responseText进行处理
+	};
+	request.send();
+}
+2. 利用<script>、<img>标签的src
+
+解决方法：
+Web页面上调用js文件时则不受是否跨域的影响（不仅如此，我们还发现凡是拥有“src”这个属性的标签都拥有跨域的能力，比如<script>、<img>、<iframe>）
+
+<script>、<img>标签的src属性并不被同源策略所约束，所以可以获取任何服务器上脚本并执行。
+
+
+
+<script type="text/javascript">
+	function addScriptTag(src) {
+			var script = document.createElement('script');
+			script.setAttribute("type", "text/javascript");
+			script.src = src;
+			document.body.appendChild(script);
+		}
+	
+	//调用加载ScrptTag函数
+		window.onload =function(){
+
+		//搜索apple，将自定义的回调函数名result传入callback参数中             
+		addScriptTag("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=apple&callback=result");
+		}
+		
+	//自定义的回调函数result	
+	function result(data) {
+			//我们就简单的获取apple搜索结果的第一条记录中url数据    
+			alert(data.responseData.results[0].unescapedUrl);
+		alert(data.responseData.results[0].cacheUrl);
+	}
+</script>
+3. 使用jsonp(json with padding 填充式json)
+
+json是一种数据交换格式
+Jsonp是一种非官方跨域数据交互协议
+JSON是地下党们用来书写和交换情报的“暗号”，而JSONP则是把用暗号书写的情报传递给自己同志时使用的接头方式。看到没？一个是描述信息的格式，一个是信息传递双方约定的方法
+
+客户端：在跨域的url请求中指定回调函数，回调函数是接收到响应时页面执行的函数。
+
+http://域名/json/?callback=handle
+
+服务器端：会将请求的json数据作为回调函数的参数，并调用回调函数。
+
+eg: handle({"name":"xiaoming"})
+
+jsonp包括两个部分：回调函数、数据
+
+jsonp跨域的原理也是利用script标签的src属性：
+
+
+
+//客户端的代码
+function handle(response) {
+	console.log(response.city + response.name);
+}
+
+var script = document.createElement('script');
+script.src = 'http://域名/json/remote.js?callback=handle';
+document.body.insertBefore(script,documen.body.firstChild);
+
+//服务器返回的代码remote.js
+handle({"name":"xiaoming"})
+js文件载入成功后会执行我们在url参数中指定的函数，并且会把我们需要的json数据作为参数传入。
+
+所以jsonp是需要服务器端的页面进行相应的配合的。
+
+jsonp的优点：简单适用，老式浏览器全部支持，服务器改造非常小。
+
+jsonp的缺点：只能发送get请求
+
+4. 使用服务器代理的方式
+
+浏览器请求同源服务器，再由后者请求外部服务
+
+5. Web Socket
+
+是一个不受同源策略限制的通信协议
+
+三. XSS跨站脚本攻击
+
+1.什么是xss
+
+xss的全称是：cross site scripting，跨站脚本
+
+攻击者通过向要攻击的网站中插入一些恶意的html、js代码，来达到攻击其他用户的目的。
+
+攻击者使被攻击者在浏览器中执行脚本后，收集来自被攻击者的数据（如cookie或其他敏感信息）。
+
+避免xss的方法：将用户提交的内容进行过滤。
+
+2. 什么是CSRF
+
+CSRF: 跨站请求伪造，是在用户不知情的情况下，冒充其身份发起了一个请求。
+
+盗取用户cookie，伪造用户请求
+
+HttpOnly 属性可以阻止通过javascript访问cookie
+
+要完成一次CSRF攻击，受害者必须依次完成两个步骤：
+
+1.登录受信任网站A，并在本地生成Cookie。
+2.在不登出A的情况下，访问危险网站B。
+
+xss是实现CSRF的一种方式。
+
+避免CSRF的方法：在请求中加入随机数，让钓鱼网站无法正常伪造请求。
