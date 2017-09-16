@@ -1,0 +1,118 @@
+一直都分不清下面的属性分别指的是什么，网上的那张图太乱了，现在总结一下。
+
+clientLeft/clientTop、clientWidth/clientHeight
+
+offsetLeft/offsetTop、offsetWidth/offsetHeight
+
+offsetParent
+
+scrollLeft/scrollTop、scrollWidth/scrollHeight
+
+上面几种属性，又分两种情况：
+
+一种是对于document.body
+一种是对于某个元素
+其实，document.body也是页面中的一个元素
+
+一. 对于document.body而言
+
+clientWidth/clientHeight
+
+指的是可视区的宽和高，不包括浏览器的边框的白色部分。
+
+offsetHeight/offsetWidth
+
+用的较少
+document.body.offsetWidth = body的width + padding + border;
+
+scrollWidth/scrollHeight
+
+包括滚动隐藏的部分，可以看成是整个页面的宽和高（区别于浏览器可视区的宽和高）
+
+scrollTop/scrollLeft
+
+documen.body.scrollTop指的是页面上部被隐藏的部分，也就是滚动条向下滚动的距离
+
+如果将滚动条滚动到底部，那么scrollTop + clientHeight = scrollHeight
+
+关于获取浏览器的滚动条距离顶端的距离，有下面两种方法，存在兼容性问题：
+
+document.body.scrollTop
+document.documentElement.scrollTop
+
+（1）文档处于混杂模式下：
+
+所有浏览器使用document.body.scrollTop获取，但一般文档都是会有文档类型声明的，因此这种情况几乎不存在。
+
+（2）文档处于标准模式下：
+
+chrome和safari：使用document.body.scrollTop获取
+IE：使用document.documentElement.scrollTop获取
+
+
+考虑浏览器的兼容性：
+
+
+var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+二. 对于页面中的某个元素
+
+1. clientLeft/clientTop
+
+元素的clientLeft和clientTop：
+
+clientLeft：表示的是元素内容距离元素左上角的水平距离。
+clientTop：表示的是元素内容距离元素左上角的垂直距离。
+参照点是：元素盒模型左上角的那个点，这里的元素内容包括内部的padding
+
+clientLeft相当于元素的border-left大小
+clientTop相当于元素的border-top大小
+
+2. clientWidth/clientHeight
+
+元素的clientWidth和clientHeight：
+
+clientWidth：表示的是元素内容的宽度（包括padding的大小，不包括border和滚动条）
+clientHeight：表示的是元素内容的高度（包括padding的大小，不包括border和滚动条）
+
+clientWidth相当于box-sizing取值为padding-box时的width
+clientHeight相当于box-sizing取值为padding-box时的height
+
+二. offset相关
+
+1. offsetLeft/offsetTop
+
+offsetLeft：表示距离最近的祖先定位元素（CSS position 属性被设置为 relative、absolute 或 fixed 的元素）左上角的水平偏移值
+offsetTop：表示距离最近的祖先定位元素（css position属性设置为relative、absolute、fixed的元素）左上角的垂直距离
+如果父元素没有定位元素，那么就是相对于document.body
+
+参照点：
+
+如果元素有最近的祖先定位元素，那么参照点是最近的祖先定位元素的左上角。
+
+如果元素没有最近的祖先定位元素，那么参照点是网页最上方的左边的那个点（document.body）。
+
+2. offsetWidth/offsetHeight
+
+offsetWidth：表示元素的宽度（包括内部元素、padding、border）
+offsetHeight：表示元素的高度（包括内部元素、padding、border）
+
+3. offsetParent
+
+元素的offsetParent返回的是一个对象，第一个祖先定位元素。
+
+offsetParent返回值可能取值：
+body
+最近的祖先定位元素
+td
+
+
+三. scroll相关
+
+元素的sroll相关的属性只有在元素有滚动的部分时才有效。
+
+1. scrollLeft/scrollTop
+
+Element.scrollTop不是标准属性，但是已被大多数浏览器支持，当元素自己本身含有滚动条时才有这个属性。（也就是元素的内容滚动到元素的上边界）
+
+2. scrollHeight/scrollWidth
