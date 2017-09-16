@@ -1,0 +1,65 @@
+一. 方法一（会改变数组顺序）
+
+Array.prototype.unique1 = function(){
+ this.sort(); //先排序
+ var res = [this[0]];//将arr[0]存入结果数组
+ for(var i = 1; i < this.length; i++){//从第一项开始比较
+  if(this[i] !== res[res.length - 1]){//要用不全等符号
+   res.push(this[i]);
+  }
+ }
+ return res;
+}
+var arr = [1, 'a', 'a', 'b', 'd', 'e', 'e', 1, 0]
+alert(arr.unique1());
+
+思路：将数组排序之后，数组中相同的元素只可能出现在相邻的位置上。
+注意：这里进行比较时，一定要用**不全等符号**（！==）
+因为 "1" !== 1 为true
+     "1" != 1 为false
+     
+     
+     
+二. 不改变数组顺序的方法
+
+1. 方法一
+
+
+Array.prototype.unique2 = function(){
+ var res = [];    //一个数组存放去重后的结果
+ var isIn = {};   //一个hash表，用来查询，数组中是否存在当前项,hashtable的结构记录已有的元素
+ for(var i = 0; i < this.length; i++){
+  if(!isIn[typeof this[i] + this[i]]){    //json中不存在数组当前的元素作为的属性
+   res.push(this[i]);
+   isIn[typeof this[i] + this[i]] = 1;
+  }
+ }
+ return res;
+}
+var arr = [112,112,34,'你好',112,112,34,'你好','str','str1'];
+alert(arr.unique2());
+注意：这里的’112’ 和 112不应该是重复的，所以都应该保留，所以在hash表中，应该把类型也拼接成key
+
+isIn[typeof this[i] + this[i]]
+
+
+
+
+
+
+2. 方法二
+
+
+Array.prototype.unique3 = function()
+  {
+  	var res = []; //一个新的临时数组
+  	for(var i = 0; i < this.length; i++) //遍历当前数组
+  	{
+  		//如果当前数组的第i已经保存进了临时数组，那么跳过，
+  		//否则把当前项push到临时数组里面
+  		if (res.indexOf(this[i]) == -1) {
+		res.push(this[i]);
+	}
+  	}
+  	return res;
+  }
