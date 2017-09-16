@@ -1,0 +1,78 @@
+em
+rem
+px
+pt
+vw/vh
+1. em
+
+em是相对单位，基准点是父元素的font-size。
+
+eg:
+<body style="font-size:14px">
+    <p style="font-size:2em">我这里的字体显示大小是28px(14px*2)</p>  
+    <div style="font-size:18px">
+        <p style="font-size:2em">我这里显示字体大小是36px(18px*2),而不是上面计算的28px</p>
+    </div>
+</body>
+
+
+2. rem css3中新增的
+
+root emphasize
+
+rem是css3的属性，基准点是相对于html根元素的。
+
+rem布局方式
+
+eg:
+html{
+   	font-size:20px;
+}
+.btn {
+   	width: 6rem;
+   	height: 3rem;
+   	line-height: 3rem;
+   	font-size: 1.2rem;
+   	display: inline-block;
+   	background: #06c;
+   	color: #fff;
+   	border-radius: .5rem;
+   	text-decoration: none;
+   	text-align: center;    
+}
+
+rem的优点：
+
+只修改根元素就成比例地调整所有字体大小
+可以避免字体大小逐层复合的连锁反应
+
+
+3. px 像素
+
+px(pixel)指的是像素，是屏幕上显示数据的最基本的点，表示相对大小。不同分辨率下相同长度的px元素显示会不一样，
+
+相同的屏幕大小，分辨率越大，那么每一个像素就越小。
+
+比如同样是14px大小的字，在分辨率为1366 * 768显示屏下会显示的小，在分辨率1024 * 768尺寸的显示器下会相对大点
+
+4. pt
+
+印刷行业常用的单位，表示绝对长度
+
+5. vw 和 vh
+
+
+vw:屏幕宽度相关，1vw 是屏幕宽度的 1%
+vh:屏幕高度相关，1vh 是屏幕高度的 1%
+vmin，vmax 分别表示两者中较小和较大的部分。
+
+可以使用 vw 实现一个正方形
+
+
+<div class="vw">hello,viewport</div>
+
+.vw {
+        width: 50%;
+        height: 50vw;
+        background: #ccc;
+    }
