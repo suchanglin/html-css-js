@@ -1,0 +1,169 @@
+一. 元素选择器
+
+article
+p
+h1
+...
+二. 关系选择器
+
+1. 后代选择器X Y   (中间为空格)
+
+选择X的所有子孙元素中为Y的元素
+
+2. 子选择器X > Y
+
+与X Y不同的是，X > Y只选择X的直接子元素Y，而不包括其他的子孙元素。
+
+3. 相邻兄弟选择器X + Y
+
+匹配X后面紧邻的第一个元素，只匹配一个元素。
+
+4. 一般兄弟选择器X ~ Y
+
+匹配任何在X之后的所有的同级元素Y
+
+三. 属性选择器
+
+1. X[attr]
+
+匹配具有attr属性的所有X元素
+
+2. X[attr=”val”]
+
+X[title="a"] 选择带有title=”a”的所有X
+
+3. X[attr*=”val”]
+
+X[title*="h"] 匹配属性值包含h的所有的X
+
+4. X[attr^=”val”]
+
+X[title^="a"] 匹配属性值以a开头的属性
+
+5. X[attr$=”val”]
+
+X[href$=".png"] 匹配结尾带有特定字符串的X
+
+6. X[attr|=”val”]
+
+p[class|=a] 匹配页面里所有的P段落里具有class属性且属性值为a或是a-开始的，比如class="a"以及class="a-b"
+
+7. X[attr~=”val”]
+
+div[title~=english] 匹配页面里所有具有属性title且属性值里拥有完整单词english的div容器，比如title="english"以及title="a english"
+
+四. 伪类
+
+1. X:link X:visited X:hover X:active
+
+这个主要是要注意写的顺序，原因是css后面的优先级比前面的高。
+
+顺序为：l o v e h a t e
+
+2. 其他伪类
+
+X:checked 匹配带有checked属性的元素
+
+X:not(selector) 否定伪类选择器
+
+五. 伪元素
+
+为了与伪类区分，伪元素使用双冒号::
+
+X::after X::before
+
+.clearfix:after { 
+content: ""; 
+display: block; 
+clear: both; 
+visibility: hidden; 
+font-size: 0; 
+height: 0; 
+} 
+
+.clearfix { 
+    *display: inline-block; 
+    _height: 1%; 
+} 
+p::first-line p::first-letter
+
+X:nth-child(n) 匹配第n个子元素，从第一个子元素开始索引
+
+X:nth-last-child(n) 从最后一个子元素开始索引
+
+X:nth-of-type(n) 
+
+X:nth-last-of-type(n) 
+
+X:first-child
+
+X:last-child
+
+X:only-child
+
+X:only-of-type
+
+X:first-of-type
+六. * 通配符
+
+* { margin: 0; } 
+
+#id *{ margin: 0; }
+七. css选择器的权重
+
+行内样式style:1000
+
+ID选择器：100
+
+类class/属性选择器/伪类(:hover/:focus等)：10
+
+元素(标签)/伪元素：1
+
+注意：伪类指的是一种状态，例如hover，active；伪元素指的是文档的某个特定部分的表现。
+权重的计算：
+
+body #content .data img:hover
+
+权重为：1 + 100 + 10 + 1 + 10 = 122
+
+不同的权重，权重高的有效；
+相同的权重，后定义的有效。
+一个例子：
+
+求下面四个选择器权重的大小
+
+
+<div class='myDiv' id='myDiv'>
+	<span class='myDiv' id='myDiv'>hhhh</span>
+</div>
+
+<style>	
+	//1	
+	.myDiv #myDiv{
+		background: black;
+	}
+
+	//2
+	#myDiv .myDiv{
+		background: red;
+	}
+
+	//3
+	body .myDiv {
+		background: yellow;
+	}
+
+	//4
+	div.myDiv {
+		background: green;
+	}
+</style>
+
+1选择器1：10 + 100 = 110
+2选择器2：100 + 10 = 110
+3选择器3：1 + 10 = 11
+4选择器4：1 + 10 = 11
+
+权重一样的，后定义的有效
+
+所以选择器的优先级的顺序是 2 > 1 > 4 > 3
