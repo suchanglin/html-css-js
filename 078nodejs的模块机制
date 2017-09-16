@@ -1,0 +1,20 @@
+一. nodejs的模块定义与使用
+
+使用require
+
+举个栗子
+
+   //circle.js
+var PI = Math.PI;
+   exports.area = function(r){
+   	return PI * r * r;
+   };
+   exports.circle = function(r){
+   	return 2 * PI * r;
+   };
+
+//app.js
+var circle = require("./circle.js");
+console.log("The area is" + clrcle.area(4));
+
+node app.js
