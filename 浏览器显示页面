@@ -1,0 +1,137 @@
+一. 浏览器内核
+
+浏览器的功能：显示在计算机中的网页实际上是位于许多不同的计算机文件中的元素的集合。因此，浏览器的功能首先是检索文件，然后将页面的各个部分组合起来，
+根据文本中的html命令排列这些部分。
+
+浏览器内核分为两部分：渲染引擎 和 JavaScript引擎。其中，渲染引擎是浏览器内核中比较重要的部分，现在所说的内核一般指的都是渲染引擎。
+
+常见的浏览器内核：Trident、Gecko、Presto、Webkit
+
+二. 浏览器显示页面的步骤
+
+1. 从网络层（networking）获取请求文档的内容，解析HTML/SVG/XHTML，形成一个DOM树(DOM Tree)
+
+默认情况下，加载和执行javascript都会阻止DOM tree的构建。
+
+内部js脚本会在引入它的位置执行，外联脚本则是加载完毕后执行。
+
+注意：因此，不管是内联脚本还是外部脚本，都应该尽量放在标签结束之前（除非某些脚本需要在页面加载完之前调用），这样可以保证在运行脚本之前，
+页面已经基本加载完成。
+
+2. 解析CSS代码，计算出最终的样式数据，产生一个CSS规则树(CSS Rule Tree)
+
+解析CSS的时候的顺序：浏览器默认设置，用户设置，外链样式，内联样式，html中的style
+
+3. 解析JavaScript
+
+通过DOM API来操作DOM Tree
+通过CSSOM API来操作CSS Rule Tree
+4. 解析完上述三种代码之后，就构建一个渲染树 (rendering tree)
+
+渲染树和DOM树有所不同：
+
+渲染树中不包括不需要渲染的节点
+eg : 
+    html 
+    head
+    meta
+    link
+    style
+    script
+    display : none的元素
+渲染树中每一个节点都储存有对应的CSS属性
+
+加载css会阻止render tree的构建
+
+5. 开始渲染
+
+页面初始化时会发生一次回流
+
+三. 页面的重绘和回流
+
+1. 什么是页面的重绘和回流
+
+回流：当render tree中的一部分(或全部)因为元素的规模尺寸，布局，隐藏等改变而需要重新构建。（需要改变布局、几何属性）
+
+重绘：当render tree中的一些元素需要更新属性，而这些属性只是影响元素的外观，风格，而不会影响布局的，比如background-color。则就叫称为重绘。
+
+回流必定影响重绘，重绘不一定引起回流。
+
+回流比重绘的代价要更高
+
+2. 回流何时发生
+
+当页面布局和几何属性改变时就需要回流。下述情况会发生浏览器回流：
+
+1、添加或者删除可见的DOM元素；
+
+2、元素位置改变；
+
+3、元素尺寸改变——边距、填充、边框、宽度和高度
+
+4、内容改变——比如文本改变或者图片大小改变而引起的计算值宽度和高度改变；
+
+5、页面渲染初始化；
+
+6、浏览器窗口尺寸改变——resize事件发生时；（所以需要函数节流）
+
+3. 浏览器对回流和重绘做的优化工作
+
+浏览器会维护1个队列，把所有会引起回流、重绘的操作放入这个队列，等队列中的操作到了一定的数量或者到了一定的时间间隔，浏览器就会释放队列，进行一个批处理。
+这样就会让多次的回流、重绘变成一次回流重绘。
+
+虽然有了浏览器的优化，但有时候我们写的一些代码可能会强制浏览器提前释放队列，这样浏览器的优化可能就起不到作用了。
+当你请求向浏览器请求一些 style信息的时候，就会让浏览器释放队列，比如：
+
+offsetTop, offsetLeft, offsetWidth, offsetHeight
+
+scrollTop/Left/Width/Height
+
+clientTop/Left/Width/Height
+
+width,height
+
+请求了getComputedStyle(), 或者 IE的 currentStyle
+
+当你请求上面的一些属性的时候，浏览器为了给你最精确的值，需要释放队列，因为队列中可能会有影响到这些值的操作。即使你获取元素的布局和样式信息跟最近
+发生或改变的布局信息无关，浏览器都会强行刷新渲染队列。
+
+4. 减少回流reflow和重绘repaint
+
+(1) 不要一条条修改DOM的样式
+
+替换方法：
+
+预先定义好css，然后修改DOM的className
+修改style的style.cssText
+
+eg:
+
+// bad
+var left = 10,
+top = 10;
+el.style.left = left + “px”;
+el.style.top = top + “px”;
+
+// Good 预先定义好css，然后修改DOM的className
+el.className += “ theclassname”;
+
+// Good 修改style的style.cssText
+el.style.cssText += “; left: “ + left + “px; top: “ + top + “px;”;
+
+(2) 把DOM离线后修改
+
+先把DOM给display:none(有一次reflow)，然后你想怎么改就怎么改。比如修改100次，然后再把他显示出来。
+clone一个DOM结点到内存里，然后想怎么改就怎么改，改完后，和在线的那个的交换一下。
+(3) 不要把DOM结点的属性值放在一个循环里当成循环的变量。
+
+(4) 尽可能修改层级比较低的DOM
+
+(5) 为动画的HTML元素使用fixed或者absolute的position
+
+修改他们的CSS是不会reflow的，因为使用fixed或者absolute的元素会脱离文档流~~
+
+(6) 千万不要使用table布局
+
+注意：CSS匹配DOM Tree主要是从右到左解析CSS的Selector，CSS匹配HTML元素是一个相当复杂和有性能问题的事情。DOM树要小，CSS尽量用id和class，
+千万不要过渡层叠下去。
