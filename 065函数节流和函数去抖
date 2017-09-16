@@ -1,0 +1,80 @@
+一. 函数节流
+
+1. 什么是函数节流
+
+如果用户在一个短的时间内触发非常多次事件绑定程序，如果在这个程序内部绑定了一些DOM操作，高频率的更改就会使浏览器崩溃。
+
+为了防止这种情况，就需要用到函数节流的思想，某些代码不可以在没有间断的情况下连续重复地执行。
+
+eg:
+
+给浏览器绑定一个onresize事件，当用户在将浏览器宽度变大变小的过程中，会一直触发onresize事件。
+
+页面滚动时，滚动到哪有一定的效果，绑定onscroll事件
+
+大部分节流都采用时间做节流，即时间间隔小于多少的不再调用，但同时保证一个最小调用间隔
+
+2. 用定时器来实现函数节流
+
+原理：当我触发一个事件时，先setTimout让这个事件延迟一会再执行，如果在这个时间间隔内又触发了事件，那我们就clear掉原来的定时器，
+再setTimeout一个新的定时器延迟一会执行，就这样。
+
+function throttle(method, context) {
+     clearTimeout(method.tId);//将定时器存在method.tId里
+     method.tId = setTimeout(function(){
+         method.call(context);//确保函数在正确的环境中执行
+     }， 100);//两次函数调用之间的间隔至少为100ms
+ }
+
+function myFunc(){
+    var div = document.getElementById("myDiv");
+    div.style.height = div.offsetWidth + "px";//实现使一个div的高度等于其宽度
+}
+
+window.onresize = function(){
+     throttle(myFunc);//不直接调用myFunc，而是通过throttle来调用myFunc
+}
+二. 函数去抖
+
+1. 什么是函数去抖
+
+当一个函数在在一定的间隔内没有被调用时，才开始执行被调用的方法。
+
+例如：用户在输入一段文字时，对文字进行处理，监听文字改变事件，每一次改变都会调用一次回调函数，但是想要的功能只是在用户输入停下来的时候才去
+执行回调函数。
+
+
+function debounce(func, wait, immediate) {
+	var timeout, result;
+
+	return function() {
+		var context = this, args = arguments;
+
+		var later = function() {
+			timeout = null;
+			
+			if(!immediate) {
+				result = func.apply(context, args);
+			}
+		}
+
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+
+		timeout = setTimeout(later, wait);
+
+		if(callNow) {
+			result = func.apply(context, args);
+		}
+
+		return result;
+	}
+}
+假设immediate == true：
+
+首次调用debounce(func,wait,immediate)，callNow = true，执行func函数；
+
+第二次调用debounce(func,wait,immediate)
+
+若间隔时间 < wait，callNow == false，不执行func函数
+若间隔时间 > wait，callNow == true，执行func函数
