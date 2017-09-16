@@ -1,0 +1,49 @@
+这是百度前端技术学院第三阶段的一个任务，用canvas和H5开发一个小游戏。
+
+王牌特工任务要求
+
+任务demo地址：http://panpanfish.com/myDemo/spy-game.html
+
+任务代码地址：
+https://github.com/panpan040828/myDemo/blob/gh-pages/spy-game.html
+
+在这个任务中，用到了以下知识点：
+
+1. 使用canvas画图
+
+2. 寻路算法的实现
+
+3. canvas在移动设备上的适配问题
+
+4. 获取鼠标位置、获取当前屏幕可见宽度等
+
+以上四个知识点都分别有相应的博客笔记进行说明。
+
+下面记录的是一些小的知识点：
+
+1. addEventListener(“event”,function,useCapture)
+
+用于给指定元素添加事件
+
+第三个参数useCapture为可选的参数
+
+useCapture = true;//事件在捕获阶段执行
+useCapture = false;//事件在冒泡阶段执行（默认）
+2. keyCode 键码值
+
+键码值指的是键盘上的按键对应的数值，每个按键都有自己对应的数值。（例如：回车键的键码值为13）
+
+在有的浏览器里面不支持event.keyCode，可用下面的方法来调整浏览器的兼容性
+
+var myKeyCode = (navigator.appname=="Netscape")?event.which:event.keyCode;
+3. Date.now()、new Date()都是获取当前的时间
+
+4. window.requestAnimationFrame()请求动画帧
+
+5. break、continue的区别
+
+break:跳出循环，执行循环之后的语句
+
+continue:跳出本次循环，继续下一次循环
+
+6. while(1){}循环不会终止，除非循环体中有break
