@@ -1,0 +1,178 @@
+JSLint
+JSHint
+
+一. 代码规范
+
+1. 基本规范
+
+(1). 使用tab空格
+
+(2). 每一行结束使用分号
+
+js有自动分号插入机制，可能会出现错误
+
+(3). 换行
+
+以运算符结尾，第二行追加两个缩进
+
+(4). 命名
+
+以驼峰命名的方式
+
+变量名 前缀为名词
+函数名 前缀为动词
+
+can has is get set
+
+(5). 常量
+
+大写字母＋下划线
+
+MAX_COUNT
+
+(6). 构造函数
+
+大写字母开头
+一般为名词
+
+因为构造函数一般是创建某种类型的实例
+
+(7). null undefined
+
+null一般涌来当作对象的占位符
+
+2. 注释
+
+(1). 单行注释 //
+
+注释前空一行，注释与后面一行的缩进相同
+
+(2). 多行注释 / /
+
+/*
+ * abcdefg
+ * abcdefg
+ */
+(3). 文档注释
+
+
+/**
+
+**/
+3. 语句和表达式
+
+if语句
+
+if (condition) {
+
+}
+
+4. 变量、函数
+
+使用合并的var语句来声明变量
+
+函数不允许出现在块级作用域以内
+
+使用 === 和 !== 而不是用 == 和 !=
+
+不要使用eval()、禁止给setTimeout、setInterval传入字符串参数
+
+原始包装类型String、Boolean、Number的作用是让原始值具有对象般的行为
+
+二. 编程规范
+
+1. html、css、js之间保持松耦合
+
+将css从js中抽离出来
+
+使用修改className的方式来操作样式
+
+将HTML从js中抽离出来
+
+方法一：
+
+使用XMLHttprequest从服务器获取外部的标签，然后插入
+
+
+function loadDialog(name, oncomplete) {
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status >= 200 && xhr.status <300 || xhr.status == 304) {
+				var div = document.getElementById('dlg-holder');
+				div.innerHTML = xhr.responseText;
+				
+				//执行回调函数
+				oncomplete();
+			}
+		}
+	}
+	
+	xhr.open('get', '/js/dialog/' + name, true);
+	xhr.send(null); 
+}
+方法二：
+
+使用客户端模版
+
+handlebar.js
+
+2. 避免使用全局变量
+
+在定义函数时，尽可能地将数据置于局部作用域内，函数外的数据应该用参数的形式传出来
+
+单全局变量
+
+很多框架都是采用这种模式
+
+创建一个唯一的全局对象名，并将所有的功能代码都挂载在这个全局对象上。eg: jQuery中的$和jQuery
+
+使用命名空间
+模块
+3. 避免空比较
+
+不要和underfined/null进行比较
+
+检测基本值：
+
+typeof
+
+检测引用值：
+
+instanceof
+
+Object.prototype.toString.call([])
+
+检测函数 typeof
+检测数组 Array.isArray()
+
+检测属性：
+
+in
+object.hasOwnProperty()
+4. 将配置数据抽离
+
+5. 错误处理
+
+抛出错误
+
+throw 用来创建自定义错误
+
+throw new Error(‘something bad happened’)
+
+捕获错误
+
+try {
+//可能引发错误的代码
+} catch(error) {
+//处理错误的代码
+}
+
+6. 不要修改下列对象
+
+原生对象
+DOM对象
+BOM对象
+类库的对象
+7. 使用对浏览器特性检测代替对浏览器的检测
