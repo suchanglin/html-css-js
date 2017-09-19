@@ -63,3 +63,117 @@ Array.prototype.unique3 = function()
   	}
   	return res;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2017.09.19增加
+
+//此处要处理的数组仅包含数字和字符串
+var arr= ["a","a","1",1,2,2,3];
+方法一（双重for循环）
+//主要思路：将每一个元素和它后面的所有元素进行比较，若没有重复，则推入数组，
+//          若有重复，则将重复项的最后一项推入数组
+function unique1 (arr) {
+    var result = [];    //将用于存放去重后的数组
+    var flag;   //  用于标识元素是否重复
+    for(var i = 0, len = arr.length; i < len; i++){
+        flag = false;   //还没有比较之前，默认为元素不重复
+        for(var j = i+1 , len = arr.length; j < len; j++){
+            //只要当前元素和其后的任意一项元素重复了，就把标识符设为true，并停止内层循环
+            if(arr[i] === arr[j]){
+                flag = true;
+                break;
+            }
+        }
+        //根据当前元素是否与其后的任意一项元素重复，决定是否将其推入数组
+        if (!flag) {
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+console.log(unique1(arr));          // ["a", "1", 1, 2, 3]
+
+
+方法二
+//主要思路：遍历数组元素，若该元素在结果数组中不存在，则将其推入数组
+//indexOf：查找指定元素在数组的首次出现的索引，若不存在该元素，则返回-1
+//indexOf大小写敏感，写的时候千万要小心，顺便把typeof也记住吧，两者的'o'是不一样的
+function unique2(arr){
+  var result = [];  //将用于存放去重后的数组
+  for(var i = 0,len = arr.length;i < len;i++){
+    if(result.indexOf(arr[i])===-1){
+      result.push(arr[i]);
+    }
+  }
+  return result;
+}
+console.log(unique2(arr));  // ["a", "1", 1, 2, 3]
+方法三
+//主要思路：先把原数组的第一个元素推入结果数组，从原数组的第二项开始，
+//     判断该项元素在原数组中受首次出现的位置是否为当前位置，若是，则向数组中推入该元素。
+function unique3(arr){
+   var result = []; //将用于存放去重后的数组
+   result.push(arr[0]); 
+   for(var i = 1,len = arr.length;i < len;i++){
+        if(arr.indexOf(arr[i]) === i){//判断当前元素在原数组中首次出现的索引值，是否是当前元素的索引
+          result.push(arr[i]);
+        }
+  }
+  return result;
+}
+console.log(unique3(arr));      // ["a", "1", 1, 2, 3]
+方法四（借助对象）
+//主要思路：通过一个对象来标志元素是否存在于结果数组，若不存在，则将该元素推入结果数组，并将其标志为存在
+//遗憾的是，此方法没能区分出数字和字符，1和'1'只保留了一个。
+function unique4 (arr) {
+    var flag = {},
+        result = [];    //将用于存放去重后的数组
+    for(var i = 0, len = arr.length; i < len; i++){
+        if (flag[arr[i]]!==true) {
+            result.push(arr[i]);
+            flag[arr[i]] = true;
+        }
+    }
+    return result;
+}
+console.log(unique4(arr));  // ["a", "1", 2, 3]
+方法五
+//主要思路：先排序，然后判断紧随其后的元素跟它是否重复，若不重复，则说明该元素是唯一的，故将其推入数组
+function unique5 (arr) {
+    var sortedArr = arr.sort(); 
+    var result = [];    //将用于存放去重后的数组
+    for (var i = 0; i < arr.length; i++) {
+        if (sortedArr[i + 1] !== sortedArr[i]) {
+            result.push(sortedArr[i]);
+        }
+    }
+    return result;
+}
+console.log(unique5(arr));  //["1", 1, 2, 3, "a"]
+方法六（借助ES6的Array.from()和Set数据结构）
+//主要思路：先把数组转换为Set数据结构，滤除多余的重复元素，再将其转换为数组
+//Set是ES6提供的一个数据结构，里面的元素不能出现重复，学过高一数学的你们应该都能理解集合的概念吧
+//Array.from()ES6新增的数组方法，该方法可以将一个类数组对象或可遍历对象转换成真正的数组。
+function unique6 (arr) {
+    return Array.from(new Set(arr));
+}
+console.log(unique6(arr));  //["1", 1, 2, 3, "a"]
+总结：
+　　 数组去重的方法有很多种，但少不了两种结构：循环结构（为了处理每一个数组元素，必然少不了它）和分支结构（为了判断是否重复，也肯定要使用到它）。
+   如果说代码中没有出现以上两种逻辑，要么是采用了递归的思路，要么就是利用到的数据结构（比如Set数据结构）或方法已经帮我们处理了那些逻辑。
+
