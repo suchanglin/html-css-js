@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="ZRC-Struggling">
+	<title>单一按钮显示或隐藏-播放列表收缩展开</title>
+	<style>
+		body{
+			font-size: 12px;
+		}
+		.container{
+			width: 280px;
+			margin: 0 auto;
+			border: 1px solid #999;
+		}
+		.list-title{
+			position: relative;
+			background-color: #e8e8e8;
+			padding: 5px 20px;
+			font-size: 14px;
+			border-bottom: 1px solid #999;
+		}
+		.triangle-up, .triangle-down{
+			border-width: 5px;
+			border-style: solid;
+			position: absolute;
+			right: 10px;
+		}
+		.triangle-down{
+			border-color: #333 transparent transparent transparent;
+			top: 12px;
+		}
+		.triangle-up{
+			border-color: transparent transparent #333 transparent;
+			bottom: 12px;
+		}
+		ul{
+			list-style: none;
+			padding-left: 0;
+			margin: 0;
+			background-color: #e8e8e8;
+		}
+		a{
+			text-decoration: none;
+			display: block;
+			padding: 5px 20px;
+			color: #666;
+		}
+		a:hover{
+			text-decoration: underline;
+			background-color: blue;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="container">
+		<div class="list-title">播放列表...<span class="icon triangle-down"></span></div>
+		<ul class="list-content">
+			<li><a href="#">玩家之徒-蔡依林</a></li>
+			<li><a href="#">原谅我就是这样的女生-戴佩妮</a></li>
+			<li><a href="#">猜不透-丁当</a></li>
+			<li><a href="#">自导自演-周杰伦</a></li>
+			<li><a href="#">烂漫窝-弦子</a></li>
+			<li><a href="#">流年-王菲</a></li>
+		</ul>
+	</div>
+
+	<script>
+		window.onload = function () {
+			var listTitle = document.getElementsByClassName("list-title")[0];
+			var icon = document.getElementsByClassName("icon")[0];
+			var listContent = document.getElementsByClassName("list-content")[0];
+			listTitle.onclick = function () {
+				var style = listContent.style;
+				if (!style.display) {
+					style.display = "block";
+				}
+				style.display = (style.display === "block" ? "none" : "block");
+				
+				if (/triangle-up/.test(icon.className)) {
+					icon.classList.remove("triangle-up");
+					icon.classList.add("triangle-down");
+				}else{
+					icon.classList.remove("triangle-down");
+					icon.classList.add("triangle-up");
+				}
+			}
+		}
+	</script>
+
+</body>
+</html>
