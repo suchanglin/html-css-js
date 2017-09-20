@@ -1,0 +1,19 @@
+解决IE6不兼容fixed属性的方法，在css中加入：
+
+/*ie6 hack*/
+
+*html,*html body{   //解決跳閃的問題
+
+background-image:url(about:blank);
+
+background-attachment:fixed;
+
+}
+
+*html menu{     //解決導航條位置偏差問題
+
+position:absolute;
+
+top:expression(((e=document.documentElement.scrollTop)?e:document.body.scrollTop)+100+'px');
+
+}
