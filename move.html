@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>速度动画</title>
+    <style type="text/css">
+body,div,span{
+    margin: 0;
+    padding: 0;
+}
+ 
+#div1{
+ 
+    width: 200px;
+ 
+    height: 200px;
+ 
+    background: red;
+ 
+    position: relative;
+ 
+    left: -200px;
+ 
+    top: 0;
+ 
+}
+ 
+#div1 span {
+ 
+    width: 20px;
+ 
+    height: 50px;
+ 
+    background: blue;
+ 
+    position: absolute;
+ 
+    left: 200px;
+ 
+    top: 75px;
+ 
+}
+ 
+</style>
+<script type="text/javascript">
+window.onload=function()
+{
+var oDiv=document.getElementById('div1');
+// oDiv.onmouseover=startmove();
+//鼠标移入
+oDiv.onmouseover=function(){
+    startmove(0);
+//startmove(0,20);
+}
+//鼠标移出
+oDiv.onmouseout=function(){
+    //startmove(-200,-20);   
+    startmove(-200);                            //1、单个函数startmove1();
+}
+}
+var timer=null;
+function startmove(target){    //精简参数
+window.clearInterval(timer);
+   var oDiv=document.getElementById('div1');
+   
+    timer=window.setInterval(function(){
+    //var lastleft=window.getComputedStyle(oDiv,false).left; oDiv.offsetLeft=lastleft
+    if(oDiv.offsetLeft<target){
+        speed=10;    //offsetLeft
+    }
+    else if(oDiv.offsetLeft>target){
+        speed=-10;
+    };
+ 
+    if(oDiv.offsetLeft==target){     
+       window.clearInterval(timer);
+    }
+    else
+        {oDiv.style.left=oDiv.offsetLeft+speed+'px';}   //style.left是一个字符串
+    },30);
+}
+ 
+ 
+ 
+ 
+ 
+//统一写法
+/*
+function startmove(event){
+   
+   var oDiv=document.getElementById('div1');
+    if(event.type='onmouseover'){
+    window.clearInterval(timer);
+    timer=window.setInterval(function(){
+    //var lastleft=window.getComputedStyle(oDiv,false).left; oDiv.offsetLeft=lastleft
+    if(oDiv.offsetLeft==0){
+       window.clearInterval(timer);
+    }
+    else
+        {oDiv.style.left=oDiv.offsetLeft+10+'px';}
+     
+    },300);
+    }
+     else if(event.type='onmouseout'){
+      if(oDiv.offsetLeft>=0){
+        window.clearInterval(timer);
+    oDiv.style.left=-200+'px';
+   }
+  else{
+    oDiv.style.left=oDiv.offsetLeft+10+'px';
+}
+    }
+ 
+}
+*/
+//单个函数
+/*function startmove(){
+  window.clearInterval(timer);
+   var oDiv=document.getElementById('div1');
+    timer=window.setInterval(function(){
+    //var lastleft=window.getComputedStyle(oDiv,false).left; oDiv.offsetLeft=lastleft
+    if(oDiv.offsetLeft==0){
+       window.clearInterval(timer);
+    }
+    else
+        {oDiv.style.left=oDiv.offsetLeft+10+'px';}
+     
+    },300);
+}
+//2、单个函数
+function startmove1(){
+var oDiv=document.getElementById('div1');
+if(oDiv.offsetLeft>=0){
+   oDiv.style.left=-200+'px';
+}
+else{
+    oDiv.style.left=oDiv.offsetLeft+10+'px';
+}
+}*/
+ 
+</script>
+</head>
+<body>
+<div id="div1">
+    <span>分享</span> <!-- 点分享时div1有效，事件冒泡 -->
+</div>
+</body>
+</html>
