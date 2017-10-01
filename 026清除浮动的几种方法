@@ -14,6 +14,7 @@ eg:
 
 .outer{border: 1px solid #ccc;background: #fc9;color: #fff; margin: 50px auto;padding: 50px;}
 .div1{width: 80px;height: 80px;background: red;float: left;}
+
 如上例所示，如果子元素不浮动的话，那么这个外层的高是会自动被撑开的。但是当内层元素浮动后，就出现了以下影响：
 
 背景不能显示
@@ -91,3 +92,24 @@ display:none; **在页面中**看不见摸不着，存在dom节点，但是在�
 6.父元素定义display:table
 
 不建议使用
+
+7.使用after伪类清除浮动带来的影响的时候，通常都这么写：
+
+
+/* slightly enhanced, universal clearfix hack */
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+  
+第七点的原文链接：
+https://perishablepress.com/lessons-learned-concerning-the-clearfix-css-hack/
