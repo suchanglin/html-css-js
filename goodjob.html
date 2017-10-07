@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{text-align: center;}
+		ul li{list-style-type: none;}
+	</style>
+</head>
+<body>
+	<h1>新加标签 </h1>
+	<h2>mark  标注</h2>
+	<p>this is <mark>my</mark> first</p>
+	<hr>
+	<h2>progress  进度条</h2>
+	<progress max="100" value="85">
+		<span>85</span>% <!-- 里面的可有可无 -->
+	</progress>
+	<hr>
+	<h2>time 搜索引擎抓取时间</h2>
+	<p>发布时间:2017-9-3<time datetime="2017-9-3T10:00"></time></p>
+	<p>发布时间:2017-9-3<time datetime="2017-9-3T10:00Z" pudate></time></p>
+	<p>T是时间和日期的分割符</p>
+	<p>Z表示utc时间标准格式</p>
+	<p>pudate告诉搜索引擎这是文章发布时间</p>
+	<hr>
+	<h2>wbr 内容超过页面宽度时换行<mark>不支持IE</mark></h2>
+	<p>换行节点是按标签出现位置换的，后面是第二行<wbr>这里是第二行</p>
+	<p>如果想学习 AJAX，那么您必须熟悉 XML<wbr>Http<wbr>Request 对象。</p>
+	<hr>
+	<h2>canvas 绘图</h2>
+	<canvas id="myCanvas"></canvas>
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle = "#999";
+		ctx.fillRect(100,0,80,100);
+	</script>
+	<p>前面两个参数是左上距离，后面两个是宽高</p>
+	<hr>
+	<h2>details 展开收起</h2>
+	<details>
+		<summary>点击这里展开</summary>
+		<ul>
+			<li>summary编辑上面的点击title内容</li>
+			<li>details 里面加open属性默认展开</li>
+			<li>333333333333</li>
+		</ul>
+	</details>
+	<h3><mark>也可以这样用</mark></h3>
+	<input list="cars" />
+	<datalist id="cars">
+		<option value="BMW">
+		<option value="Ford">
+		<option value="Volvo">
+	</datalist>
+	<br><br><br><br><br><br>
+</body>
+</html>
