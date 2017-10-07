@@ -10,8 +10,8 @@
 3.在画布中生成干扰线 
 4.把验证码文本填充到画布中 
 5.点击画布更换验证码  -->
-    <!-- 结构与样式： 
- -->
+    <!-- 结构与样式： -->
+ 
     <canvas id="mycanvas" width='90' height='40'>
         <!-- 您的浏览器不支持canvas，请换个浏览器试试~ -->
     </canvas>
@@ -24,8 +24,8 @@
 
 <body>
     <!-- 下面来编写js代码： -->
-    /*生成4位随机数*/
-    <script type="text/javascript">
+              <!--    生成4位随机数  -->
+     <script type="text/javascript">
     function rand() {
         var str = "abcdefghijklmnopqrstuvwxyz0123456789";
         var arr = str.split("");
