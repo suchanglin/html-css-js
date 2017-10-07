@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    
     <!-- 在很多时候都需要用到验证码，前端验证码需要知道Html5中的canvas知识点。验证码生成步骤是： 
 1.生成一张画布canvas 
 2.生成随机数验证码 
 3.在画布中生成干扰线 
 4.把验证码文本填充到画布中 
 5.点击画布更换验证码  -->
-    <!-- 结构与样式： -->
+ <!-- 结构与样式： -->
  
     <canvas id="mycanvas" width='90' height='40'>
         <!-- 您的浏览器不支持canvas，请换个浏览器试试~ -->
