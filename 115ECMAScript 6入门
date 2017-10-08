@@ -1,3 +1,5 @@
+
+
 一. 什么是ECMAScript?与javaScript有什么关系？
 
 ECMA————国际标准化组织
@@ -16,7 +18,7 @@ ECMAScript是javaScript的规格，javaScript是ECMAScript的实现。
 
 1. ES6中新增的声明变量的方法
 
-ES6中新增了2种声明变量的方法：let和const
+ES6中新增了2种声明变量的方法：let 和 const
 
 使用let和const声明的变量，都是在块级作用域内有效，不存在变量提升，且不能被重复声明。
 
@@ -26,6 +28,7 @@ ES6中增加了块级作用域的概念，块级作用域的特点：
 
 外层作用域无法读取内层作用域的变量
 外层代码块不受内层代码块的影响
+
 (2). let命令
 
 let命令和var命令一样，都是用来声明变量的
@@ -107,6 +110,8 @@ for (var i of 'qwe') {
 q
 w
 e
+
+
 3. 函数的扩展
 
 （1）. 箭头函数：=>
@@ -126,6 +131,8 @@ param => {
 
 在ES5中：this对象的指向与函数具体是在什么样的情境下使用有关（一共有4种情况，普通函数，构造函数，对象的方法，apply/call/bind）
 在ES6中：箭头函数中this的指向是固定的，箭头函数内的this值指向绑定时所在对象，而不是使用时。
+
+
 （2）. 可以给函数参数设置默认值
 
 function log(x,y='world') {
@@ -252,6 +259,8 @@ symbol是js中新增的一种数据类型。
      smoothAnimations(element);
    }
    element[isMoving] = true；
+   
+   
 9. class类
 
 1. 定义class
