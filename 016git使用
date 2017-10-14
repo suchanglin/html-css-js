@@ -61,3 +61,30 @@ git fetch 相当于是从远程获取最新版本并merge到本地
 
 同步到服务器
 命令： git push origin  <本地分支名>
+
+--------------------------------------------------------------------------------------------------------------------------------
+2017/10/14  遇到的一个问题
+
+$ git status
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 3 and 8 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+  nothing to commit, working tree clean
+  
+  解决方案：
+  git fetch origin
+  git reset --hard origin/master
+
+另外分支
+  Your branch and 'origin / processos_criminais_151029' have diverged
+  git fetch origin
+  git reset --hard origin/processos_criminais_151029
+  
+  问题2：
+  github上怎么删除一个文件夹？
+  git rm -rf name
+  git commit -m'name为文件夹名'
+  git push
+  (主要是记住第一步，后两步常规操作，一般都需要commit和push)
+
