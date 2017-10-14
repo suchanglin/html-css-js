@@ -38,7 +38,7 @@ margin 设置值不能正确显示
     <div class="clear"></div>
 </div>
 
-
+.clear{clear:both; height: 0; line-height: 0; font-size: 0}
 插播clear属性：
 
 clear:left; /* 元素左边不允许有浮动的元素 */
