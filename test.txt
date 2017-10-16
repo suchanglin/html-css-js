@@ -1,0 +1,1 @@
+git checkout -- test.txt 此命令可以使从本地仓库删除的文件恢复到本地
