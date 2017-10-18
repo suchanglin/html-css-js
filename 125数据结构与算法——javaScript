@@ -1,6 +1,10 @@
 一. 数组
 
+<<<<<<< HEAD
 js中的数组的一些基本方法
+=======
+js中的数组的一些基本方法
+>>>>>>> 51af23fff10910806b1f297099c1328bf45733ec
 
 1. 二维数组
 
@@ -24,8 +28,8 @@ matrix(2,3,0);
 按行访问
 
 var grade = [ [11,12,13],
-			  [21,22,23],
-			  [31,32,33] ];
+	      [21,22,23],
+	      [31,32,33] ];
 for(var row = 0; row < grade.length; row++) {
 	for(var col = 0; col < grade[row].length; col++) {
 		console.log(grade[row][col]);
@@ -35,8 +39,8 @@ for(var row = 0; row < grade.length; row++) {
 
 
 var grade = [ [11,12,13],
-			  [21,22,23],
-			  [31,32,33] ];
+	      [21,22,23],
+	      [31,32,33] ];
 for(var col = 0; col < grade.length; col++) {
 	for(var row = 0; row < grade[col].length; row++) {
 		console.log(grade[row][col]);
