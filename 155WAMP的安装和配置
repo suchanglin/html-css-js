@@ -1,0 +1,31 @@
+WAMPServer集成开发之自定义网站根目录
+
+
+1.为什么要自定义网站根目录？  
+----因为这样可以不用按默认的方式让你编写的PHP代码和PHP开发环境安装包文件混在同一个路径下，达到清晰分类的目的，也便于查找和管理。
+
+2.怎么自定义网站的根目录？
+----这个稍微有些步骤，需要注意所有需要修改到的细节。
+(1)任意选择一个目录，新建一个文件夹，用来存储我们将要创建的项目或写的一些代码。比如：我在g盘目录下创建了一个alldemo的文件夹。
+(2)单击桌面右下角状态栏中的WAMPServer图标----选中Apache条目----单击子目录中的httpd.conf文件
+(3)在这个文件中共修改两处路径：
+第一个是在httpd.conf - 记事本文件中按ctrl+F,打开查找功能----在“查找内容”一栏中输入“documentroot”----在DocumentRoot（后面跟着一个以“/”分层级的路
+径）这一行中把双引号内的文件路径（默认路径为安装目录${INSTALL_DIR}/www）改为我们刚才创建文件夹的那个路径，也就是g:/alldemo。
+第二个是DocumentRoot下边一行的<Directory "${INSTALL_DIR}/www/">,把双引号中的路径也改为g：/alldemo。
+注：修改这两个路径是让服务器的执行者Apache能够找到这个目录下的php文件。
+
+完成了第一个httpd.conf之后，按同样的方法，在相同目录下找到httpd-vhosts.conf,把里面的两个路径同样改为 g:/alldemo,保存重启服务器。那么在alldemo文
+件夹下创建任何一个xxx.php文件，在浏览器输入localhost/xxx.php就能看到文件内容。（新版才有httpd-vhosts.conf这个配置）
+
+
+
+(4)让菜单项中的WWW目录对应显示我们已经改过的网站根目录，这就需要更改Wamp开发包中的配置文件：
+首先，进入wamp的目录下，找到两个文件wampmanager.ini和wampmanager.tpl。
+①打开wampmanager.ini文件，按CTRL+F，查找“menu.left”，定位到 [Menu.Left] 这一数据块的位置。
+②找到Type: item; Caption: "www 目录"; Action: shellexecute; FileName: "g:/wamp/www"; Glyph: 2这一行，将路径名和路径改为
+Type: item; Caption: "alldemo 目录"; Action: shellexecute; FileName: "g:/alldemo"; Glyph: 2。
+
+(5)同理
+③打开wampmanager.tpl文件，重复①操作定位到 [Menu.Left]这一数据块的位置。
+④找到Type: item; Caption: "${w_wwwDirectory}"; Action: shellexecute; FileName: "${wwwDir}";这一行，将路径名和路径改为
+Type: item; Caption: "PhpCode目录"; Action: shellexecute; FileName: "g:/alldemo";
