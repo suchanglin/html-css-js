@@ -1,0 +1,16 @@
+雅虎军规：
+
+1尽可能减少HTTP请求数     合并资源
+2使用CDN（内容分发网络）   增加服务器，钱的问题
+3添加Expire/Cache-Control头     时间不过期就不请求
+4启用Gzip压缩        本地压缩     服务器压缩，服务器二次压缩
+5将CSS放在页面最上面        IE存在阻止加载      Firefox  闪烁
+6将Script放在页面最下面  死循环实验for(i=0;i=i+1;i++){document.write(i);}
+7避免在CSS中使用Expressions        移动鼠标等都会计算
+8把Javascript和CSS都放到外部文件中     文件大小与访问频率取舍
+9减少DNS查询    20ms  缓存    单域   多域
+10压缩Javascript和CSS   
+11避免重定向    301 移动到了另外的位置，永久     302被找到了，不在这里，返回一个地址，临时重定向
+12移除重复的脚本   numbei++实验来说明
+13配置实体标签Etags   小狗尿尿   304  未修改
+14使AJAX缓存 
