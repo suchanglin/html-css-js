@@ -82,3 +82,30 @@ $("ul").append( "<li> 你输入的<b> " + $("#txtNumber").val() + " </b>是<b> "
 $(selector).ajaxStop(function()) ajax请求执行后执行
 
 当发送Ajax请求前，执行ajaxStart()方法绑定的函数；请求成功后，执行ajaxStop ()方法绑定的函数
+
+--------------------------------------------------------------------------------------------------------------------------------
+2017.11.07添加的内容
+
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+
+try
+ {
+ // Firefox, Opera 8.0+, Safari
+ xmlHttp=new XMLHttpRequest();
+ }
+catch (e)
+ {
+ // Internet Explorer
+ try
+  {
+  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+  }
+ catch (e)
+  {
+  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ }
+return xmlHttp;
+}
