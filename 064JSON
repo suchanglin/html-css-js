@@ -118,3 +118,17 @@ Json的规格非常简单:
 4） 映射的集合（对象）用大括号（"{}"）表示。
 
 http://www.ruanyifeng.com/blog/2009/05/data_types_and_json.html
+
+---------------------------------------------------------------------------------
+<?php
+ $arr = array('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
+echo json_encode($arr);
+
+{"a":1,"b":2,"c":3,"d":4,"e":5 }
+?>
+
+
+<?php
+$json = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+var_dump(json_decode($json,true);
+?>
