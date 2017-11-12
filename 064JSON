@@ -1,8 +1,8 @@
 一. 什么是JSON
 
-json是一种数据格式，json语法能表示简单值、对象、数组三种类型的值。
+json是一种数据格式，json语法能表示简单值、数组、对象三种类型的值。
 
-对象和数组通常是json数据结构的最外层形式
+数组和对象通常是json数据结构的最外层形式
 
 1. 简单值
 
@@ -10,19 +10,22 @@ bool、字符串、number、null
 
 其中字符串与js中的字符串中的不同之处：必须用双引号
 
-2. 对象
+2.数组
+
+3. 对象
 
 json对象和js中对象的区别：
 
 json对象的属性名必须用双引号
 末尾没有分号(不是一个js语句)
-3. 数组
+
 
 二. json序列化
 
 JSON对象的方法
 
 JSON.stringify(js对象)：把js对象序列化为json字符串
+
 JSON.parse(json字符串)：把json字符串解析为原生的json对象
 
 1. 将对象序列化成json字符串 JSON.stringify()
@@ -33,7 +36,6 @@ JSON.stringify()第一个参数为json对象，第二个参数可以为一个数
 
 第二个参数为数组时:
 
-
 var book = {
 	"title": "javaScript",
 	edition: 1,
@@ -43,10 +45,11 @@ var book = {
 var bookStr = JSON.stringify(book,["title","edition"]);
 console.log(bookStr); // "{"title":"javaScript","edition":1}"
 typeof bookStr; //string
+
+
 第二个参数为函数时：
-
-
 //一般的js对象里的key值是可以不加引号的
+
 var book = {
 	"title": "javaScript",
 	edition: 1,
@@ -96,3 +99,22 @@ XML：可扩展通用标记语言
 与json相比：
 
 XML文件庞大，格式复杂，传输占带宽；json较轻量级
+
+
+-----------------------------------------------------------------------------------------
+拜读阮一峰博客：2017.11.12
+
+从结构上看，所有的数据（data）最终都可以分解成三种类型：
+第一种类型是标量（scalar），也就是一个单独的字符串（string）或数字（numbers），比如"北京"这个单独的词。
+第二种类型是序列（sequence），也就是若干个相关的数据按照一定顺序并列在一起，又叫做数组（array）或列
+表（List），比如"北京，上海"。
+第三种类型是映射（mapping），也就是一个名/值对（Name/value），即数据有一个名称，还有一个与之相对
+应的值，这又称作散列（hash）或字典（dictionary），比如"首都：北京"。
+
+Json的规格非常简单:
+1） 并列的数据之间用逗号（", "）分隔。
+2） 映射用冒号（": "）表示。
+3） 并列数据的集合（数组）用方括号("[]")表示。
+4） 映射的集合（对象）用大括号（"{}"）表示。
+
+http://www.ruanyifeng.com/blog/2009/05/data_types_and_json.html
