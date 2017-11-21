@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 <style type="text/css">
-/*<!--�ڴ˶�����Ӧ����ѡ������������Ҫ���������CSS����-->*/
+/*<!--在此定义相应的类选择器，并根据要求设置相关CSS属性-->*/
 *{
 	padding:0;
 	margin:0;
@@ -33,19 +33,22 @@ overflow:visible;
 .clear
 {
 	clear:both;
-	height:0;/*���IE6���и߶ȵ�����*/
+	height:0;/*解决IE6下有高度的问题*/
 	overflow:hidden;
 }
-/*����һ��div��������ڿ��Ⱥ͸߶ȵģ�������������·�����clear���ӣ�����Ҳ�����ţ�ֻ�Ǹ߶�Ϊ�����û��������ݣ����Կ����������ڿ��߲����ӱ߿���ʱ�����ῴ��Ч��������clear�����ม��Ҳ�ǿ��Եģ���right�����Ҳ����clear����Ӱ�졣�ڶ��㣬clear���ӻ��к󣬺������к��ӵ�margin����ôclear���ϱߵľ�������͹���ĺ��Ӽ��㣬�������Ӷ�һ���ߣ����޸Ĳ�ͬ�߶���ʱ�������������Ч������ø�clearһ�����ߣ�����ɫ�߿��ߣ�����۲죩*/
+/*添加一个div，如果存在宽度和高度的，将会在左盒子下方看到clear盒子，本身也存在着，只是高度为零或者没有填充内容，所以看不到。存在宽高并添加边框
+线时，将会看到效果。本例clear清除左侧浮动也是可以的，即right盒子右侧给了clear浮动影响。
+第二点，clear盒子换行后，忽略所有盒子的margin，那么clear距上边的距离又下凸最多的盒子计算，本例盒子都一样高，都修改不同高度事时，
+可以清楚看到效果（最好给clear一定宽高，带颜色边框线，方便观察）*/
 </style>
 </head>
 
 <body>
-<!--�ڴ�������Ӧ��div��ǩ-->
+<!--在此添加相应的div标签-->
 <div class="mainBox">
-	<div class="leftBox"></div>
-  <div class="rightBox"></div>
-  <div class="clear"></div>
+   <div class="leftBox"></div>
+   <div class="rightBox"></div>
+   <div class="clear"></div>
 </div>
 </body>
 </html>
