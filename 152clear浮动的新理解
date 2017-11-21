@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style type="text/css">
+/*<!--在此定义相应的类选择器，并根据要求设置相关CSS属性-->*/
+*{
+	padding:0;
+	margin:0;
+}
+.mainBox
+{
+	width:960px;
+	margin:0 auto;
+	background-color:#CFF;
+overflow:visible;
+}
+.leftBox
+{
+	width:740px;
+	height:300px;
+	background-color:#C9F;
+	float:left;
+}
+.rightBox
+{
+	width:210px;
+	height:300px;
+	background-color:#FCF;
+	float:right;
+}
+.clear
+{
+	clear:both;
+	height:0;/*解决IE6下有高度的问题*/
+	overflow:hidden;
+}
+/*添加一个div，如果存在宽度和高度的，将会在左盒子下方看到clear盒子，本身也存在着，只是高度为零或者没有填充内容，所以看不到。存在宽高并添加边框线时，将会看到效果。本例clear清除左侧浮动也是可以的，即right盒子右侧给了clear浮动影响。第二点，clear盒子换行后，忽略所有盒子的margin，那么clear距上边的距离又下凸最多的盒子计算，本例盒子都一样高，都修改不同高度事时，可以清楚看到效果（最好给clear一定宽高，带颜色边框线，方便观察）*/
+</style>
+</head>
+
+<body>
+<!--在此添加相应的div标签-->
+<div class="mainBox">
+	<div class="leftBox"></div>
+  <div class="rightBox"></div>
+  <div class="clear"></div>
+</div>
+</body>
+</html>
