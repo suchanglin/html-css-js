@@ -22,7 +22,7 @@
     </style>
     <script>
     var changeStyle = function(elem, attr, value) {
-        elem.style[attr] = value
+        elem.style[attr] = value;
     };
     window.onload = function() {
         var oBtn = document.getElementsByTagName("input");
@@ -34,7 +34,7 @@
             oBtn[i].index = i;
             oBtn[i].onclick = function() {
                 this.index == oBtn.length - 1 && (oDiv.style.cssText = "");
-                changeStyle(oDiv, oAtt[this.index], oVal[this.index])
+                changeStyle(oDiv, oAtt[this.index], oVal[this.index]);
             }
         }
     };
