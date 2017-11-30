@@ -104,25 +104,25 @@
         for (i = 0; i < aNum.length; i++) {
             aNum[i].index = i;
             aNum[i].onmouseover = function() {
-                show(this.index)
+                show(this.index);
             }
         }
 
         //鼠标划过关闭定时器
         oBox.onmouseover = function() {
-            clearInterval(play)
+            clearInterval(play);
         };
 
         //鼠标离开启动自动播放
         oBox.onmouseout = function() {
-            autoPlay()
+            autoPlay();
         };
 
         //自动播放函数
         function autoPlay() {
             play = setInterval(function() {
                 index++;
-                index >= aImg.length && (index = 0);
+                index >= aImg.length && (index = 0); //关系高于逻辑，index >= aImg.length为真时，执行(index = 0)；
                 show(index);
             }, 2000);
         }
