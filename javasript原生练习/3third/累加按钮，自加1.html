@@ -21,8 +21,8 @@
         var i = 0;
 
         aBtn.onclick = function() {
-            aBtn.value = ++i;
-            alert(i)
+            aBtn.value = ++i;    //表单用val()和value，而不是innerHTML。同时++i和i++的重大区别
+            alert(i);
         }
     }
     </script>
