@@ -91,7 +91,7 @@
             "艾滋病日:12月1日<br />废除奴隶制国际日:12月2日。"
         ];
         for (var i = 0; i < oLi.length; i++) {
-            oLi[i].index = i;
+            oLi[i].index = i;  //保存变量，与简易选项卡类似
             oLi[i].onmouseover = function() {
                 for (var n = 0; n < oLi.length; n++) oLi[n].className = "";
                 this.className = "current";
