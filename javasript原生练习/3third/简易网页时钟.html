@@ -40,12 +40,12 @@
         var aSpan = oClock.getElementsByTagName("span");
 
         setInterval(getTimes, 1000);
-        getTimes();
+        getTimes();  //因为setInterval有1000毫秒的延迟作用，所以必须马上调用函数
 
         function getTimes() {
             var oDate = new Date();
             var aDate = [oDate.getHours(), oDate.getMinutes(), oDate.getSeconds()];
-            for (var i in aDate) aSpan[i].innerHTML = format(aDate[i])
+            for (var i in aDate) aSpan[i].innerHTML = format(aDate[i]);
         }
 
         function format(a) {
