@@ -60,3 +60,42 @@ exec()方法
 获取捕获组的方法，返回的是一个数组
 
 match()和replace()是字符串的方法
+
+
+--------------------------------------------------------------------------------------------------
+var re = /^[1-9]{4,10}$/gi;
+var str = "123456";
+alert(re.test(str));      //返回true
+
+alert(re.lastIndex); // 弹出6
+
+表示上一次在第6个字符之后结束
+那么下一次再调用 test 的时候， 就会从第6个字符之后继续搜索
+解决办法，将正则表达式的 lastIndex 属性设置为0.
+
+<script type="text/javascript">
+var re = /^[1-9]{4,10}$/gi;
+var str = "123456";
+alert(re.test(str));      //返回true
+re.lastIndex=0;
+alert(re.test(str));      //返回true
+</script>
+
+
+JavaScript表单验证email邮箱，判断一个输入量是否为邮箱email，通过正则表达式实现。
+function check(){
+var email=document.getElementById("email").value;
+var isemail=/^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2})?$/i;
+if (email=="") {
+      alert("请输入您的邮箱!");
+      return false;
+    }
+if (email.length>25){
+     alert("长度太长");
+     return false
+}
+if (!isemail.test(email)){
+     alert("不是邮箱");
+    return false;
+}
+}
