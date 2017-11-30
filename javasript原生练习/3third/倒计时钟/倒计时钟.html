@@ -13,7 +13,7 @@
 
     body {
         color: #fff;
-        font: 16px/1.5 \5fae\8f6f\96c5\9ed1;
+        font: 16px/1.5 \5fae\8f6f\96c5\9ed1;  /*微软雅黑*/
     }
 
     #countdown {
@@ -54,25 +54,26 @@
         var timer = null;
 
         aInput.onclick = function() {
+            console.log(this.className);
             this.className == "" ? (timer = setInterval(updateTime, 1000), updateTime()) : (clearInterval(timer));
             this.className = this.className == '' ? "cancel" : '';
         };
 
         function format(a) {
-            return a.toString().replace(/^(\d)$/, '0$1')
+            return a.toString().replace(/^(\d)$/, '0$1');  //补位函数
         }
 
         function updateTime() {
             var aSpan = oCountDown.getElementsByTagName("span");
-            var oRemain = aSpan[0].innerHTML.replace(/^0/, '') * 60 + parseInt(aSpan[1].innerHTML.replace(/^0/, ''));
+            var oRemain = aSpan[0].innerHTML.replace(/^0/, '') * 60 + parseInt(aSpan[1].innerHTML.replace(/^0/, ''));   //默认设置的总秒数
             if (oRemain <= 0) {
-                clearInterval(timer);
-                return
+                clearInterval(timer);    //倒数完毕，清除定时器
+                return ;
             }
-            oRemain--;
-            aSpan[0].innerHTML = format(parseInt(oRemain / 60));
-            oRemain %= 60;
-            aSpan[1].innerHTML = format(parseInt(oRemain));
+            oRemain--;   //秒递减
+            aSpan[0].innerHTML = format(parseInt(oRemain / 60));  //  显示分，并在此之前判断补位
+            oRemain %= 60;   //显示 秒
+            aSpan[1].innerHTML = format(parseInt(oRemain));  //显示秒，并在此之前判断补位
         }
     }
     </script>
@@ -80,7 +81,7 @@
 
 <body>
     <div id="countdown">
-        <span>01</span>分钟<span>40</span>秒
+        <span>01</span>分钟<span>20</span>秒
         <input type="button" value="" />
     </div>
 </body>
