@@ -30,7 +30,8 @@
             clearInterval(timer);
             timer = setInterval(function() {
                 oBox.style.display = i++ % 2 ? "none" : "block";
-                i > 6 && (clearInterval(timer))
+                console.log(i);
+                i > 6 && (clearInterval(timer));//if(i>6){ clearInterval(timer)},偶数平屏幕才显示结果
             }, 80)
         }
     };
