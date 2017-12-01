@@ -125,13 +125,13 @@
             var style = oSub.style;
             style.display = style.display == "block" ? "none" : "block";
             //阻止事件冒泡
-            (event || window.event).cancelBubble = true
+            (event || window.event).cancelBubble = true;
         };
 
         for (i = 0; i < aLi.length; i++) {
             //鼠标划过
             aLi[i].onmouseover = function() {
-                this.className = "hover"
+                this.className = "hover";
             };
             //鼠标离开
             aLi[i].onmouseout = function() {
@@ -139,7 +139,8 @@
             };
             //鼠标点击
             aLi[i].onclick = function() {
-                oSelect.innerHTML = this.innerHTML
+                // console.log(this);  //测试用
+                oSelect.innerHTML = this.innerHTML;
             }
         }
 
