@@ -1,0 +1,103 @@
+js获取css值的方法：style、getComputedStyle和currentStyle
+
+JS 获取 html元素的样式有三种方式：style、getComputedStyle 和 currentStyle等。
+
+区别在于：
+（1）style 只能获取行间样式，但能设置样式。
+（2）getComputedStyle 和 currentStyle 能够获取 行间样式/非行间样式/浏览器默认样式，但存在浏览器兼容问题，且不能设置样式。
+
+
+<!DOCTYPE HTML>  
+<html lang="zh-cn">  
+<head>  
+<meta charset="utf-8" />  
+<title>Javascript</title>  
+<style>  
+*{margin: 0;padding: 0;}  
+#box{width: 100px;height: 100px;margin-left: 100px;}  
+</style>  
+</head>  
+<body>  
+<div id="box" style="background-color:#ccc;margin-top:100px;"></div>  
+<script>  
+window.onload = function(){   
+    var oBox = document.getElementById('box');  
+    console.log(oBox.style.width);          //结果为：100px  
+    console.log(oBox.style.background); //结果：rgb(204,204,204)，但ie下为空  
+    console.log(oBox.style.backgroundColor); //结果：rgb(204,204,204)或#ccc  
+    console.log(oBox.style.margin);     //结果为空  
+    console.log(oBox.style.marginTop);  //结果：100px  
+    oBox.style.height = '120px';        //设置样式  
+}  
+</script>  
+</body>  
+</html>  
+
+style总结：
+（1）对于复合属性（如background），假设行间设置了样式：background-color:#333，不能通过 element.style.background 来获取（见上面例子）。
+（2）css属性使用驼峰法，如 backgroundColor、marginTop等。
+（3）不同浏览器，一些 css 属性值可能会发生转换，如例子中的 background-color，标准浏览器会转换为 rgb 形式。
+
+
+
+
+2.getComputedStyle 获取css属性值
+
+<!DOCTYPE HTML>  
+<html lang="zh-cn">  
+<head>  
+<meta charset="utf-8" />  
+<title>Javascript</title>  
+<style>  
+#box{width: 100px;height: 100px;margin-left: 100px;}  
+</style>  
+</head>  
+<body>  
+<div id="box" style="background-color:#ccc;margin-top:100px;"></div>  
+<script>  
+window.onload = function(){   
+    var oBox = document.getElementById('box');  
+    var a = getComputedStyle(oBox, null)['width']; // 100px  
+    var b = getComputedStyle(oBox, null).getPropertyValue('backgroundColor'); //chrome为null, ie为空  
+    var c = getComputedStyle(oBox, null)['backgroundColor'];// rgb(204,204,204)  
+    var d = getComputedStyle(oBox,null)['padding'];// chrome为0px, ie为空  
+    console.log(a, b, c, d);  
+}  
+</script>  
+</body>  
+</html>  
+
+
+getComputedStyle总结：
+（1）标准浏览器，ie9+以上支持 getComputedStyle。
+（2）对于复合属性：使用 getPropertyValue 获取属性值时，不能使用驼峰写法，如：例子中的 getpropertyValue('backgroundColor') 无法正确获得值，
+而必须写成 background-color。
+（3）另外，以下写法也正确：getComputedStyle(oBox, null)['backgroundColor']、getComputedStyle(oBox, null)['background-color']， 
+以及 getComputedStyle(oBox, null).backgroundColor 等。
+（4）当没有设置某个属性值时，chrome 会读取浏览器该属性的默认值，而 ie9+ 下结果为空。如例子中的 padding。
+（5）getComputedStyle 第二个参数为”伪类“，一般用不着，设置为 null 即可。
+
+
+3.IE 下 currentStyle 获取css 属性值
+<script>  
+window.onload = function(){   
+    var oBox = document.getElementById('box');  
+    var a = oBox.currentStyle['width']; // 100px  
+    var b = oBox.currentStyle['background-color'];  // #ccc  
+    var c = oBox.currentStyle['backgroundColor'];   // #ccc  
+    var d = oBox.currentStyle.backgroundColor;     // #ccc  
+    //var e = oBox.currentStyle.background-color;  错误  
+    var e = oBox.currentStyle['padding'];       // 0px  
+    console.log(a, b, c, d, e);  
+}  
+</script>  
+
+currentStyle 总结：
+（1）只在 IE 下支持（网上 opera 也支持，但未测）。
+（2）注意 ['backgroundColor']、['background-color'] 和 .backgroundColor 等写法。
+（3）未设置的属性值，currentStyle 会读取浏览器默认值，如例子中的 padding。
+
+4.不同浏览器下，获取 css 属性值 的兼容写法
+function getStyle(oElement, sName){  
+    return oElement.currentStyle ? oElement.currentStyle[sName] : getComputedStyle(oElement, null)[sName];  
+}  
