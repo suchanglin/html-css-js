@@ -1,0 +1,46 @@
+compareDocumentPosition() 方法
+
+定义和用法
+compareDocumentPosition() 方法按照文档顺序，比较当前节点与指定节点的文档位置。
+查看以上实例，返回值可能是：
+1：没有关系，这两个节点不属于同一个文档。
+2： 第一节点（P1）位于第二个节点后（P2）。
+4：第一节点（P1）定位在第二节点（P2）前。
+8： 第一节点（P1）位于第二节点内（P2）。
+16： 第二节点（P2）位于第一节点内（P1）。
+32:没有关系的，或是两个节点在同一元素的两个属性。
+注意： 返回值可以是一个组合的值。即返回20意味着在P1 P2和P1（16） 定位在P2（4）前。
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+
+<div id="p1">这是一个段落<p id="p2">这是另一个段落；</p></div>
+
+<p id="demo">单击按钮来比较两个段落的位置。</p>
+<button onclick="myFunction()">点我</button>
+<script>
+function myFunction(){
+	var p1=document.getElementById("p1").lastChild;
+	var p2=document.getElementById("p2").lastChild;
+	var x=document.getElementById("demo");
+	x.innerHTML=p1.compareDocumentPosition(p2);
+}
+</script>
+<p>
+1: 这两个节点不属于同一个文档<br>
+2: P1位于P2之后。<br>
+4: P1位于P2之前。<br>
+8: P1在P2里面。<br>
+16:P2在P1里面。<br>
+32:这两个节点没有关系，或者它们是同一个元素上的两个属性。</p>
+<p><strong>注意:</strong>Internet Explorer 8或者更早的版本不支持comparedocumentposition方法。</p>
+<p><strong>注意:</strong> 返回值也可以是值的组合。即返回20意味着P2在P1里面并且P1（16）定位在P2（4）之前。</p>
+
+</body>
+</html>
+
