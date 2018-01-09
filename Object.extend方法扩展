@@ -1,0 +1,50 @@
+or (var property in source) {destination[property] = source[property];}
+
+Object.extend = function(destination, source) {
+for (var property in source) {
+    destination[property] = source[property];
+}
+return destination;
+}
+Prototype 对Object类进行的扩展主要通过一个静态函数Object.extend(destination, source)实现了JavaScript中的继承。 从语义的角
+度, Object.extend(destination, source)方法有些不和逻辑, 因为它事实上仅仅实现了从源对象到目标对象的全息拷贝。不过你也可以这样认为：由于目
+标对象拥有了所有源对象所拥有的特性, 所以看上去就像目标对象继承了源对象(并加以扩展)一样。另外, Prototype对Object扩展了几个比较有用的静
+态方法, 所有其他的类可以通过调用这些静态方法获取支持。
+
+
+
+
+Object.extend = function(destination, source) { // 一个静态方法表示继承, 目标对象将拥有源对象的所有属性和方法
+for (var property in source) {
+    destination[property] = source[property];   // 利用动态语言的特性, 通过赋值动态添加属性与方法
+}
+return destination;   // 返回扩展后的对象
+}
+
+Object.extend(Object, { 
+inspect: function(object) {   // 一个静态方法, 传入一个对象, 返回对象的字符串表示
+    try {
+      if (object == undefined) return 'undefined'; // 处理undefined情况
+      if (object == null) return 'null';     // 处理null情况
+      // 如果对象定义了inspect方法, 则调用该方法返回, 否则返回对象的toString()值
+      return object.inspect ? object.inspect() : object.toString(); 
+    } catch (e) {
+      if (e instanceof RangeError) return '...'; // 处理异常情况
+      throw e;
+    }
+},
+keys: function(object) {     // 一个静态方法, 传入一个对象, 返回该对象中所有的属性, 构成数组返回
+    var keys = [];
+    for (var property in object)
+      keys.push(property);     // 将每个属性压入到一个数组中
+    return keys;
+},
+values: function(object) {   // 一个静态方法, 传入一个对象, 返回该对象中所有属性所对应的值, 构成数组返回
+    var values = [];
+    for (var property in object) values.push(object[property]); // 将每个属性的值压入到一个数组中
+    return values;
+},
+clone: function(object) {    // 一个静态方法, 传入一个对象, 克隆一个新对象并返回
+    return Object.extend({}, object);
+}
+});
