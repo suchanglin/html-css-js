@@ -15,7 +15,7 @@ compareDocumentPosition() 方法按照文档顺序，比较当前节点与指定
 <html>
 <head>
 <meta charset="utf-8">
-<title>菜鸟教程(runoob.com)</title>
+<title>节点的位置关系</title>
 </head>
 <body>
 
