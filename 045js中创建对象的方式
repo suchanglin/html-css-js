@@ -66,9 +66,9 @@ var myperson2 = new Person("xiaohong",12,"student");
 console.log(myperson2.sayName == myperson1.sayName);//false
 通过new方法调用构造函数：
 
-如果函数没有显示地return表达式，那么就会隐式地返回this；
-如果函数显示地return的是对象，那么返回的是对象
-如果函数显示地return的不是对象，那么还是会隐式地返回this
+如果函数没有显式地return表达式，那么就会隐式地返回this；
+如果函数显式地return的是对象，那么返回的是对象
+如果函数显式地return的不是对象，那么还是会隐式地返回this
 
 
 
@@ -125,7 +125,7 @@ function Person(name,age,job){
 	this.age = age;
 	this.friends = ["1","2"];
 }
-   
+
 Person.prototype = {
 	constructor: Person,
 	sayName: function(){
