@@ -1,4 +1,4 @@
-一. 什么是ajax
+﻿一. 什么是ajax
 
 异步的javascript and xml
 
@@ -33,10 +33,10 @@ send()函数里面接收的参数，是作为请求主体发送的数据，如�
 为了满足跨浏览器的兼容性，必须在open事件调用之前指定onreadystatechange事件处理程序
 
 xhr.onreadystatechange = function(){
-    if(xhr.readystate == 4)//请求响应的当前活动阶段，4表示响应已完成
+    if(xhr.readyState == 4)//请求响应的当前活动阶段，4表示响应已完成
     {
         if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304)
-        {alert(responseText);}
+        {alert(xhr.responseText);}
         else
         {alert("unsuccessful")}    
     }
