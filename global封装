@@ -1,0 +1,189 @@
+var GLOBAL = {};
+ GLOBAL.namespace = function(str) {   //把str添加到GLOBAL中，并作为属性
+     var arr = str.split('.'),
+         o = GLOBAL;
+     for (var i = (arr[0] == 'GLOBAL') ? 1 : 0; i < arr.length; i++) {
+         o[arr[i]] = o[arr[i]] ||{};
+         o = o[arr[i]];
+     }
+ }
+
+
+ // DOM操作
+ GLOBAL.namespace('Dom');
+
+ GLOBAL.Dom.getNextNode = function(node) {
+     node = typeof node == 'string' ? document.getElementById(node) : node;
+     var nextNode = node.nextSibling;
+     if (!nextNode) {
+         return null;
+     }
+     if (!document.all) {
+         while (true) {
+             if (nextNode.nodeType == 1) {
+                 break;
+             } else {
+                 if (nextNode.nextSibling) {
+                     nextNode = nextNode.nextSibling;
+                 } else {
+                     break;
+                 }
+             }
+         }
+     }
+     return nextNode;
+ }
+ GLOBAL.Dom.setOpacity = function(node, level) {
+     node = typeof node == 'string' ? document.getElementById(node) : node;
+     if (document.all) {
+         node.style.filter = 'alpha(opacity=' + level + ')';
+     } else {
+         node.style.opacity = level / 100;
+     }
+ }
+ GLOBAL.Dom.get = function(node) {
+     node = typeof node == 'string' ? document.getElementById(node) : node;
+     return node;
+ }
+ GLOBAL.Dom.getElementsByClassName = function(str, root, tag) {
+     if (root) {
+         root = typeof root == 'string' ? document.getElementById(root) : root;
+     } else {
+         root = document.body;
+     }
+     var els = root.getElementsByTagName(tag),
+         arr = [];
+     for (var i = 0, n = els.length; i < n; i++) {
+         for (var j = 0, k = els[i].className.split(' '), l = k.length; j < l; j++) {
+             if (k[j] == str) {
+                 arr.push(els[i]);
+                 break;
+             }
+         }
+     }
+     return arr;
+ }
+ GLOBAL.Dom.addClass = function(node, str) {
+     if (!new RegExp("(^\\s+)" + str).test(node.className)) {
+         node.className = node.className + " " + str;
+     }
+ }
+ GLOBAL.Dom.hasClass = function(name, type) {
+     var r = [];
+     var re = new RegExp("(^\\s)" + name + "(\\s$)");
+     var e = document.getElementsByTagName(type||"*");
+     for (var j = 0; j < e.length; j++) {
+         if (re.test(e[j])) {
+             r.push(e[j]);
+         }
+     }
+     return r;
+ }
+ GLOBAL.Dom.removeClass = function(node, str) {
+     node.className = node.className.replace(new RegExp("(^\\s+)" + str), "");
+ }
+
+
+
+
+//事件操作
+ GLOBAL.namespace('Event');
+
+
+ GLOBAL.Event.getEventTarget = function(e) {
+     e = window.event|| e;
+     return e.srcElement || e.target;
+ }
+ GLOBAL.Event.stopPropagation = function(e) {
+     e = e.window || e;
+     if (document.all) {
+         e.cancelBubble = true;
+     } else {
+         e.stopPropagation();
+     }
+ }
+ GLOBAL.Event.on = function(node, eventType, handler, scope) {
+     node = typeof node == 'string' ? document.getElementById(node) : node;
+     if (document.all) {
+         node.attachEvent('on' + eventType, function() {
+             handler.apply(scope, arguments);
+         });
+     } else {
+         node.addEventListener(eventType, function() {
+             handler.apply(scope, arguments);
+         }, false);
+     }
+ }
+
+
+
+ //Lang 
+ GLOBAL.namespace('Lang');
+ GLOBAL.Lang.trim = function(ostr) {
+     return ostr.replace(/^\s+s+$/g, "");
+ }
+ GLOBAL.Lang.isNumber = function(s) {
+     return !isNaN(s);
+ }
+ GLOBAL.Lang.isString = function(s) {
+     return typeof s === 'string';
+ }
+ GLOBAL.Lang.isBoolean = function(s) {
+     return typeof s === 'boolean';
+ }
+ GLOBAL.Lang.isFunction = function(s) {
+     return typeof s === 'function';
+ }
+ GLOBAL.Lang.isNull = function(s) {
+     return s === null;
+ }
+ GLOBAL.Lang.isUndefined = function(s) {
+     return typeof s === 'undefined';
+ }
+ GLOBAL.Lang.isEmpty = function(s) {
+     return /^\s$/.test(s);
+ }
+ GLOBAL.Lang.isArray = function(s) {
+     return s instanceof Array;
+ }
+
+ GLOBAL.Lang.extend = function(subClass, superClass) {
+     var F = function() {};
+     F.prototype = superClass.prototype;
+     subClass.prototype = new F();
+     subClass.prototype.constructor = subClass;
+     subClass.prototype = superClass.prototype;  //????
+     if (superClass.prototype.constructor == Object.prototype.constructor) {
+         superClass.prototype.constructor = superClass;
+     }
+ }
+
+ //"Cookie"
+ GLOBAL.namespace("Cookie");
+ GLOBAL.Cookie = {
+     read: function(name) {
+         var cookieStr = ";" + document.cookie + ";";
+         var index = cookieStr.indexOf(";" + name + "=");
+         if (index != -1) {
+             var s = cookieStr.substring(index + name.length + 3, cookieStr.length);
+             return unescape(s.substring(0, s.indexOf(';')));
+         } else {
+             return null;
+         }
+     },
+     set: function(name, value, expires) {
+         var expDays = expires * 24 * 60 * 60 * 1;
+         var expDate = new Date();
+         expDate.setTime(expDate.getTime() + expDays);
+         var expString = expires ? ";expires" + expDate.toGMTString() : "";
+         var pathString = ";path=/";
+         document.cookie = name + "=" + escape(value) + expString + pathString;
+     },
+     del: function() {
+         var exp = new Date(new Date().getTime() - 1);
+         var s = this.read(name);
+         if (s != null) {
+             document.cookie = name + "=" + s + ";expires=" + exp.toGMTString() + ";path=/";
+         }
+     }
+ };
