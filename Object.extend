@@ -1,0 +1,37 @@
+Object.extend = function(destination, source) { // 一个静态方法表示继承, 目标对象将拥有源对象的所有属性和方法
+for (var property in source) {
+    destination[property] = source[property];   // 利用动态语言的特性, 通过赋值动态添加属性与方法
+}
+return destination;   // 返回扩展后的对象
+}
+
+Object.extend(Object, { 
+inspect: function(object) {   // 一个静态方法, 传入一个对象, 返回对象的字符串表示
+    try {
+      if (object == undefined) return 'undefined'; // 处理undefined情况
+      if (object == null) return 'null';     // 处理null情况
+      // 如果对象定义了inspect方法, 则调用该方法返回, 否则返回对象的toString()值
+      return object.inspect ? object.inspect() : object.toString(); 
+    } catch (e) {
+      if (e instanceof RangeError) return '...'; // 处理异常情况
+      throw e;
+    }
+},
+keys: function(object) {     // 一个静态方法, 传入一个对象, 返回该对象中所有的属性, 构成数组返回
+    var keys = [];
+    for (var property in object)
+      keys.push(property);     // 将每个属性压入到一个数组中
+    return keys;
+},
+values: function(object) {   // 一个静态方法, 传入一个对象, 返回该对象中所有属性所对应的值, 构成数组返回
+    var values = [];
+    for (var property in object) values.push(object[property]); // 将每个属性的值压入到一个数组中
+    return values;
+},
+clone: function(object) {    // 一个静态方法, 传入一个对象, 克隆一个新对象并返回
+    return Object.extend({}, object);
+}
+});
+
+
+
