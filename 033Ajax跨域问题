@@ -58,18 +58,19 @@ function createCORSRequest(method, url) {
 	var xhr = new XMLHttpRequest();
 	//检测XHR是否支持跨域请求
 	if('withCredentials' in xhr) {
-	
+
 		xhr.open(method,url,true);
-		
+
 	} else if(typeof XDomainRequest != 'undefined') {
-	
+
 		var xdr = new XDomainRequest();
+
 		xdr.open(method,url);
-		
+
 	} else {
-	
+
 		xhr = null;
-		
+
 	}
 }
 
@@ -80,6 +81,7 @@ if(request) {
 	};
 	request.send();
 }
+
 2. 利用<script>、<img>标签的src
 
 解决方法：
@@ -96,21 +98,23 @@ Web页面上调用js文件时则不受是否跨域的影响（不仅如此，我
 			script.src = src;
 			document.body.appendChild(script);
 		}
-	
+
 	//调用加载ScrptTag函数
 		window.onload =function(){
 
-		//搜索apple，将自定义的回调函数名result传入callback参数中             
+		//搜索apple，将自定义的回调函数名result传入callback参数中
 		addScriptTag("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=apple&callback=result");
 		}
-		
-	//自定义的回调函数result	
+
+	//自定义的回调函数result
 	function result(data) {
-			//我们就简单的获取apple搜索结果的第一条记录中url数据    
+			//我们就简单的获取apple搜索结果的第一条记录中url数据
 			alert(data.responseData.results[0].unescapedUrl);
 		alert(data.responseData.results[0].cacheUrl);
 	}
 </script>
+
+
 3. 使用jsonp(json with padding 填充式json)
 
 json是一种数据交换格式
