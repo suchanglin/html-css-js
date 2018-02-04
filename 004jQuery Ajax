@@ -23,9 +23,7 @@ $this.attr("disabled", "true");
 
 使用getJSON()方法可以通过Ajax异步请求的方式，获取服务器中的数组，并对获取的数据进行解析
 
-3. jQuery.getScript(url,[callback]) 或 $.getScript(url,[callback])
-
-异步加载并执行js文件 获取JS文件内容
+3. jQuery.getScript(url,[callback]) 或 $.getScript(url,[callback])    异步加载并执行js文件 获取JS文件内容
 
 4. $.get(url,[callback]) 向服务器请求数据
 
@@ -35,20 +33,17 @@ $this.attr("disabled", "true");
 
 用于以POST方式向服务器发送数据，服务器接收到数据之后，进行处理，并将处理结果返回页面
 
-eg: $.post("http://www.imooc.com/data/check_f.php",{num:$("#txtNumber").val()},
-function (data) {});
+eg: $.post("http://www.imooc.com/data/check_f.php",{num:$("#txtNumber").val()},function (data) {});
 
 注意：Ajax里面的post、get都是以用户为主体，所以get指的是向服务器请求数据，post是指向服务器发送数据
+
 6. $(selector).serialize() 将元素进行序列化
 
-将表单中有name属性的元素值进行序列化，生成标准URL编码文本字符串???，直接可用于ajax请求
+将表单中有name属性的元素值进行序列化，生成标准URL编码文本字符串，直接可用于ajax请求
 
-7. jQuery.ajax([settings]) 或$.ajax([settings])
+7. jQuery.ajax([settings]) 或$.ajax([settings])      获取服务器数据，同时向服务器发送请求
 
-获取服务器数据，同时向服务器发送请求
-
-使用$.ajax()方法是最底层、功能最强大的请求服务器数据的方法，
-它不仅可以获取服务器返回的数据，还能向服务器发送请求并传递数值
+使用$.ajax()方法是最底层、功能最强大的请求服务器数据的方法，它不仅可以获取服务器返回的数据，还能向服务器发送请求并传递数值
 
 settings为一个对象：该对象包括：
 
@@ -90,20 +85,16 @@ function GetXmlHttpObject()
 {
 var xmlHttp=null;
 
-try
- {
+try{
  // Firefox, Opera 8.0+, Safari
  xmlHttp=new XMLHttpRequest();
  }
-catch (e)
- {
+catch (e){
  // Internet Explorer
- try
-  {
+ try{
   xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
   }
- catch (e)
-  {
+ catch (e){
   xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
  }
