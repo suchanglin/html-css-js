@@ -162,6 +162,21 @@ jsonp的缺点：只能发送get请求
 
 是一个不受同源策略限制的通信协议
 
+
+------------------------------------------------------------------------------------------------------
+
+补充第一点：chrome
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Methods:POST,GET');
+
+在IE10以下是这样设置的
+
+在代码中js加上一句jQuery.support.cors =true;或者$.support.cors =true;
+
+然后：设置IE浏览器->Internet选项->安全->自定义级别->其他选项下面的->通过源数据：选择“启用”或者“提示”
+
+
+
 三. XSS跨站脚本攻击
 
 1.什么是xss
