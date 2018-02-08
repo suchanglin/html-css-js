@@ -11,6 +11,7 @@ gulp的优点：
 代码优于配置，通过简单的配置能够完成很多重复的功能
 简单明了，目的明确，一般一个插件只完成一个任务
 gulp的gulpfile.js的写法更加通俗易懂，易上手
+
 二. 使用gulp的步骤：
 
 由于gulp是基于node.js的，因此在安装gulp之前需要安装node.js
@@ -18,6 +19,7 @@ gulp的gulpfile.js的写法更加通俗易懂，易上手
 node.js是一个后端的js运行环境，也就是说：你写一个服务器端的js代码，可以交给node.js来解释执行。
 
 安装nodejs -> 全局安装gulp -> 项目安装gulp以及gulp插件 -> 配置gulpfile.js -> 运行任务
+
 1. 安装nodejs
 
 从官网上直接下载安装（路径随意）
@@ -28,14 +30,16 @@ node.js是一个后端的js运行环境，也就是说：你写一个服务器�
 输入npm -v         /* 查看npm版本号 */
 输入D:             /*定位到D盘*/
 输入cd  nodejs       /* 定位到安装目录*/
-输入dir           /*查看当前定位目录下的文件*/
+输入dir        /*查看当前定位目录下的文件*/
 输入cls           /* 清空内容*/
+
 2. 全局安装gulp
 
 目的：通过全局安装的gulp执行gulp任务，全局安装完gulp之后，就可以使用gulp命令行
 
 输入 npm install gulp -g   /*全局安装gulp*/
 输入 gulp -v               /*查看安装的gulp的版本号，出现版本号即为正确安装*/
+
 3. 新建package.json文件
 
 package.json是nodejs项目必不可少的配置文件，存放在项目的根目录下
@@ -44,6 +48,7 @@ package.json是nodejs项目必不可少的配置文件，存放在项目的根�
 前三项（项目名称，项目版本，项目描述）必须输入，后几项可留空
 
 输入 npm help package.json   /*查看package.json帮助文档*/
+
 4. 项目安装gulp依赖
 
 输入 npm install gulp --save-dev     /*本地安装gulp*/
@@ -70,6 +75,8 @@ gulp.task('default',['testLess', 'elseTask']); //定义默认任务
 //gulp.task(name[, deps], fn) 定义任务  name：任务名称 deps：依赖任务名称 fn：回调函数
 //gulp.src(globs[, options]) 执行任务处理的文件  globs：处理的文件路径(字符串或者字符串数组)
 //gulp.dest(path[, options]) 处理完后文件生成路径
+
+
 6. 运行gulp
 
 输入$gulp                 /*运行gulp*/
@@ -332,6 +339,7 @@ gulp.task('rev', ['使用gulp-rev的函数名'] , function () {
  .pipe( gulp.dest('dist') );
 });
 注意：由于gulp完成各个task是异步的，因此执行gulp-rev-recollector之前需要执行gulo-rev，解决方法：见代码第二行红色部分
+
 10.gulp-autoprefixer 针对不同的浏览器，给CSS文件添加相应的前缀
 
 (1) 安装
