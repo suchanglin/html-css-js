@@ -63,7 +63,9 @@ var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
 4. IE和其他浏览器中的事件对象event
 
-封装一个获取当前事件的派生对象的函数getEventTarget
+封装一个获取当前事件的派生对象的函数
+
+getEventTarget
 
 若使用dom0级绑定事件的方式，那么event是作为window对象的属性存在的
 
@@ -75,12 +77,12 @@ IE中，既可以使用window.event，也可以使用函数的第一个参数
 
 function getEventTarget(event) {
     var eve = window.event || event;
-    return eve.srcElement || eve.target;
+       return eve.srcElement || eve.target;
 }
 
 5. 取消事件冒泡
 
-在IE中，使用`event.cancelBubble = true`来取消事件冒泡。
+在IE中，使用 event.cancelBubble = true 来取消事件冒泡。
 
 在其他浏览器中，使用`stopPropagation()`方法来取消事件冒泡。
 
