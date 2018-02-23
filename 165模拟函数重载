@@ -1,0 +1,14 @@
+模拟函数重载
+
+用 arguments 对象判断传递给函数的参数个数，即可模拟函数重载：
+
+function doAdd() {
+  if(arguments.length == 1) {
+    alert(arguments[0] + 5);
+  } else if(arguments.length == 2) {
+    alert(arguments[0] + arguments[1]);
+  }
+}
+
+doAdd(10);	//输出 "15"
+doAdd(40, 20);	//输出 "60"
