@@ -1,0 +1,19 @@
+Google 公司的Traceur转码器，也可以将 ES6 代码转为 ES5 代码。
+
+直接插入网页
+Traceur 允许将 ES6 代码直接插入网页。首先，必须在网页头部加载 Traceur 库文件。
+
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+  import './Greeter.js';
+</script>
+
+
+上面代码中，一共有 4 个script标签。第一个是加载 Traceur 的库文件，第二个和第三个是将这个库文件用于浏览器环境，第四个则是加载用户脚本，
+这个脚本里面可以使用 ES6 代码。
+
+注意，第四个script标签的type属性的值是module，而不是text/javascript。这是 Traceur 编译器识别 ES6 代码的标志，
+编译器会自动将所有type=module的代码编译为 ES5，然后再交给浏览器执行。
