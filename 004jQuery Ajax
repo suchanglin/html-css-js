@@ -19,9 +19,9 @@ eg:
 $this.attr("disabled", "true");
 });
 
-2. jQuery.getJSON(url,[data],[callback]) 或者 $.getJSON(url,[data],[callback]) 获取数组
+2. jQuery.getJSON(url,[data],[callback]) 或者 $.getJSON(url,[data],[callback]) 获取数据
 
-使用getJSON()方法可以通过Ajax异步请求的方式，获取服务器中的数组，并对获取的数据进行解析
+使用getJSON()方法可以通过Ajax异步请求的方式，获取服务器中的数据，并对获取的数据进行解析
 
 3. jQuery.getScript(url,[callback]) 或 $.getScript(url,[callback])    异步加载并执行js文件 获取JS文件内容
 
@@ -58,12 +58,12 @@ success为请求成功的执行的回调函数
 type为发送数据请求的方式，默认为get
 
 eg: $.ajax({
-url:"http://www.imooc.com/data/check.php",
-data: { num: $("#txtNumber").val() },
-dataType:"text",
-success: function (data) {
-$("ul").append( "<li> 你输入的<b> " + $("#txtNumber").val() + " </b>是<b> " + data + " </b></li>");
-}
+    url:"http://www.imooc.com/data/check.php",
+    data: { num: $("#txtNumber").val() },
+    dataType:"text",
+    success: function (data) {
+    $("ul").append( "<li> 你输入的<b> " + $("#txtNumber").val() + " </b>是<b> " + data + " </b></li>");
+    }
 });
 
 8. jQuery.ajaxSetup([options]) 或$.ajaxSetup([options])
