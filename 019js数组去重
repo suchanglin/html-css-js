@@ -17,9 +17,9 @@ alert(arr.unique1());
 注意：这里进行比较时，一定要用**不全等符号**（！==）
 因为 "1" !== 1 为true
      "1" != 1 为false
-     
-     
-     
+
+
+
 二. 不改变数组顺序的方法
 
 1. 方法一
@@ -36,9 +36,9 @@ Array.prototype.unique2 = function(){
  }
  return res;
 }
-var arr = [112,112,34,'你好',112,112,34,'你好','str','str1'];
+var arr = [112,112,34,'你好','112','112',34,'你好','str','str1'];
 alert(arr.unique2());
-注意：这里的’112’ 和 112不应该是重复的，所以都应该保留，所以在hash表中，应该把类型也拼接成key
+注意：这里的'112' 和 112不应该是重复的，所以都应该保留，所以在hash表中，应该把类型也拼接成key
 
 isIn[typeof this[i] + this[i]]
 
@@ -128,7 +128,7 @@ console.log(unique2(arr));  // ["a", "1", 1, 2, 3]
 //     判断该项元素在原数组中受首次出现的位置是否为当前位置，若是，则向数组中推入该元素。
 function unique3(arr){
    var result = []; //将用于存放去重后的数组
-   result.push(arr[0]); 
+   result.push(arr[0]);
    for(var i = 1,len = arr.length;i < len;i++){
         if(arr.indexOf(arr[i]) === i){//判断当前元素在原数组中首次出现的索引值，是否是当前元素的索引
           result.push(arr[i]);
@@ -155,7 +155,7 @@ console.log(unique4(arr));  // ["a", "1", 2, 3]
 方法五
 //主要思路：先排序，然后判断紧随其后的元素跟它是否重复，若不重复，则说明该元素是唯一的，故将其推入数组
 function unique5 (arr) {
-    var sortedArr = arr.sort(); 
+    var sortedArr = arr.sort();
     var result = [];    //将用于存放去重后的数组
     for (var i = 0; i < arr.length; i++) {
         if (sortedArr[i + 1] !== sortedArr[i]) {
