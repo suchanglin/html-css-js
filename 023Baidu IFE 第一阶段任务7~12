@@ -1,46 +1,4 @@
-三. 我的任务
 
-我的任务列表http://panpanfish.com/baiduIFE/
-
-7. 任务七
-
-(1). 任务七需要完成的示意图
-
-(2). 任务七demo
-
-(3). 任务七代码
-
-(4). 任务七笔记
-
-8. 任务八
-
-(1). 任务八需要完成的示意图
-
-
-
-任务要求：
-
-使用 HTML 和 CSS 实现网格布局。根据屏幕宽度调整元素大小。
-参考 BootStrap 的网格系统DOM 元素类名。
-(2). 任务八demo
-
-http://panpanfish.com/baiduIFE/task1-8.html
-
-(3). 任务八代码
-
-https://github.com/panpan040828/baiduIFE/blob/gh-pages/task1-8.html
-
-(4). 任务八笔记
-
-这个任务中主要使用到的一个知识点是CSS3中的媒体查询，加深了我对bootstrap栅格布局的理解。
-
-媒体查询media
-
-简单来说：就是根据不同的媒体环境情况，来设置不同的样式
-
-使用方法：
-
-在标签里加上media属性
 
 在CSS文件中应用
 

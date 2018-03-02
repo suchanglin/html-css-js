@@ -1,107 +1,111 @@
-一. 排序算法
+一.排序算法
 
 1. 排序算法的稳定性
 
-稳定：如果 a=b，a原本在b的前面，排序之后，a仍然在b的前面，那么这个排序算法就是稳定的。
+稳定： 如果 a = b， a原本在b的前面， 排序之后， a仍然在b的前面， 那么这个排序算法就是稳定的。
 
-反之，就是不稳定的排序算法。
+反之， 就是不稳定的排序算法。
 
 稳定的排序算法有：
 
-二. 快速排序
+二.快速排序
 
 思想：
 
-选取中间的数为基准值，然后将比它小的放在左边，比它大的放在右边，然后将左右两边的数组进行同样的操作，使用递归的思想。
+选取中间的数为基准值， 然后将比它小的放在左边， 比它大的放在右边， 然后将左右两边的数组进行同样的操作， 使用递归的思想。
 
 注意三点：
 
-要判断递归的边界条件，当数组的长度<=1时，跳出递归
-最后进行数组合并时，需要将基准值也合并进去
-splice是对原数组进行操作，返回的是要删除的数组
+要判断递归的边界条件， 当数组的长度 <= 1 时， 跳出递归
+最后进行数组合并时， 需要将基准值也合并进去
+splice是对原数组进行操作， 返回的是要删除的数组
 
 var QuickSort = function(arr) {
-	if (arr.length <= 1) {
-		return arr;
-	}
-	
-	var pivotIndex = Math.floor(arr.length/2);
-	var pivot = arr.splice(pivotIndex,1)[0];
-	var left = [], right = [];
-	
-	for(var i = 0; i < arr.length; i++) {
-		if(arr[i] < pivot) {
-			left.push(arr[i]);
-		} else {
-			right.push(arr[i]);
-		}
-	}
-	
-	return QuickSort(left).concat(pivot,QuickSort(right));
-	
-	
+    if (arr.length <= 1) {
+        return arr;
+    }
+
+    var pivotIndex = Math.floor(arr.length / 2);
+    var pivot = arr.splice(pivotIndex, 1)[0];
+    var left = [],
+        right = [];
+
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+
+    return QuickSort(left).concat(pivot, QuickSort(right));
+
+
 }
 
 
-	QuickSort([1,4,7,8,3,12,35]);
-	console.log(QuickSort([1,4,7,8,3,12,35]));
+QuickSort([1, 4, 7, 8, 3, 12, 35]);
+console.log(QuickSort([1, 4, 7, 8, 3, 12, 35]));
 
 
 
-### 三. 冒泡排序
+###
+三.冒泡排序
 
-**冒泡排序的原理：**
+    **
+    冒泡排序的原理： **
 
-比方说有五个数字54321，要按从小到大排列；
+    比方说有五个数字54321， 要按从小到大排列；
 
-首先比较前两个，就是5和4，如果第一个小于第二个，不做操作，如果第一个大于第二个，那么交换二者的位置，即变成45321，然后比较第二个和第三个，
-交换位置，变成43521，然后第三个和第四个，第四个和第五个，这样一次循环下来，变成43215
+首先比较前两个， 就是5和4， 如果第一个小于第二个， 不做操作， 如果第一个大于第二个， 那么交换二者的位置， 即变成45321， 然后比较第二个和第三个，
+交换位置， 变成43521， 然后第三个和第四个， 第四个和第五个， 这样一次循环下来， 变成43215
 
-所以，一层循环的效果就是挑出最大的一个数字5，冒泡到最后面。
+所以， 一层循环的效果就是挑出最大的一个数字5， 冒泡到最后面。
 
-但是还要挑出第二大，第三大的数字，等等。
+但是还要挑出第二大， 第三大的数字， 等等。
 
-所以一层循环根本就不够用，必须再套一层才行。
+所以一层循环根本就不够用， 必须再套一层才行。
 
-像这个例子，五个数字，起码要进行四轮循环才行。至于为什么要this.length-i，是因为第一次比较五个数字，第二个只要比较前四个就行了，
+像这个例子， 五个数字， 起码要进行四轮循环才行。 至于为什么要this.length - i， 是因为第一次比较五个数字， 第二个只要比较前四个就行了，
 第五个肯定是最大的了。。
 
 var bubbleSort = function(arr) {
-var temp;
-for(var i = 0; i < arr.length; i++) {
-for(var j = 0; j < arr.length - 1 - i; j++) {
-if(arr[j] > arr[j+1]) {
-temp = arr[j];
-arr[j]= arr[j+1];
-arr[j+1] = temp;
-}
-}
-}
+        var temp;
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
 
-return arr;
-}
+        return arr;
+    }
 
 
-**改进后的冒泡排序：**
+    **
+    改进后的冒泡排序： **
 
-改进的思路：将每趟排序中最后一次进行交换的位置pos记录下来，下次排序只要扫描到pos即可。
+    改进的思路： 将每趟排序中最后一次进行交换的位置pos记录下来， 下次排序只要扫描到pos即可。
 function bubbleSort2() {
 
     //初始时，最后的位置保持不变
     var i = arr.length - 1;
-    while(i > 0) {
+    while (i > 0) {
 
         //每趟开始时，没有记录交换的最后位置
         var pos = 0;
 
-        for(var j = 0; j < i; j++) {
-            if(arr[j] > arr[j+1]) {
+        for (var j = 0; j < i; j++) {
+            if (arr[j] > arr[j + 1]) {
 
                 //记录交换位置
                 pos = j;
                 var tmp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = tmp;
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
             }
         }
 
@@ -112,19 +116,21 @@ function bubbleSort2() {
 }
 
 
-### 四. 选择排序
+###
+四.选择排序
 
 最直观的排序算法
 
-依次找出第一大、第二大、第三大...依次放在数组中
+依次找出第一大、 第二大、 第三大...依次放在数组中
+
 function selectSort(arr) {
     var len = arr.length;
     var minIndex, temp;
 
-    for(var i = 0; i < len - 1; i++) {
+    for (var i = 0; i < len - 1; i++) {
         minIndex = i;
-        for(var j = i + 1; j < len; j++) {
-            if(arr[minIndex] > arr[j]) {
+        for (var j = i + 1; j < len; j++) {
+            if (arr[minIndex] > arr[j]) {
                 minIndex = j;
             }
         }
@@ -137,49 +143,53 @@ function selectSort(arr) {
     return arr;
 }
 
-### 五. 堆排序
+###
+五.堆排序
 
 #### 1. 什么是堆？
 
-在一个完全二叉树中，所有的**非终端结点的值**均不大于（或不小于）其左、右孩子结点的值。
+在一个完全二叉树中， 所有的 ** 非终端结点的值 ** 均不大于（ 或不小于） 其左、 右孩子结点的值。
 
 例如：
 
-	最大化堆：
+最大化堆：
 
-			                 96
-                    
-		          83        27
-           
-    11      9  
+96
 
-	最小化堆：
-	 		                 12
-                       
-		          36        24
-              
-    85      47  
+83 27
 
-利用堆的概念来排序，若在输出堆顶的最小值之后，使得剩余n-1个元素的序列重又建成一个堆，则得到n个元素的次小值。如此反复执行，
-便能得到一个有序序列，这个过程称之为堆排序。
+11 9
 
-i结点的左子节点为`2*i+1`，i结点的右子节点为`2*i+2`
+最小化堆：
+12
+
+36 24
+
+85 47
+
+利用堆的概念来排序， 若在输出堆顶的最小值之后， 使得剩余n - 1 个元素的序列重又建成一个堆， 则得到n个元素的次小值。 如此反复执行，
+便能得到一个有序序列， 这个过程称之为堆排序。
+
+i结点的左子节点为 `2*i+1`，
+i结点的右子节点为 `2*i+2`
+
 function heapSort(arr) {
-    var type = Object.prototype.toString().call(arr).slice(8,-1);
+    var type = Object.prototype.toString().call(arr).slice(8, -1);
 
-    if(type == 'Array') {
-        var heapSize = arr.length, temp;
+    if (type == 'Array') {
+        var heapSize = arr.length,
+            temp;
 
         //将无序数组变成大顶堆
         //Math.floor(heapSize/2)-1指的是除去叶子结点外的最右边的一个结点，也就是二叉树中倒数第二行最右边的一个节点。
-        for(var i = Math.floor(heapSize/2)-1; i >= 0; i--) {
+        for (var i = Math.floor(heapSize / 2) - 1; i >= 0; i--) {
 
             //heapify是为了让每个节点都满足大顶堆的特性
             heapify(arr, i, heapSize);
         }
 
         //从最后一个开始循环
-        for(var j = heapSize - 1; j >= 1; j--) {
+        for (var j = heapSize - 1; j >= 1; j--) {
 
             //将数组第一个数和最后一个数交换位置，因为现在数组时大顶堆，因此arr[0]最大
             //交换后，将除了最后一个元素的数组也变成大顶堆
@@ -193,23 +203,23 @@ function heapSort(arr) {
 }
 
 function heapify(arr, x, len) {
-    var arrType = Object.prototype.toString().call(arr).slice(8,-1);
+    var arrType = Object.prototype.toString().call(arr).slice(8, -1);
     var len = arr.length;
 
-    if(arrType == 'Array' && typeof x == 'number') {
-        var left = 2*x+1;
-        var right = 2*x+2;
+    if (arrType == 'Array' && typeof x == 'number') {
+        var left = 2 * x + 1;
+        var right = 2 * x + 2;
         var large = x;
 
-        if(left < len && arr[left] > arr[large]) {
+        if (left < len && arr[left] > arr[large]) {
             large = left;
         }
 
-        if(right < len && arr[right] > arr[large]) {
+        if (right < len && arr[right] > arr[large]) {
             large = right;
         }
 
-        if(large != x) {
+        if (large != x) {
             var temp = arr[x];
             arr[x] = arr[large];
             arr[large] = arr[x];

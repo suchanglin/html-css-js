@@ -1,32 +1,3 @@
-一. 第二阶段任务
-
-百度前端技术学院的第一阶段主要是针对HTML和CSS的学习和训练，第二阶段就进入javascript的学习了。
-
-进入js之后发现很多基础的东西虽然之前看过，但是用起来时候还是得再返回去看一下，希望自己能在做任务的过程中不断进步~~
-
-第二阶段任务
-
-二. 我的任务
-
-我的任务列表http://panpanfish.com/baiduIFE/
-
-1. 任务十三
-
-(1). 任务十三需要完成的功能
-
-任务要求：
-
-本任务完成的功能为：用户可以在输入框中输入任何内容，点击“确认填写”按钮后，用户输入的内容会显示在“您输入的值是”文字的右边
-
-(2). 任务十三demo
-
-http://panpanfish.com/baiduIFE/task2-13.html
-
-(3). 任务十三代码
-
-https://github.com/panpan040828/baiduIFE/blob/gh-pages/task2-13.html
-
-(4). 任务十三笔记
 
 a. (function(){})();
 
@@ -49,27 +20,6 @@ d. 获取input框的输入值
 document.getElementById("myinput").value
 e. DOM 的innerHTML属性
 
-获取或者设置标签内部的HTML
-
-2. 任务十四
-
-(1). 任务十四需要完成的功能
-
-任务要求：
-
-页面加载后，将提供的空气质量数据数组，按照某种逻辑（比如空气质量大于60）进行过滤筛选，最后将符合条件的数据按照一定的格式要求显示在网页上
-
-<li>第一名：福州（样例），10</li>
-  <li>第二名：福州（样例），10</li> 
-(2). 任务十四demo
-
-http://panpanfish.com/baiduIFE/task2-14.html
-
-(3). 任务十四代码
-
-https://github.com/panpan040828/baiduIFE/blob/gh-pages/task2-14.html
-
-(4). 任务十四笔记
 
 a. 数组的重排序方法
 
