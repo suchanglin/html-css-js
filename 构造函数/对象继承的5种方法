@@ -68,8 +68,7 @@ Cat.prototype.constructor指向Animal。
 
 三、 直接继承prototype
 
-第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，
-我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
+第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
 现在，我们先将Animal对象改写：
 
 　　function Animal(){ }
