@@ -70,21 +70,21 @@ obj.onclick = function(){}；
    obj.onclick = function(){
    			alert("1");
    		}
-   
+
    obj.onclick = function(){
    			alert("2");
    		}
-   
+
    obj.onclick = function(){
    			alert("3");
    		}
-   
+
 只会alert("3")
 可以采用下面的绑定事件的方式：
 
 1. W3C
 
-W3C绑定事件 
+W3C绑定事件
 
 obj.addEventListener(event,function,usecapture)
 
@@ -110,35 +110,35 @@ true：事件在捕获阶段执行
   </style>
  </head>
  <body>
- 
+
   <p>该实例演示了在添加事件监听时冒泡与捕获阶段的不同。</p>
-  
+
   <div id="myDiv">
     <p id="myP">点击该段落， 我是冒泡</p>
   </div><br>
-  
+
   <div id="myDiv2">
     <p id="myP2">点击该段落， 我是捕获</p>
   </div>
-  
+
   <script>
    document.getElementById("myP").addEventListener("click", function() {
    alert("你点击了 P 元素!");
    }, false);
-   
+
    document.getElementById("myDiv").addEventListener("click", function() {
    alert("你点击了 DIV 元素!");
    }, false);
-   
+
    document.getElementById("myP2").addEventListener("click", function() {
    alert("你点击了 P 元素!");
    }, true);
-   
+
    document.getElementById("myDiv2").addEventListener("click", function() {
    alert("你点击了 DIV 元素!");
    }, true);
  	</script>
- 
+
  </body>
 </html>
 如果用addEventListener给同一个对象绑定了多个事件，执行顺序如下：
@@ -201,7 +201,7 @@ event.target：触发事件的元素(事件的实际目标)
 event.type：事件类型
 
 event.stopPropagation();
-取消事件进一步捕获或冒泡    
+取消事件进一步捕获或冒泡
 什么是事件冒泡：
 
 eg:
@@ -304,7 +304,7 @@ event.currentTarget 当前绑定事件的对象 UL.data-list
     }else {
     	mydiv['on'+type] = eventfn
     }
-    
+
 	//事件处理程序
     function eventfn(event){
 	    var event = event || window.event;
