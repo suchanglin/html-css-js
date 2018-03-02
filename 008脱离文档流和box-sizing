@@ -1,0 +1,35 @@
+
+
+什么叫元素脱离文档流？
+
+元素从普通布局排版中拿走，其他盒子在定位的时候，会把脱离文档流的元素当做不存在来进行定位。
+
+什么情况下元素会脱离文档流？
+
+元素设置了float属性 或者 元素的position定义为absolute
+
+float脱离文档流 和 absolute脱离文档流的不同之处？
+
+float脱离文档流：其他盒子会无视这个元素，但文字会为其让出位置，环绕周围
+
+absolute脱离文档流：其他盒子和文字均会无视这个元素
+
+
+box-sizing的几种取值
+
+box-sizing可以理解为选择定义盒子尺寸的模式
+
+box-sizing的取值有 content-box、border-box、padding-box
+
+适用于一切有width、height属性的元素
+
+content-box：width和height均指的是   内容   的宽度和高度（默认值）
+
+padding-box：width和height值的是    内容+padding的宽度和高度
+
+border-box：width和height指的是   内容+padding+border的宽度和高度
+
+
+
+
+

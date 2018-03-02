@@ -150,11 +150,10 @@ function addEvt(oTarget, sEvtType, fnHandle) {
 //匹配首尾空白字符的正则表达式
 /^\s*|\s*$/;
 //匹配HTML标记的正则表达式
-<
-(\S * ? )[ ^ > ] * > .* ? | < .* ? />;
+<(\S * ? )[ ^ > ] * > .* ? | < .* ? />;
 
 
-//原生JavaScript实现返回顶部的通用方法
+ // 原生JavaScript实现返回顶部的通用方法
 
 function backTop(btnId) {
     var btn = document.getElementById(btnId);
