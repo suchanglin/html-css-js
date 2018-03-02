@@ -109,7 +109,7 @@ Web页面上调用js文件时则不受是否跨域的影响（不仅如此，我
 	//自定义的回调函数result
 	function result(data) {
 			//我们就简单的获取apple搜索结果的第一条记录中url数据
-			alert(data.responseData.results[0].unescapedUrl);
+		alert(data.responseData.results[0].unescapedUrl);
 		alert(data.responseData.results[0].cacheUrl);
 	}
 </script>
