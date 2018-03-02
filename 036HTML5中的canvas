@@ -25,6 +25,7 @@ canvas只支持一种原生图形的绘制:矩形
 fillRect(startX,startY,width,height) 绘制一个填充的矩形
 fillStroke(startX,startY,width,height) 绘制一个矩形的边框
 clearRect(startX,startY,width,height) 清除指定矩形区域
+
 (2) 线型
 
 通过设置路径来画各种线
@@ -32,9 +33,9 @@ clearRect(startX,startY,width,height) 清除指定矩形区域
 第一步：beginPath();//开始设置路径
 第二步：moveTo(x,y);//设置路径的起点（将笔触移动到某个坐标）
 第三步：lineTo(x,y);//设置线的终点，从起点到终点画一条直线
-       arc(x,y,半径,开始的弧度,结束的弧度,旋转的方向)//画圆弧
-第四步:fill();//根据画的线型，生成实心图形
-      stroke();//根据画的线型，生成轮廓
+        arc(x,y,半径,开始的弧度,结束的弧度,旋转的方向)//画圆弧
+第四步:fill();    //根据画的线型，生成实心图形
+       stroke();   //根据画的线型，生成轮廓
 (3) 三角形
 
 三角形可以通过(2)中的线型生成，其余的几何形状也可以按照同样的方式生成。
@@ -49,6 +50,7 @@ ctx.moveTo(25,25);
 ctx.lineTo(105,25);
 ctx.lineTo(25,105);
 ctx.fill();
+
 2. 绘制文本
 
 (1) 文本
@@ -73,8 +75,8 @@ measureText(“文本”).width 返回指定文本的大小
 
 这里的图像来源可以是一张图片、一个视频帧、另外一个canvas
 
-var img = new Image();   // 创建一个<img>元素
-img.onload = function(){ //用load时间来保证不会在加载完毕之前使用这个图片：
+var img = new Image();        // 创建一个<img>元素
+img.onload = function(){      //用load时间来保证不会在加载完毕之前使用这个图片：
   ctx.drawImage(img,0,0);
   ctx.beginPath();
   ctx.moveTo(30,96);
@@ -83,7 +85,8 @@ img.onload = function(){ //用load时间来保证不会在加载完毕之前使�
   ctx.lineTo(170,15);
   ctx.stroke();
 }
-img.src = 'myImage.png'; // 设置图片源地址
+img.src = 'myImage.png';   // 设置图片源地址
+
 (2) 将图像画在画布中 drawImage(传入的image元素，x，y，width，height)
 
 4. 设置阴影
@@ -102,6 +105,7 @@ shadowBlur:阴影模糊的像素数
 fillStyle = “color” 设置填充颜色
 strokeStyle = “color” 设置边框颜色
 globalAlpha = 透明度 设置canvas里所有图形的透明度（使用较少）
+
 (2) 使用渐变设置颜色
 
 渐变分为两种：线性渐变、径向渐变
@@ -110,14 +114,17 @@ globalAlpha = 透明度 设置canvas里所有图形的透明度（使用较少�
 
 createLinearGradient(startX,startY,endX,endY);//创建线性渐变对象
 createRadialGradient(x1,y1,r1,x2,y2,r2);//创建径向渐变对象
+
 第二步：给渐变对象添加颜色 addColorStop(position,color)
 
 var LG1 = ctx.createLinearGradient(0,0,150,150);
 LG1.addColorStop(0,'white');
 LG1.addColorStop(1,'black');
+
 第三步：将渐变对象赋给图形的fillStyle、strokeStyle属性
 
 ctx.fillStyle = LG1;
+
 6. 设置线型样式
 
 lineWidth 设置线条宽度
@@ -135,6 +142,7 @@ setLineDash() 设置当前虚线样式
 lineDashOffset 设置虚线样式的起始偏移量
 
 暂时只总结了最最基本的用法，后面的用法以后有时间再整理一下。
+
 三. canvas中的width、height与一般style中的width、height的区别
 
 canvas标签的width、height
@@ -155,20 +163,20 @@ canvas作为html的标签，所以也有style属性中的width、height，style�
 <canvas id="diagonal3" style="border:1px solid;width:200px;height:200px;" ></canvas>
 
 <script type="text/javascript">
-        function drawDiagonal(id){
-            var canvas=document.getElementById(id);
-            var context=canvas.getContext("2d");
-            context.beginPath();
-            context.moveTo(0,0);
-            context.lineTo(100,100);
-            context.stroke();
-        }
+      function drawDiagonal(id){
+          var canvas=document.getElementById(id);
+          var context=canvas.getContext("2d");
+          context.beginPath();
+          context.moveTo(0,0);
+          context.lineTo(100,100);
+          context.stroke();
+      }
 
-        window.onload=function(){                
-            drawDiagonal("diagonal1");
-            drawDiagonal("diagonal2");
-            drawDiagonal("diagonal3");              
-        }
+      window.onload=function(){
+          drawDiagonal("diagonal1");
+          drawDiagonal("diagonal2");
+          drawDiagonal("diagonal3");
+      }
 </script>
 最终在浏览器中显示的情况如下所示：
 http://panpanfish.com/myDemo/canvas-width.html
@@ -190,7 +198,7 @@ diagonal3的style.width、style.height比例与画布比例不一致，因此上
 
 例如：
 
-var clientWidth = document.documentElement.clientWidth;//获得设备可见区域宽度
+var clientWidth = document.documentElement.clientWidth;  //获得设备可见区域宽度
 canvas.width = clientWidth;
 canvas.height = clientWidth*800/600;
 
