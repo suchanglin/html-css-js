@@ -102,7 +102,7 @@ position：relative和position：absolute都可以改变元素在文档流中的
 
 另一个有趣的现象是position：absolute和float会隐式的改变display类型，不论之前什么类型的元素（display：none除外），
 
-只要设置了position：absolute、float：left或float：right中人一个，都会让元素以display：inline-block的方式显示：可以设置长宽，默认宽度并不
+只要设置了position：absolute、float：left或float：right中任意一个，都会让元素以display：inline-block的方式显示：可以设置长宽，默认宽度并不
 
 占满父元素。就算我们显示的设置display：inline或者display：block，也任然是无效的（float在IE6下的双边距BUG就是
 
