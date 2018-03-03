@@ -6,15 +6,16 @@
 
    //circle.js
 var PI = Math.PI;
-   exports.area = function(r){
+   exports.area = function(r){   //圆的面积
    	return PI * r * r;
    };
-   exports.circle = function(r){
+   exports.circle = function(r){   //远的周长
    	return 2 * PI * r;
    };
 
 //app.js
 var circle = require("./circle.js");
+
 console.log("The area is" + clrcle.area(4));
 
 node app.js
