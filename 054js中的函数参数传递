@@ -111,9 +111,9 @@ for(var i in b) {
     e[i] = b[i];
 }
 
-e[name] = 'lala';
+e['name'] = 'lala';
 
-console.log(b[name]); // xiaoming
+console.log(b['name']);// xiaoming
 但是一般还是不要使用for-in对数组进行遍历，其缺点有：
 
 （1）循环变量i的值不是数字，而是字符串“0”、“1”、“2”，此时很可能在无意之间进行字符串算数计算，例如：“2” + 1 == “21”，这给编码过程带来极大的不便。
