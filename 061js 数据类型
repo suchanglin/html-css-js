@@ -26,13 +26,13 @@ var a = null;
 if(!a){
 	alert(a);//null
 }
+
 (2) 在相等运算符中，两者是相等的
-1
-2
-3
+
 if(undefined == null){
 	alert("1");//1
 }
+
 2. 不同之处
 
 undefined指的是一个基本类型没有值（缺少值）。
@@ -52,7 +52,8 @@ f() // undefined
 对象的属性没有被赋值时，等于undefined
 var  o = new Object();
 o.p // undefined
-null表示一个空对象的指针，可作为原型链的终点
+
+null表示一个空对象的指针，可作为原型链的终点  //是这个 Object.prototype = null; 吗??
 
 typeof null; //Object
 null instanceof Object; //false
@@ -87,13 +88,14 @@ console.log(typeof b);//number
 console.log(typeof c);//boolean
 console.log(typeof d);//undefined
 console.log(typeof e);//function
+
 当用typeof来检测引用类型和null时，返回的都是object
 
 var e = {};
 var f = null;
 
-console.log(typeof e);
-console.log(typeof f);
+console.log(typeof e);   // object
+console.log(typeof f);   // object
 
 2. instanceof
 
@@ -101,7 +103,8 @@ console.log(typeof f);
 
 
 var myArr=[1,2,3];
-console.log(myArr instanceof Array);//true
+console.log(myArr instanceof Array);  //true
+
 用instanceof检测基本类型都会返回false
 
 instanceof实现原理
@@ -127,7 +130,7 @@ new Bar() instanceof Foo;//true
 
 Object.prototype.toString.call([])
 
-会输出’[object Array]’
+会输出 "[object Array]"
 
 检测数组的方法：
 
