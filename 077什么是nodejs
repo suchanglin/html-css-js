@@ -6,13 +6,14 @@ nodejs是对于需要独立运行的js的一个解析器。nodejs是用C++语言
 
 这里插叙一点脚本语言和编程语言的区别：
 
-1. 脚本语言（scripting language）：脚本语言不需要编译，可以直接用，由解释器来负责解释。 
+1. 脚本语言（scripting language）：脚本语言不需要编译，可以直接用，由解释器来负责解释。
 
 编程语言可分为：机器语言、汇编语言、高级语言（一般的java、c、c++等都是指的高级语言）。
 
 编程语言都需要经过编写-编译-链接-运行 这四个步骤。
 
 2. 编程语言的语法和规则更加严格和复杂一些。
+
 每一种解析器都提供了一些内置对象和方法，允许js对其进行操作。
 
 例如运行在浏览器中的JS的用途是操作DOM，浏览器就提供了document之类的内置对象。
@@ -20,18 +21,23 @@ nodejs是对于需要独立运行的js的一个解析器。nodejs是用C++语言
 而运行在NodeJS中的JS的用途是操作磁盘文件或搭建HTTP服务器，NodeJS就相应提供了fs、http等内置对象。
 
 NodeJS的作者说，他创造NodeJS的目的是为了实现高性能Web服务器。
-二. 如何在nodejs里面运行js
+
+二. 如何在node.js里面运行js脚本?
 
 1. 直接像浏览器控制台一样输入代码
 
 打开cmd
 输入node(这时是不需要指定到哪一个文件夹里的)
 输入代码，例如：console.log('Hello World!')
-2. 用nodejs运行单独的js文件
+
+2. 用node.js运行单独的js文件
 
 打开cmd
 进入需要运行的js文件的文件夹
 输入node 文件名.js
+
+比如：在G盘有一个test.js文件，则输入 node test.js ,不需要在右尖括号 > 状态下。
+
 三. 什么是npm
 
 npm的全称是Node Package Manager，是nodejs的包管理器。
