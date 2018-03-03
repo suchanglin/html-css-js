@@ -50,17 +50,17 @@ Etag指的是版本标识符，由服务端配置。
 
 响应报文：
 
-  HTTP/1.1 200 OK   
-  Last-Modified: Tue, 12 Dec 2006 03:03:59 GMT   
-  ETag: "10c24bc-4ab-457e1c1f"   
+  HTTP/1.1 200 OK
+  Last-Modified: Tue, 12 Dec 2006 03:03:59 GMT
+  ETag: "10c24bc-4ab-457e1c1f"
   Content-Length: 12195
 
 下一次的请求报文 ：
 
-  GET /i/yahoo.gif HTTP/1.1   
-  Host: us.yimg.com   
-  If-Modified-Since: Tue, 12 Dec 2006 03:03:59 GMT   
-  If-None-Match: "10c24bc-4ab-457e1c1f"  
+  GET /i/yahoo.gif HTTP/1.1
+  Host: us.yimg.com
+  If-Modified-Since: Tue, 12 Dec 2006 03:03:59 GMT
+  If-None-Match: "10c24bc-4ab-457e1c1f"
 
 再次响应的报文：
 
@@ -119,7 +119,7 @@ Accept-Encoding: gzip
 
 7. 在请求头中添加Expires或者Cache-Control
 
-6、7其实就是一中的缓存ajax返回的数据
+6、7两项其实就是上述‘一’里面的缓存ajax返回的数据
 
 
 
@@ -277,7 +277,7 @@ function process(data) {
 
 //好的写法
 function process(data) {
-	
+
 	//将数组的长度存到一个局部变量中
 	var len = data.length;
 	if(len > 0) {
