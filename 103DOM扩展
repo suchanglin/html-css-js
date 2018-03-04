@@ -1,9 +1,10 @@
 一. 为什么要扩展DOM
 
-在原来的dom操作中，从页面中获取dom的方式只有两种：
+在原来的dom操作中,从页面中获取dom的方式只有两种:
 
-document.getElementById(“id”)
-document.getElementByTagName(“input”)
+document.getElementById("id");
+document.getElementsByTagName("input");
+
 但是只用这两种方式获取dom节点有的时候会很不方便。
 
 于是出现了一些扩展的方法。
@@ -17,9 +18,10 @@ document.getElementByTagName(“input”)
 （1）根据CSS选择器来获取dom元素
 
 支持的浏览器：IE8+、Firefox3.5+、Safari3.1+、Chrome、Opera10+
-querySelector(“css选择器”)：返回第一个匹配这个选择器的元素，没有则为null
-querySelectorAll(“css选择器”)：返回所有匹配这个选择器的NodeList对象。
-matchesSelector(“dom节点”,”css选择器”)：判断dom节点的选择符是否和某一选择符匹配，返回的是bool值
+
+querySelector("css选择器")：返回第一个匹配这个选择器的元素，没有则为null
+querySelectorAll("css选择器")：返回所有匹配这个选择器的NodeList对象。
+matchesSelector("dom节点","css选择器")：判断dom节点的选择符是否和某一选择符匹配，返回的是bool值
 
 （2）获取元素节点
 
@@ -36,10 +38,13 @@ nextElementSibling：下一个兄弟元素（nextSibling的dom版）
 （1）通过类名获取dom节点
 
 支持的浏览器有：IE9+、Firefox3+、Safari3.1+、Chrome、Opera9.5+
-getElementsByClassName("css")
-（2）获取某一个元素的类名数组div.classList
+
+getElementsByClassName("css");
+
+（2）获取某一个元素的类名数组 div.classList
 
 支持的浏览器有：Firefox3.6+、Chrome
+
 div.classList有4个方法：
 
 add(value)
