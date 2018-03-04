@@ -235,7 +235,7 @@ rejected已失败
 
 6. 模版字符串
 
-使用反撇号``
+使用反引号 ` `,（Esc下面那个键）
 
 模板字符串内部使用${}将js表达式包起来
 
@@ -280,6 +280,7 @@ Point.prototype.toString = function () {
 };
 
 var p = new Point(1, 2);
+
 ES6中通过 class关键字定义类
 
 //定义类
@@ -302,7 +303,7 @@ var a = new Point();
 注意：
 (1). 类里面的构造函数之间不需要逗号分隔
 (2). 用class声明的类的数据类型就是函数
-(3). 类里面定义的所有的方法都试定义在类的原型(prototype)上
+(3). 类里面定义的所有的方法都是定义在类的原型(prototype)上
 (4). 一个类必须有constructor方法
 (5). 不存在变量提升
 (6). class 与function类似，可以使用表达式的形式定义
@@ -314,7 +315,6 @@ const MyClass = class { /* ... */ };
 2. class的继承
 
 通过关键字extends实现继承
-
 
 //ColorPoint继承了Point的所有属性和方法
 class ColorPoint extends Point {}
@@ -368,7 +368,7 @@ ES6中的class解决的问题：
 export
 import
 
-在ES6中，无论是否加入’use strict;’语句，默认情况下都是在严格模式下进行的。
+在ES6中，无论是否加入'use strict;'语句，默认情况下都是在严格模式下进行的。
 
 1. 导出
 
@@ -378,9 +378,8 @@ import
 
 
 export {module1, module2...}
+
 默认导出
-
-
 export default ...
 export default命令用于指定模块的默认输出。一个模块只能有一个默认输出。
 

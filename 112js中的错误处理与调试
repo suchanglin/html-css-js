@@ -7,6 +7,7 @@ ReferenceError
 SyntaxError
 TypeError
 URIError
+
 1. Error
 
 错误的基类型，所有错误继承自这个错误，编程中一般不会出现这个错误。
@@ -19,6 +20,7 @@ URIError
 
 eg：使用了数组不支持的项数。
 var arr = new Array(-20);
+
 4. ReferenceError——引用错误
 
 访问不存在的变量时会出现。
@@ -48,17 +50,21 @@ try {
 }
 对于不同浏览器而言，这里的error对象包含不同的属性，但是所有浏览器都有一个相同的属性：
 
-error.message:浏览器给出的错误消息    
+error.message:浏览器给出的错误消息
+
+
 try…catch…finally
 
 try {
-	return 0;	
+	return 0;
 } catch(error) {
 	return 1;
 } finally {
 	return 2;
 }
 注意：finally语句块中的语句会覆盖try和catch里面的，所以代码会返回2。
+
+
 2. 抛出错误——throw
 
 throw 用来创建自定义错误
