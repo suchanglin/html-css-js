@@ -1,8 +1,8 @@
-一. 什么是koa.js?
+一. 什么是 koa.js?
 
-koa.js是一个基于nodejs的web框架，主要利用了ES6里面的generator的新特性。
+koa.js是一个基于node.js的web框架,主要利用了ES6里面的Generator的新特性.
 
-koa的作用：
+koa的作用:
 
 利用一个个中间件对HTTP请求进行处理。例如：生成缓存／指定代理／请求重定向等。
 
@@ -16,6 +16,7 @@ express让请求逐个通过中间件，实现处理网络请求，是串联的�
 
 Express自身封装来很多功能：比如路由，视图处理等等。
 koa框架自身没有集成太多功能，大部分需要用户自己去require中间件去解决，这样使用起来反而更灵活。
+
 二. koa实例的几种方法
 
 var koa = require('koa');
@@ -23,18 +24,19 @@ var app = koa();
 
 app.use()：使用中间件
 app.listen()：监听某一个端口
-app.on()：可以用来监听事件，例如：app.on(‘error’, function)
-app.callback()
-app.keys = ：用来设置签名cookie密钥
+app.on()：可以用来监听事件，例如：app.on('error', function);
+app.callback();
+app.keys = :用来设置签名cookie密钥
+
 三. koa的中间件
 
 1. 什么是中间件？
 
 koa的中间件：
 
-koa的中间件是一个generator函数，这些函数是用来处理http请求。
+koa的中间件是一个Generator函数，这些函数是用来处理http请求。
 
-generator函数最大的特点是：函数可以在运行的时候跳出然后再跳回来。
+Generator函数最大的特点是：函数可以在运行的时候跳出然后再跳回来。
 
 可以自己写中间件，也可以用已经封装好了的中间件。
 
@@ -94,6 +96,7 @@ f1: pre next
    		f3: post next
  		f2: post next
 f1: post next
+
 4. 合并中间件
 
 使用.call(this,next)将多个中间件进行合并。
