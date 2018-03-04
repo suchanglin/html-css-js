@@ -31,8 +31,9 @@ target.ondragenter = function(event){
 	event.preventDefault();//阻止默认事件的默认行为
 }
 target.ondragover = function(event){
-	event.preventDefault(); 
+	event.preventDefault();
 }
+
 四. 拖放元素的数据交换
 
 实现拖放的原理就是，删除原来的元素，在目标元素里添加这个元素
@@ -51,6 +52,7 @@ dataTransfer对象有两个属性：
 
 dropEffect：被拖动的元素能够执行哪种放置行为
 effectAllowed：被拖动的元素允许哪种dropEffect
+
 五. 举个栗子
 
 eg:
@@ -110,7 +112,7 @@ eg:
 				};
 
 				//拖放过程中
-				src.ondrag = function(e){ 
+				src.ondrag = function(e){
 					info.innerHTML="<h2>--照片正在被拖动--</h2>";
 				}
 
@@ -122,7 +124,7 @@ eg:
           浏览器只会响应click事件,不会发生跳转.
 				}
 				target.ondragover = function(e){
-					e.preventDefault(); 
+					e.preventDefault();
 				}
 				//有东西拖放到了目标元素
 				target.ondrop = function (e) {

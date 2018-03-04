@@ -6,24 +6,24 @@
 			["b",2,2],
 			["c",4,3]
 		   ];
-    
+
     var arr1 = arr.sort(function(x, y) {
          return x[1] - y[1];//根据第二列排序（升序）
     });
-    console.log(arr1);
-//arr1 = [			
+    console.log(arr1);  // 结果如下：
+  arr1 = [
 			["b",2,2],
 			["c",4,3],
 			["a",7,10]
 		  ];
-      
+
 二. 数组里面是对象的排序问题
 
-var arr = [ 
-      {name:'hdj', age:118}, 
-      {name:'yim', age:25}, 
-      {name:'hdq', age:26} 
- ]; 
+var arr = [
+      {name:'hdj', age:118},
+      {name:'yim', age:25},
+      {name:'hdq', age:26}
+ ];
 
 按照age的值得大小排序：
 
@@ -32,8 +32,8 @@ arr.sort(function(a,b){
 });
 
 输出结果为：
-arr = [ 
-      {name:'yim', age:25}, 
-      {name:'hdj', age:118},        
-      {name:'hdq', age:26} 
+arr = [
+      {name:'yim', age:25},
+      {name:'hdq', age:26}
+      {name:'hdj', age:118},
  ];

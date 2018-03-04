@@ -20,8 +20,6 @@ unload：用户从一个页面切换到另一个页面时触发
 resize：浏览器窗口宽度、高度改变时触发
 scroll：浏览器的窗口滑动滚轮时触发
 
-
-
 三. 焦点事件
 
 页面获得或者失去焦点
@@ -45,6 +43,7 @@ mousemove：鼠标指针在元素内部移动时重复触发
 mouseout：鼠标指针位于一个元素上方，然后用户将其移入另一个元素时触发
 mouseover：鼠标指针位于一个元素外部，用户将其首次移入另一个元素边界之内时触发
 mouseup：用户释放鼠标按钮时触发
+
 mouseenter和mouseover的区别：
 
 若元素内部有子元素，鼠标进入该元素和该元素内部的子元素都会触发mouseover；鼠标进入该元素整个范围之内触发mouseenter
@@ -63,7 +62,7 @@ mouseenter和mouseover的区别：
                 width: 40%;
                 float: left;
             }
-            
+
             #enter {
                 background-color: lightgray;
                 padding: 20px;
@@ -92,7 +91,7 @@ mouseenter和mouseover的区别：
             var divEnter = document.getElementById("enter");
             var overNum = document.getElementById("overNum");
             var enterNum = document.getElementById("enterNum");
-            
+
             divOver.onmouseover = function() {
                 overNum.innerHTML = parseInt(overNum.innerHTML) + 1;
             }
