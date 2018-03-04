@@ -1,15 +1,16 @@
 
 ES6标准新增了一种新的函数：Arrow Function（箭头函数）。
-为什么叫Arrow Function？因为它的定义用的就是一个箭头：
+为什么叫 Arrow Function？因为它的定义用的就是一个箭头：
 
 x => x * x
+
 上面的箭头函数相当于：
 
 function (x) {
 return x * x;
 }
 
-但箭头函数带来了些许问题，下面来一起看看吧。
+但箭头函数带来了些许问题，下面来一起来分析。
 关于{}
 第一个问题是关于箭头函数与{}。
 箭头函数，乍一看，用法似乎很简单，比如像下面这样用来给数组每一项乘以2：
@@ -20,23 +21,25 @@ return x * x;
        传递给map()的函数的调用方式和传递给forEach()的函数的调用方式一样。但传递给map()的函数应该有返回值。
        注意：map()返回的是新数组：它不修改调用的数组。
        如果是稀疏数组，返回的也是相同方式的稀疏数组：它具有相同的长度，相同的缺失元素。)
-       
-const numbers = [1, 2, 3];
+
+ const numbers = [1, 2, 3];
  const result = numbers.map(n => n * 2);
  // produces [2,4,6]
- 
+
 但是，如果使用不当，可能会引发意想不到的问题。比如下面，尝试为数组中每一项去产生对象字面量，看上去挺简单的map操作，还是引发了意外。
 
-const numbers = [1, 2, 3];
+ const numbers = [1, 2, 3];
  const result = numbers.map(n => { value: n });
+
  // produces [undefined], [undefined], [undefined]
- 
+
 什么原因造成的呢？
 稍微分析可知，引起上面问题在于，箭头函数内部包裹在花括号之间的代码，被认为是一段独立的代码块而不是对象字面量，因此其单独执行，
 显然得到的结果就是一个全为undefined的数组。
 于是，在这种情况下，其中的代码就必须有明确的返回语句或者用圆括号()包括对象字面量。
 
-const result = numbers.map(n => ({ value: n }));
+ const result = numbers.map(n => ({ value: n }));
+
  // [{value: 1}, {value:2}, {value:3}]
 关于this
 第二个问题是关于箭头函数与this。
@@ -61,9 +64,9 @@ const adder = {
     this.sum += n;
    });
   }
- 
+
  };
- 
+
  adder.add([1, 2, 3]);
  // adder.sum === 0
 最后请记住一点：箭头函数中的this继承自外围作用域的值，因此我们不能改变其指向。

@@ -19,7 +19,7 @@ lazyload的好处：
 懒加载实现的过程：
 
 可以将网页中的图片都设置为同一张图片
-给图片增加自定义属性data-origin=’img/example.jpg’
+给图片增加自定义属性data-origin='img/example.jpg'
 当滚动条到达用户可视区之后，改变图片的src属性为我们缓存的地址
 浏览器加载可视区域图
 如何判断图片是否在视窗内：
@@ -37,7 +37,7 @@ function lazyload() {
 
 	for(var i = 0; i < imgs.length; i++) {
 		var y = scrollTop + veiwportSize - img[i].offsetTop;
-		
+
 		if(y > 0) {
 			imgs[i].src = imgs[i].getAttribute('data-origin');
 		}
@@ -45,6 +45,8 @@ function lazyload() {
 }
 
 setInterval(lazyload, 1000);
+
+
 三. 滚动条滚动到底部，加载更多内容
 
 需要判断是否到达了文件的底部
@@ -57,13 +59,13 @@ document.body.scrollTop + clientHeight 是否大于 document.body.scrollHeight
 window.onscroll = function() {
     //垂直滚动的距离
 	var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-	
+
 	//可视窗口的高度
 	var clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
 
     //文档的完整高度
 	var scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
-	
+
 	//判断是否到达了文档的最底部，如果是，那么再动态添加元素
 	if(scrollTop + clientHeight == scrollHeight) {
 		var xhr = new XMLHttpRequest();
