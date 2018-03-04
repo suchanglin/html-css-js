@@ -10,7 +10,6 @@ Web Sockets的目的是：
 
 1. 创建一个WebSocket实例
 
-
 var socket = new WebSocket("ws://www.example.com/server.php");
 注意：传入的参数是一个绝对的URL，websocket协议不受同源策略的影响。
 
@@ -27,7 +26,8 @@ var message = {
 	clientId: "asdfp8734rew"
 }
 
-socket.send(JSON.stringify(message));
+socket.send(JSON.stringify(message));   //竟然运行time的方法
+
 插叙一点关于JSON的知识：
 
 JSON是一种轻量级的文本数据交换格式，在语法上与js对象的代码相同。
@@ -73,7 +73,6 @@ close事件的event有额外的信息：
 wasClean:布尔值，是否明确地关闭
 code：服务器返回的数值状态码
 reason：字符串，包含服务器发回的消息
-
 
 
 实例：
