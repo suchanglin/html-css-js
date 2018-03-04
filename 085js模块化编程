@@ -23,14 +23,13 @@ function divide(a,b){
 
 将函数包裹在一个对象中：
 
-
 var math = {
 	_flag: 0,
 
 	add: function(a,b){
 		return a + b;
 	},
-	
+
 	devide: function(a,b){
 		return a/b;
 	}
@@ -39,18 +38,17 @@ var math = {
 
 例如：
 
-
 var math = {
 	_flag: 0,
 
 	add: function(a,b){
 		return a + b;
 	},
-	
+
 	devide: function(a,b){
 		return a/b;
 	}
-}；
+};
 
 math._flag = 2;
 console.log(math._flag);//2
@@ -62,7 +60,7 @@ console.log(math._flag);//2
 
 var math = (function(){
 	var _flag = 0;
-	
+
 	return {
 		add: function(a,b){
 			return a + b;
@@ -110,20 +108,21 @@ var math = (function($){
 
 二. js模块化编程的规范
 
-CommonJs：服务器模块的规范，浏览器使用 —— browserify
+Common.js：服务器模块的规范，浏览器使用 —— browserify
 AMD：asynchornous module definition
 CMD：common module definition
+
 1. browserify
 
-browserify是commonJs规范用于浏览器的一个工具，实现js的模块与依赖管理。
+browserify是common.js规范用于浏览器的一个工具，实现js的模块与依赖管理。
 
-CommonJs是同步加载模块的，需要等到一个模块加载完毕之后才能使用。
+Common.js是同步加载模块的，需要等到一个模块加载完毕之后才能使用。
 
 browserify中规定：
 
-用require()引入模块
+用 require()引入模块
 
-用module.exports来引出模块
+用 module.exports来导出模块
 
 举个栗子：
 
@@ -138,20 +137,24 @@ module.exports = function () {
 var $ = require("./a");
 a();
 console.log("This is b.js");
+
+
 browserify如何使用
 
 (1)安装browserify
 
-首先要安装npm和nodejs
+首先要安装npm和node.js
 
 然后在命令行中输入
 
 npm install -g browserify //在全局变量中安装browserify
+
 (2)使用browserify
 
 进入到需要运行的js文件的文件夹里，然后执行
 
 browserify b.js -o bundle.js
+
 编译后生成的bundle.js文件中，所有的js模块都合并在一起了并建立好了依赖关系。
 
 (3)在nodejs里运行编译后的bundle.js
@@ -161,19 +164,19 @@ browserify b.js -o bundle.js
 在命令行中输入：
 
 node b.js
+
 (4)在前端页面引用bundle.js
 
 <script src="bundle.js"></script>
 bondle.js
 
-
 (function e(t,n,r){
-	
+
 	//...自执行函数内容
 
 })({
 	1:[function(require,module,exports){
-		
+
 		// a.js
 		module.exports = function () {
 		    console.log('This is a.js');
@@ -188,6 +191,7 @@ bondle.js
 		console.log('This is b.js');
 	},{"./a":1}]
 },{},[2]);
+
 bondle.js是一个自执行函数，这个自执行函数接收3个参数。
 
 第一个参数是一个object，它的每一个key都是数字，作为模块的id，每一个数字key对应的值是长度为2的数组。
@@ -204,7 +208,7 @@ bondle.js是一个自执行函数，这个自执行函数接收3个参数。
 
 2. AMD规范
 
-CommonJs是服务器端的模块规范，由于服务器的模块都是存在服务器上，因此同步加载模块不会带来问题，但是如果浏览器端也采用同步加载，当网速很慢时，
+Common.js是服务器端的模块规范，由于服务器的模块都是存在服务器上，因此同步加载模块不会带来问题，但是如果浏览器端也采用同步加载，当网速很慢时，
 就会等待很久。因此浏览器端需要异步加载模块。
 
 AMD的特点是异步加载，模块的加载不影响其他代码的运行。
@@ -225,7 +229,7 @@ id指的是模块的名字；
 
 dependencies是此模块依赖的模块，是一个数组；
 
-factory是一个工场方法：表示模块初始化要执行的函数或对象，如果为函数，只被执行一次；如果为对象，此对象应该为模块的输出值。
+factory是一个工厂方法：表示模块初始化要执行的函数或对象，如果为函数，只被执行一次；如果为对象，此对象应该为模块的输出值。
 
 模块的加载
 
@@ -239,11 +243,9 @@ require(["math"],function(math){
 });
 
 
-
-
 3. CMD规范
 
-CMD与CommonJs是兼容的。sea.js是利用CMD规则。
+CMD与Common.js是兼容的。sea.js是利用CMD规则。
 
 CMD模块定义规则
 
