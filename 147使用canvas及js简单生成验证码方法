@@ -1,20 +1,18 @@
-<<<<<<< HEAD
-=======
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    
-    <!-- 在很多时候都需要用到验证码，前端验证码需要知道Html5中的canvas知识点。验证码生成步骤是： 
-1.生成一张画布canvas 
-2.生成随机数验证码 
-3.在画布中生成干扰线 
-4.把验证码文本填充到画布中 
+
+<!-- 在很多时候都需要用到验证码，前端验证码需要知道Html5中的canvas知识点。验证码生成步骤是：
+1.生成一张画布canvas
+2.生成随机数验证码
+3.在画布中生成干扰线
+4.把验证码文本填充到画布中
 5.点击画布更换验证码  -->
+
  <!-- 结构与样式： -->
- 
+
     <canvas id="mycanvas" width='90' height='40'>
         <!-- 您的浏览器不支持canvas，请换个浏览器试试~ -->
     </canvas>
@@ -27,7 +25,7 @@
 
 <body>
     <!-- 下面来编写js代码： -->
-              <!--    生成4位随机数  -->
+    <!--    生成4位随机数  -->
      <script type="text/javascript">
     function rand() {
         var str = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -68,7 +66,7 @@
         }
         cxt.fillStyle = 'red';
         cxt.font = 'bold 20px Arial';
-        cxt.fillText(rand(), 25, 25); //把rand()生成的随机数文本填充到canvas中  
+        cxt.fillText(rand(), 25, 25); //把rand()生成的随机数文本填充到canvas中
     }
     clickChange();
     /*点击验证码更换*/
@@ -80,4 +78,4 @@
 </body>
 
 </html>
->>>>>>> 5e4e524ef0376632abe77db577ad2e108ce93719
+
