@@ -39,6 +39,7 @@ demo地址：http://panpanfish.com/myDemo/research/date3.html
 由于在写对象方法时，作为函数调用的内部的this指的并不是当前对象，因此经常会使用闭包来获取当前对象：
 
 var that = this;
+
 因此产生了一个对象引用的问题，就是我在函数里面改变了that的一些属性值，与之对应的this值也会改变吗？
 
 举个栗子：
@@ -55,11 +56,11 @@ console.log(a.age);//a.age = 3;
 
 b = null;//切断了b与内存A的关系，但此时a仍然可以读写该内存A
 a = null;//也切断了a与内存A的关系，这时内存A就被垃圾回收了
-这就是对象引用。可以简单理解同一银行帐号你拿存折，我拿卡。不管谁取钱了帐号都会减少金额，同理存钱也会涨。
+这就是对象引用。可以简单理解同一银行帐号你拿存折，我拿卡。不管谁取钱了,帐号都会减少金额，同理存钱也会涨。
 
 2. 用字符串拼接的方式添加dom时，首先声明的变量应该赋值为一个空的字符串，否则会拼接进一个undefined。
 
-3. select框与div水平无法对齐，给select框添加样式：verticle-align:middle；
+3. select框与div水平无法对齐，给select框添加样式：verticle-align:middle;
 
 4. 用parseInt()将字符串变成数字时，只能将以数字开头的字符串变成数字：
 
@@ -67,6 +68,7 @@ a = null;//也切断了a与内存A的关系，这时内存A就被垃圾回收了
 
 parseInt("23abc");//23
 parseInt("abc23");//NAN
+
 5. 文本框输入字符事件 textInput、文本框获取焦点事件 focusin
 
 火狐不支持focusin事件，和textInput事件
@@ -75,19 +77,17 @@ chrome对这两个事件都支持
 
 解决这个兼容性的方法：将focusin事件换成了focus事件
 由于一聚焦就触发了，因此textInput事件失效了也没关系
+
 6. <table>标签里面的padding无效
 
 <table>里面如果要设置padding，只能用<table>标签的属性
 
 cellpadding：单元格外面的一个距离
 cellspacing：表格边框与单元格补白的距离
+
 7. 用createElement生成的是dom对象
 
 不能通过字符串的方式拼接
 
 只能通过appendChild的方式
-三. 第一次修订
 
-在我学习了requireJS和sass之后，又用requireJS和sass修改了一下日历组件（三）。
-
-将之前css里面用的固定长宽都修改成了百分比的形式，方便扩展。
