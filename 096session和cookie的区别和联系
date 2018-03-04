@@ -29,7 +29,9 @@ cookies的基本思想就是让浏览器积累一组服务器特有的信息，�
 
 cookie如何分发
 cookie的内容
+
 客户端如何使用cookie
+
 1. cookie如何分发
 
 a. 服务器在返回的响应报文中，通过Set-Cookie头部来设置cookie
@@ -37,6 +39,7 @@ a. 服务器在返回的响应报文中，通过Set-Cookie头部来设置cookie
 HTTP/1.1 200 OK
 Content-type: text/html
 Set-Cookie: name=value; domain="www.baidu.com";
+
 b. 客户端将set-cookie首部中的内容保存下来，在下次发送请求时携带
 
 GET /index.html HTTP/1.1
@@ -56,11 +59,13 @@ cookie的数据始终在同源的http请求中携带，并且会来回传递。
 根据过期时间不同，将cookie分为会话cookie和持久cookie。
 
 会话cookie和持久cookie的区别：
+
 过期时间：
 
 会话cookie：没有设定过期时间的cookie都会被当成会话cookie
 
-持久cookie：设置了过期时间的cookie是
+持久cookie：设置了过期时间的cookie
+
 存储地点：
 
 cookie都是存在客户端的。但是不同类型的cookie存在客户端的位置不一样。
@@ -68,26 +73,29 @@ cookie都是存在客户端的。但是不同类型的cookie存在客户端的�
 会话cookie：存储在内存里
 
 持久cookie：存储在硬盘上
+
 消失时间：
 
 会话cookie：由于会话cookie是存在内存中的，内存又是相对于进程分配的，因此进程关闭，会话cookie就会消失。
 
-           对于多进程浏览器（chrome、IE 10），浏览器的一个标签页就是一个进程，在浏览器窗口(标签页)关闭之后就会消失；
+对于多进程浏览器（chrome、IE 10），浏览器的一个标签页就是一个进程，在浏览器窗口(标签页)关闭之后就会消失；
 
-           对于多线程浏览器（firefox），浏览器的一个标签页是一个线程，只有当浏览器窗口关闭才会消失（所有浏览器窗口都是一个进程）。
+对于多线程浏览器（firefox），浏览器的一个标签页是一个线程，只有当浏览器窗口关闭才会消失（所有浏览器窗口都是一个进程）。
 
 持久cookie：是在过期时间之后消失。
+
 是否被浏览器不同页面共享：
 
 会话cookie：不同浏览器的处理方式不同。
 
-           对于多进程浏览器（chrome、IE 10），是不能被浏览器的不同标签页共享
+对于多进程浏览器（chrome、IE 10），是不能被浏览器的不同标签页共享
 
-           对于多线程浏览器（firefox）,是可以被浏览器的不同标签页共享
+对于多线程浏览器（firefox）,是可以被浏览器的不同标签页共享
 
-           一般来说是用javascript的window.open()打开的窗口会与原窗口共享内存cookie。
+一般来说是用javascript的window.open()打开的窗口会与原窗口共享内存cookie。
 
 持久cookie：是存在电脑硬盘里，是可以被同一个浏览器的所有页面共享的（无论是多进程还是多线程浏览器）；
+
 补充一点点：
 
 不同浏览器之间不能共享cookie，因为每个浏览器存cookie路径不是一样的。
