@@ -22,39 +22,42 @@ Webpack的加载器之间可以进行串联，一个加载器的输出可以成�
 
 将多个页面的公用模块独立打包，从而可以利用浏览器缓存机制来提高页面加载效率；
 按需加载，减少页面初次加载时间。
+
 四. webpack打包之后的文件
 
 webpack兼容commonjs规范、AMD
 
 打包之前的2个模块：
 
-parent.js
-
+parent.js 文件
 
 var cats = ['dave','henry','martha'];
 //commonJS的写法
 module.exports = cats;
-app.js
 
+
+
+app.js文件
 
 cats = require('./parent.js');
-打包之后的文件：
 
+//打包之后的文件：
 
 ([
 	function(module, exports, __webpack_require__) {
     	cats = __webpack_require__(1);
     	console.log(cats);
 	},
-    
+
 	function(module, exports) {
         var cats = ['dave', 'henry', 'martha'];
         module.exports = cats;
 	}
 ])
-数组第一个元素是app.js里面的内容，第二个元素是依赖的内容
 
-由此可见，不仅app.js里面的内容被打包进app.bundle.js，app.js所依赖度cats.js也被打包了进来。
+数组第一个元素是 app.js里面的内容，第二个元素是依赖的内容
+
+由此可见，不仅 app.js里面的内容被打包进 app.bundle.js, app.js所依赖度cats.js也被打包了进来。
 
 webpack打包原理是边读边分析入口文件的依赖，分析入口文件依赖的文件的依赖，以此类推，只要有依赖都去分析并打包到输出文件(app.bundle.js)中
 
