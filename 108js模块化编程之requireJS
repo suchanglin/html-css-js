@@ -16,16 +16,16 @@ requireJS官网：http://requirejs.org/
 
 requireJS常用的方法：
 
-main.js主模块内使用require()
-require([需要引入的模块], 回调函数(参数代表刚刚引入的模块){})；
+main.js 主模块内使用 require()。
+require([需要引入的模块], 回调函数(参数代表刚刚引入的模块){});
 
 eg:
 
 require(["jquery"], function($) {
 
 });
-使用require.config进行配置
-require.config()接受一个配置对象
+使用 require.config进行配置
+require.config() 接受一个配置对象
 
 eg:
 
@@ -72,9 +72,9 @@ define("myModule", ["jquery"], function(参数代表刚刚引入的模块) {
 
 requirejs可以看成一个模块加载器
 
-1.我们在使用requireJS时，都会把所有的js交给requireJS来管理，也就是我们的页面上只引入一个require.js，把data-main指向我们的main.js。
+1.我们在使用requireJS时，都会把所有的js交给requireJS来管理,也就是我们的页面上只引入一个require.js，把data-main指向我们的main.js。
 
-2.通过我们在main.js里面定义的requirejs方法或者define方法，requireJS会把这些依赖和回调方法都用一个数据结构保存起来。
+2.通过我们在 main.js里面定义的requirejs方法或者define方法，requireJS会把这些依赖和回调方法都用一个数据结构保存起来。
 
 3.当页面加载时，requireJS会根据这些依赖预先把需要的js通过document.createElement的方法引入到dom中，这样，被引入dom中的script便会运行。
 

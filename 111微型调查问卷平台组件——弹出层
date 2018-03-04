@@ -20,7 +20,7 @@ Demo地址：http://panpanfish.com/myDemo/research/floatdiv.html
 
 (1) this指代的问题
 
-setTimeout,setTimeout里面的回调函数内的this指的是全局对象，因此需要用var that = this;，再利用闭包，在setTimeOut里面使用that。
+setTimeout,setTimeout里面的回调函数内的this指的是全局对象,因此需要用var that = this;再利用闭包，在setTimeOut里面使用that。
 
 关于this指代对象的问题，可看相关博客
 
@@ -38,8 +38,8 @@ transition: transform 200ms linear 0ms;
 
 (3)选取某一个标签下class为myclass的标签
 
-
 eg: p.myclass{}//中间不能空格
+
 (4) 监听事件，兼容浏览器
 
 if(mydiv.addEventListener) {
@@ -67,7 +67,7 @@ if(mydiv.addEventListener) {
 
 注意：鼠标按下时，监听鼠标按下事件的div是我们需要移动的div（这个例子里是弹出框的头部）
 鼠标移动：onmousemove事件触发时，获取鼠标的在可见区域内距离浏览器左边、上边的距离：event.clientX、event.clientY；
-并减去鼠标按下时的event.clientX、event.clientY，计算出鼠标在横轴和纵轴分别走了多远；并将弹出框的left和top值分别移动相应的值。
+并减去鼠标按下时的 event.clientX、event.clientY，计算出鼠标在横轴和纵轴分别走了多远；并将弹出框的left和top值分别移动相应的值。
 
 注意：
 
@@ -81,7 +81,7 @@ if(mydiv.addEventListener) {
 
 如何解决这个问题：
 
-**在ie中：**可以使用setCapture()和releaseCapture()来解决这个问题。
+**在ie中：** 可以使用 setCapture()和 releaseCapture()来解决这个问题。
 
 - setCapture():某一对象调用这个函数之后，之后的所有的mouse事件都发送给这个对象（相当于在这个对象上执行事件，调用这个对象绑定的事件监听函数）
 - relaeaseCapture():某一对象调用这个函数之后，将mouse事件还回去。
@@ -92,13 +92,14 @@ if(mydiv.addEventListener) {
 鼠标松开：onmouseup事件触发时，获取当前弹出框（绝对定位）的left、top值。
 
 注意：这个事件是在鼠标移动之后发生，因此会出现与鼠标事件一样的问题，解决方法如上。
+
 (2)实现拖拽中遇到的问题
 
 获取html元素样式
 
 具体见http://panpanfish.com/2016/06/07/2016-06-07-js%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0%E7%9A%84%E6%A0%B7%E5%BC%8F/
 
-注意：使用getComputedStyle时，获取的是计算后的样式，在这里使用了百分比和translate(-50%, -50%);但使用ie中的currentStyle.attr只能获取到百分比，
+注意：使用getComputedStyle时，获取的是计算后的样式，在这里使用了百分比和 translate(-50%, -50%);但使用ie中的currentStyle.attr只能获取到百分比，
 而不是px值。
 
 当前鼠标的在可见区域里的位置
@@ -186,7 +187,7 @@ Dom：与Dom操作有关的方法
 Eve：与事件有关的方法
     —— addEvent(node,type,fn)：绑定事件，兼容ie
     —— removeEvent(node,type,fn)：移除事件，兼容ie
-    
+
 (2)将弹出框的js代码进行整理
 
 首先，由于一个页面可能出现有多处按钮点击出现弹出框，因此就不能通过id名获取激发弹出框的<input>
@@ -215,7 +216,7 @@ config = {
         title: "这是第二个浮出层",
         content: "这是浮出层的内容"
     }],
-    _handler: 回调函数,        
+    _handler: 回调函数,
 }
 
 弹出框方法的注释：
@@ -239,7 +240,7 @@ var FloatLayer = function(config) {
 		this.popupBtn = config.popupBtn;
 		this.root = config.root;
 		this.isMove = config.isMove || true;
-		this.isZoom = config.isZoom || true;	
+		this.isZoom = config.isZoom || true;
 		this._handler = config._handler;
 		this.floatContent = config.floatContent;
 		this._alertDiv = {};
@@ -252,13 +253,13 @@ var FloatLayer = function(config) {
 			currentY: 0,
 			flag: false
 		};
-		
+
 		//初始化，生成浮出层
-    
+
 		this.init();
 
 		//给按钮绑定事件
-    
+
 		var that = this;
 		for(var i = 0; i < this.popupBtn.length; i++) {
 			(function(_i) {
@@ -275,7 +276,7 @@ var FloatLayer = function(config) {
 				//阻止弹出框上的点击事件冒泡到浮出层上
 				GLOBAL.Eve.addEvent(that.root.children[0],"click",function(e) {
 					e.stopPropagation();
-				});	
+				});
 
 				GLOBAL.Eve.addEvent(that._alertDiv.btnSure,"click",function() {
 					that.hide(_i);
@@ -293,7 +294,7 @@ var FloatLayer = function(config) {
 				if(that.isZoom[_i] == true) {
 					that.resizeDiv();
 					console.log("2");
-				}			
+				}
 			})(i);
 		}
 }
@@ -301,13 +302,13 @@ var FloatLayer = function(config) {
 FloatLayer.prototype = {
 	constructor: FloatLayer,
 	//初始化
-	init: function() {	
+	init: function() {
 		var alertDiv = document.createElement("div");
 		alertDiv.className = "alert";
 		alertDiv.id = "alertDiv";
 		alertDiv.style.visibility = "hidden";
 
-		alertDiv.innerHTML = "<div id='alertHeader' class='alert-header'>" 
+		alertDiv.innerHTML = "<div id='alertHeader' class='alert-header'>"
 							+ "</div>"
 							+ "<div id='alertBody' class='alert-body'>"
 							+ "</div>"
@@ -336,16 +337,16 @@ FloatLayer.prototype = {
 				resizeDiv: resizeDiv,
 				btnSure: btnSure,
 				btnCancel: btnCancel
-			};			
+			};
 		},
 
 		//初始化弹出框的内容
 		initContent: function(i) {
 			var alertDiv = this._alertDiv;
 			var title = this.floatContent[i].title;
-			var content = this.floatContent[i].content;			
+			var content = this.floatContent[i].content;
 			alertDiv.head.innerHTML = title;
-			alertDiv.body.innerHTML = content;		
+			alertDiv.body.innerHTML = content;
 		},
 
 		//初始化弹出框的位置和长宽
@@ -358,37 +359,37 @@ FloatLayer.prototype = {
 		},
 
 		//弹出框出现
-		show: function(i) {	
-			var that = this.root;		
+		show: function(i) {
+			var that = this.root;
 			var alert = this._alertDiv.wrap;
 			that.style.visibility = "visible";
 			setTimeout(function(){
 				alert.style.visibility = "visible";
 				alert.style.transition = "transform 200ms linear";
 				alert.style.transform = 'translate(-50%, -50%) scale(1,1)';
-			}, 200);				
+			}, 200);
 		},
 
 		//弹出框隐藏
-		hide: function(i) {	
+		hide: function(i) {
 			var that = this.root;
-			var alert = this._alertDiv.wrap;	
+			var alert = this._alertDiv.wrap;
 			alert.style.transition = "transform 200ms linear";
 			alert.style.transform = 'translate(-50%, -50%) scale(0,0)';
-			alert.style.visibility = "hidden";				
+			alert.style.visibility = "hidden";
 			setTimeout(function(){
 				that.style.visibility = "hidden";
-			}, 200);	
+			}, 200);
 		},
 
 		//定义一个方法，实现拖拽功能
 		dragDiv: function() {
 			var needParams = this.params;
 			var alert = this._alertDiv.wrap;
-			var eleHead = this._alertDiv.head;			
+			var eleHead = this._alertDiv.head;
 			this.dynamic(eleHead,alert,"left",needParams);
 			this.dynamic(eleHead,alert,"top",needParams);
-				
+
 		},
 
 		//实现扩大缩小弹出框
@@ -420,7 +421,7 @@ FloatLayer.prototype = {
 								target.style[attr] = parseInt(par[attr]) + dis[0] + "px";
 							}else {
 								target.style[attr] = parseInt(par[attr]) + dis[1] + "px";
-							}							
+							}
 						}
 					}
 
@@ -434,28 +435,28 @@ FloatLayer.prototype = {
 						}else {
 							GLOBAL.Eve.removeEvent(document,"mousemove",startDrag);
 							GLOBAL.Eve.removeEvent(document,"mouseup",stopDrag);
-						}				
+						}
 					}
 
 					GLOBAL.Eve.addEvent(bar, "mousedown", function(event) {
 
 						//首先获取当前的Div的left，right值存放起来
 						par[attr] = GLOBAL.Dom.getCssAttr(target, attr);
-					
+
 						var e = event ? event: window.event;
 						//鼠标按下，记录当前鼠标所在的位置
 						par.flag = true;
 						par.currentX = e.clientX;
 						par.currentY = e.clientY;
 						//ie中才有setCapture
-						if(bar.setCapture) {										
+						if(bar.setCapture) {
 							GLOBAL.Eve.addEvent(bar, "mousemove", startDrag);
 							GLOBAL.Eve.addEvent(bar, "mouseup", stopDrag);
 							bar.setCapture();
-						}else {										
+						}else {
 							GLOBAL.Eve.addEvent(document, "mousemove", startDrag);
 							GLOBAL.Eve.addEvent(document, "mouseup", stopDrag);
 						}
-					});		
+					});
 		}
 	}

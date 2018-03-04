@@ -90,13 +90,14 @@ style.css文件
 
 1. requireJS的使用
 
-(1) 首先需要在requireJS的官网上下载require.js放入js文件夹中
+(1) 首先需要在 requireJS 的官网上下载 require.js 放入js文件夹中
 
 requireJS中文官网：http://www.requirejs.cn/
 
-(2) 然后再html里面引入reuqire.js，并指明入口文件
+(2) 然后再 html 里面引入 reuqire.js，并指明入口文件
 
-<script src="js/require.js" data-main="js/toolbar.js"></script>
+//<script src="js/require.js" data-main="js/toolbar.js"></script>
+
 (3) toolbar.js里面的内容
 
 
@@ -109,7 +110,7 @@ requirejs(["base","common_backTop"], function(GLOBAL, backTop) {
 		moveTime: 100
 	});
 });
-表明引入了两个模块，一个是js的基础模块base.js；另外一个是实现回到顶部功能的common_backTop.js。
+表明引入了两个模块，一个是js的基础模块base.js;另外一个是实现回到顶部功能的 common_backTop.js。
 
 (4) common_backTop.js模块的定义
 
@@ -127,15 +128,15 @@ define(["base"], function(GLOBAL){
 			GLOBAL.Eve.addEvent(this.ele, "click", function() {
 				that.go();
 			});
-		}		
+		}
 		this.checkPos();
 	}
 
 	BackTop.prototype = {
 		constructor: BackTop,
 
-		move: function() {	
-			var that = this.config;	
+		move: function() {
+			var that = this.config;
 			function scroll(){
 				var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 				if(scrollTop > that.des) {
@@ -143,7 +144,7 @@ define(["base"], function(GLOBAL){
 					if(document.documentElement.scrollTop) {
 						document.documentElement.scrollTop = scrollTop;
 					} else {
-						document.body.scrollTop = scrollTop;			
+						document.body.scrollTop = scrollTop;
 					}
 					setTimeout(scroll, that.moveTime);
 				} else if(scrollTop < that.des) {
@@ -151,12 +152,12 @@ define(["base"], function(GLOBAL){
 					if(document.documentElement.scrollTop) {
 						document.documentElement.scrollTop = scrollTop;
 					} else {
-						document.body.scrollTop = scrollTop;			
+						document.body.scrollTop = scrollTop;
 					}
 					setTimeout(scroll, that.moveTime);
 				} else {
 					return;
-				}				
+				}
 			}
 			scroll();
 		},
@@ -166,7 +167,7 @@ define(["base"], function(GLOBAL){
 				document.documentElement.scrollTop = this.config.des;
 			} else {
 				console.log(this.config);
-				document.body.scrollTop = this.config.des;			
+				document.body.scrollTop = this.config.des;
 			}
 		},
 

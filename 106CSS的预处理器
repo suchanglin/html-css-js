@@ -109,7 +109,7 @@ sass的默认变量一般是用来设置默认值，然后根据需求来覆盖�
 
 eg:
 //定义
-$borderDirection: top; 
+$borderDirection: top;
 
 //使用
 .border-#{$borderDirection}{
@@ -123,7 +123,7 @@ list类型有点像js中的数组，但是下标从1开始
 map类型有点像js中的对象，但是是用()包裹起来
 list类型
 
-定义: 
+定义:
 $px: 5px 10px 15px 20px;//一维数组
 $px: (5px 10px) (15px 20px);//二维数组
 
@@ -174,7 +174,7 @@ eg:
 #content article h1 {color: red;}
 #content article p {color: black;}
 
-//sass,用嵌套的规则来写    
+//sass,用嵌套的规则来写
 #content {
     article {
         h1 {color: red;}

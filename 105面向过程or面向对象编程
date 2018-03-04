@@ -56,6 +56,7 @@ var myDog = new Animal("dudu");
 console.log(myDog.name);//可以访问公有属性
 console.log(myDog.age);//会报错，不能访问私有属性
 myDog.move();//会报错，不能访问私有方法
+
 2. js中如何定义私有属性和行为
 
 方法一：在构造函数中定义
@@ -65,7 +66,8 @@ myDog.move();//会报错，不能访问私有方法
 
 方法二：使用命名来约定其私有性（并不能真正实现私有）
 
-仍然用this._attr来定义，但是命名前加下划线。
+仍然用 this._attr 来定义，但是命名前加下划线。
+
 三. 电话本程序（分别用两种思想来写）
 
 1. 用面向过程编程思想
@@ -110,11 +112,13 @@ function removeItem(phoneBook,name) {
 			break;
 		}
 	}
-	
+
 	if(n != undefined) {
 		phoneBook.splice(n,1);
 	}
 }
+
+
 2. 用面向对象编程思想
 
 
@@ -151,7 +155,7 @@ PhoneBookManager.prototype = {
 				break;
 			}
 		}
-		
+
 		if(n != undefined) {
 			this._phoneBook.splice(n,1);
 		}
