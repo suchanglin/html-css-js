@@ -4,16 +4,17 @@
 $.ajax({
 	...
 	success: function(data) {
-		
+
 		//第一次ajax请求成功执行第二次ajax请求
 		$.ajax({
 			...
-			success: function(data) {
-			
+	success: function(data) {
+
 			}
 		});
 	}
 })
+
 回调函数的缺点：回调地狱
 
 二. 事件监听
@@ -24,7 +25,7 @@ $.ajax({
 
 Promise到底解决什么问题？
 
-正如上面代码所示，笔者认为，Promise的意义就在于 then 链式调用 ，它避免了异步函数之间的层层嵌套，将原来异步函数的 
+正如上面代码所示，笔者认为，Promise的意义就在于 then 链式调用 ，它避免了异步函数之间的层层嵌套，将原来异步函数的
 嵌套关系 转变为便于阅读和理解的 链式步骤关系 。
 
 promise对象表示一个异步操作。
@@ -36,6 +37,7 @@ promise对象表示一个异步操作。
 pending 进行中
 resolved 已完成
 rejected 已失败
+
 2. 创建promise对象
 
 
@@ -46,11 +48,13 @@ var promise = new Promise(function(resolve, reject){
 resolve()函数的作用：
 
 将Promise对象的状态由pending ——> resolved
+
 resolve()中传入的参数，将会作为后续成功的函数的参数
 
 reject()函数的作用：
 
 将Promise对象的状态由pending ——> rejected
+
 reject()中传入的参数，将会作为后续失败的函数的参数
 
 promise对象一新建之后，传入的函数参数就会立即执行
@@ -70,6 +74,7 @@ console.log('Hi!');
 Promise
 Hi!
 Resolved.
+
 3. promise实例上的方法
 
 then()方法：根据promise对象的状态来确定执行的操作
@@ -90,7 +95,7 @@ var p1 = new Promise(function(resolve, reject) {
 var p2 = new Promise(function(resolve, reject) {
 	resolve('第二步完成');
 });
-	
+
 p1.then(function(data) {
 	console.log(data);
 	return p2;
@@ -101,6 +106,7 @@ p1.then(function(data) {
 控制台输出：
 第一步完成
 第二步完成
+
 catch()方法：相当于then()第二个参数的简单写法
 
 promise.then(null,function)
@@ -115,12 +121,12 @@ Promise.all()的参数是一个promise对象组成的数组，在这些promise�
 使用场景：在执行多个请求之后再做一些操作。
 
 
-var req1 = new Promise(function(resolve, reject) { 
+var req1 = new Promise(function(resolve, reject) {
    	// A mock async action using setTimeout
    	setTimeout(function() { resolve('First!'); }, 4000);
 });
 
-var req2 = new Promise(function(resolve, reject) { 
+var req2 = new Promise(function(resolve, reject) {
    	// A mock async action using setTimeout
    	setTimeout(function() { reject('Second!'); }, 3000);
 });
@@ -140,12 +146,12 @@ Promise.race()
 使用场景：在有两个请求资源时可以使用。
 
 
-var req1 = new Promise(function(resolve, reject) { 
+var req1 = new Promise(function(resolve, reject) {
    	// A mock async action using setTimeout
    	setTimeout(function() { resolve('First!'); }, 8000);
 });
 
-var req2 = new Promise(function(resolve, reject) { 
+var req2 = new Promise(function(resolve, reject) {
    	// A mock async action using setTimeout
    	setTimeout(function() { resolve('Second!'); }, 3000);
 });
@@ -269,7 +275,7 @@ function when() {
 deffered保存着状态改变之后的需要处理的函数以及promise子节点，构造函数里面应该包含这三个属性的初始化
           */
          function Promise(callback) {
-	
+
 	//status属性存放的是promise对象的状态
              this.status = PENDING;
              this.value = null;
@@ -278,7 +284,7 @@ deffered保存着状态改变之后的需要处理的函数以及promise子节�
 	//bind()函数返回的是一个匿名函数，callback函数的两个参数是resolve、reject函数
              setTimeout(callback.bind(this, this.resolve.bind(this), this.reject.bind(this)), 0);
          }
-         
+
          Promise.prototype = {
              constructor: Promise,
 
@@ -354,7 +360,7 @@ deffered保存着状态改变之后的需要处理的函数以及promise子节�
                  };
                  var status = this.status;
                  o.promise = new this.constructor(function () {
-         
+
                  });
                  if (status == PENDING) {
                      this.defferd.push(o);

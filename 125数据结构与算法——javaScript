@@ -10,7 +10,6 @@ js中的数组的一些基本方法
 
 (1). 二维数组的创建
 
-
 function matrix(row,col,init) {
 	var arr = [];
 	for(var i = 0; i < row; i++) {
@@ -23,6 +22,7 @@ function matrix(row,col,init) {
 }
 
 matrix(2,3,0);
+
 (2). 访问二维数组
 
 按行访问
@@ -35,6 +35,7 @@ for(var row = 0; row < grade.length; row++) {
 		console.log(grade[row][col]);
 	}
 }
+
 按列访问
 
 
@@ -46,6 +47,7 @@ for(var col = 0; col < grade.length; col++) {
 		console.log(grade[row][col]);
 	}
 }
+
 2. 对象数组、数组对象
 
 对象数组
@@ -88,23 +90,24 @@ this.peek = peek; //返回栈顶的元素
 
 function mulBase(num, base) {
 	var stack = [];
-	
+
 	//将每一次求得得余数入栈
 	do {
 		stack.push(num % base);
 		num = Math.floor(num / base);
 	} while (num > 0)
-	
+
 	var result = '';
-	
+
 	//依次出栈
 	while(stack.length > 0) {
 		result += stack.pop();
 	}
-	
+
 	//返回输出的结果
 	return result;
 }
+
 回文
 
 字符串反转之后是否与原字符串相等，如果相等，则为回文
@@ -119,14 +122,15 @@ function isHuiWen(str) {
 	while(arr.length > 0) {
 		reverseStr += arr.pop();
 	}
-	
+
 	if(reverseStr == str) {
 		return true;
 	} else {
 		return false;
 	}
-	
+
 }
+
 四. 队列
 
 先入先出
