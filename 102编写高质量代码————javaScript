@@ -9,6 +9,7 @@ var a, b = "hello";
 工程师乙也定义了一个全局变量a
 
 var a = "la";
+
 这种情况下，就会团队合作就会产生冲突。
 
 解决办法：
@@ -23,14 +24,15 @@ var a = "la";
 (function(){
     var a = "la";
 });
+
 2. 团队合作——两个功能模块之间如何进行通信
 
-使用1中的匿名函数包裹法，让每个功能呢的变量都限定在自己的作用域内，那么如果工程师乙想要使用工程师甲代码里的变量，应该怎么办呢？
+使用1中的匿名函数包裹法，让每个功能的变量都限定在自己的作用域内，那么如果工程师乙想要使用工程师甲代码里的变量，应该怎么办呢？
 
 解决办法：
 使用全局变量进行通信，声明一个全局变量var GLOBAL = {};并使用命名空间。
 
-<script>       
+<script>
     var GLOBAL = {};//声明一个全局的对象
 
     GLOBAL.namespace = function(str) {
@@ -40,25 +42,26 @@ var a = "la";
             o = o[arr[i]];
         }
     }
-</script> 
+</script>
 
 //工程师甲的代码
-<script> 
+<script>
   (function() {
     var a = "hello";
     GLOBAL.A = {};//命名空间为A
     GLOBAL.A.str = a;
     console.log(GLOBAL);//{A:{str:"hello"}}
   })();
-</script> 
+</script>
 
 //工程师乙的代码
-<script>  
+<script>
   (function() {
-    var b = GLOBAL.A.str;//这样乙的功能模块里就使用了甲里面的变量
-    console.log(GLOBAL);//{A:{str:"hello"}}
+    var b = GLOBAL.A.str; //这样乙的功能模块里就使用了甲里面的变量
+    console.log(GLOBAL); //{A:{str:"hello"}}
   })();
-</script> 
+</script>
+
 3. 给所有的功能提供一个统一的入口
 
 js分为框架部分和应用部分。
@@ -81,6 +84,7 @@ js分为框架部分和应用部分。
 base层
 common层：提供可以复用的组件
 page层：与某一页面的具体功能相关
+
 (1)base层
 
 封装不同浏览器之间的差异，提供统一的接口（如前5个例子）；扩展js底层的接口。
@@ -112,6 +116,7 @@ function getNextNode(node) {
       return nextNode;
     }
 }
+
 例子二：
 
 IE和其他浏览器中的事件对象event，封装一个获取当前事件的派生对象的函数getEventTarget
@@ -123,6 +128,8 @@ function getEventTarget(event) {
     var eve = window.event || event;
     return eve.srcElement || eve.target;
 }
+
+
 例子三：
 
 取消事件冒泡
@@ -138,6 +145,8 @@ function stopPropagation(event) {
         eve.cancelBubble = true;
     }
 }
+
+
 例子四：
 
 取消事件的默认行为
@@ -155,6 +164,9 @@ function preventDefault() {
         eve.returnValue = false;
     }
 }
+
+
+
 例子五：
 
 绑定事件和取消绑定事件
@@ -168,7 +180,7 @@ var EventUtil = {
         if(element.attachEvent) {
             element.attachEvent("on" + type,fn);
         } else {
-            element.addEventListener(type,fn,false);//如果允许事件冒泡，第三个参数则为false
+            element.addEventListener(type,fn,false //如果允许事件冒泡，第三个参数则为false
         }
     },
 
@@ -220,6 +232,7 @@ function isArray(s) {
 function isFunction(s) {
     return typeof s === "function";
 }
+
 例子七：
 
 用$代替document.getElementById(“”)
@@ -229,6 +242,7 @@ function $(node) {
     node = typeof node === "string" ? document.getElementById(node) : node;//传入的参数是id值或者节点本身
     return node;
 }
+
 例子八：
 
 使用className获取节点的getElementsByClassName()
@@ -240,6 +254,7 @@ function $(node) {
 //输入参数：str为class的名字，必须；
 //root为该dom的父元素，可选
 //tag为标签名，可选
+
 function getElementByClassName(str,root,tag) {
     if(root) {
         root = typeof root === "string" ? document.getElementById(root):root;
@@ -256,10 +271,12 @@ function getElementByClassName(str,root,tag) {
                 arr.push(els[i]);
                 break;
             }
-        }           
+        }
     }
     return arr;
 }
+
+
 例子九：
 
 增加className和删除某一个className
@@ -279,6 +296,8 @@ function removeClass(node,str) {
     var reg = new RegExp("(^|\\s+)" + str);
     node.className = node.className.replace(reg,"");
 }
+
+
 (2) common层
 
 common层一来base层提供的接口，为page组件调用。
@@ -296,6 +315,7 @@ common层常见的组件有：
 用于日历的Calendar
 用于富文本编辑器的RichTextEditor
 …………
+
 这些很多我之前都做过，但是并没有封装成一个组件的形式，有时间应该好好整理一下。
 
 一个优秀的组件需要满足以下几个条件：
@@ -315,6 +335,8 @@ common层没有base层那么通用，不是每一个页面都会使用到common�
 page层与具体的页面有关。
 
 很多js框架可以为我们提供强大的base层和common层。
+
+
 7. 编程小技巧
 
 弹性
