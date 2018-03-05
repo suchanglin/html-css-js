@@ -1,8 +1,4 @@
 
-
-
-
-
 Object.extend = function(destination, source) { // 一个静态方法表示继承, 目标对象将拥有源对象的所有属性和方法
 for (var property in source) {
     destination[property] = source[property];   // 利用动态语言的特性, 通过赋值动态添加属性与方法
@@ -10,13 +6,13 @@ for (var property in source) {
 return destination;   // 返回扩展后的对象
 }
 
-Object.extend(Object, { 
+Object.extend(Object, {
 inspect: function(object) {   // 一个静态方法, 传入一个对象, 返回对象的字符串表示
     try {
       if (object == undefined) return 'undefined'; // 处理undefined情况
       if (object == null) return 'null';     // 处理null情况
       // 如果对象定义了inspect方法, 则调用该方法返回, 否则返回对象的toString()值
-      return object.inspect ? object.inspect() : object.toString(); 
+      return object.inspect ? object.inspect() : object.toString();
     } catch (e) {
       if (e instanceof RangeError) return '...'; // 处理异常情况
       throw e;
@@ -37,17 +33,6 @@ clone: function(object) {    // 一个静态方法, 传入一个对象, 克隆�
     return Object.extend({}, object);
 }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -172,7 +157,7 @@ fixEvent.stopPropagation = function() {
 
 
 
-//给Object对象增加静态方法extend,该方法的作为复制source有所有属性和方法到destination 
+//给Object对象增加静态方法extend,该方法的作为复制source有所有属性和方法到destination
 Object.extend = function(destination, source) {
     for (var property in source) {
         destination[property] = source[property];
@@ -183,7 +168,7 @@ Object.extend = function(destination, source) {
 var Dog = function(name) {
     this.name = name;
 }
-//将printName方法复制给dog.prototype 
+//将printName方法复制给dog.prototype
 Object.extend(Dog.prototype, {
     printName: function() {
         alert(this.name);
