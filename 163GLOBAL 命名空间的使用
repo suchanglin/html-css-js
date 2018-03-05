@@ -1,9 +1,9 @@
  var GLOBAL = {};
- GLOBAL.namespace = function(str) {   //把str添加到GLOBAL中，并作为属性
-     var arr = str.split('.'),
+ GLOBAL.namespace = function(str) { //把str添加到GLOBAL中，并作为属性
+     var arr = str.split('.'),   //  字符串str转化为数组并赋值给arr
          o = GLOBAL;
      for (var i = (arr[0] == 'GLOBAL') ? 1 : 0; i < arr.length; i++) {
-         o[arr[i]] = o[arr[i]] ||{};
+         o[arr[i]] = o[arr[i]] || {};
          o = o[arr[i]];
      }
  }
@@ -71,7 +71,7 @@
  GLOBAL.Dom.hasClass = function(name, type) {
      var r = [];
      var re = new RegExp("(^\\s)" + name + "(\\s$)");
-     var e = document.getElementsByTagName(type||"*");
+     var e = document.getElementsByTagName(type || "*");
      for (var j = 0; j < e.length; j++) {
          if (re.test(e[j])) {
              r.push(e[j]);
@@ -86,12 +86,12 @@
 
 
 
-//事件操作
+ //事件操作
  GLOBAL.namespace('Event');
 
 
  GLOBAL.Event.getEventTarget = function(e) {
-     e = window.event|| e;
+     e = window.event || e;
      return e.srcElement || e.target;
  }
  GLOBAL.Event.stopPropagation = function(e) {
@@ -117,7 +117,7 @@
 
 
 
- //Lang 
+ //Lang
  GLOBAL.namespace('Lang');
  GLOBAL.Lang.trim = function(ostr) {
      return ostr.replace(/^\s+s+$/g, "");
