@@ -1,4 +1,4 @@
-在很多时候经常看到 Array.prototype.slice.call()方法，比如 Array.prototype.slice.call(arguments)，下面讲一下其原理：
+﻿在很多时候经常看到 Array.prototype.slice.call()方法，比如 Array.prototype.slice.call(arguments)，下面讲一下其原理：
 
 1、基本讲解
 
@@ -8,7 +8,7 @@ arrayObj.slice(start, [end]) 很显然是截取数组的一部分。
 
 2.我们再看call
 
- call([thisObj[,arg1[arg2[[argN]]]]])
+ call([thisObj[,arg1[arg2[[argN]]]]])    //看不懂
 
 thisObj是一个对象的方法
 
