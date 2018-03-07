@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>BFC3</title>
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    * {
+        padding: 10px;
+        margin: 0;
+        color: #000;
+        text-decoration: none;
+        list-style: none;
+        font-family: "微软雅黑"
+    }
+
+    .outer {
+        width: 300px;
+        border: 1px solid #666;
+
+        overflow: hidden
+    }
+
+    .innerLeft {
+        height: 100px;
+        width: 100px;
+        float: left;
+        background: #f00;
+    }
+
+    .innerRight {
+        height: 100px;
+        width: 100px;
+        float: right;
+        background: #090;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="innerLeft"></div>
+        <div class="innerRight"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>BFC4</title>
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+        color: #fff;
+        text-decoration: none;
+        list-style: none;
+        font-family: "微软雅黑"
+    }
+
+    .rowone {
+        background: #f00;
+        height: 100px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .rowtow {
+        background: #090;
+        height: 100px;
+        margin-top: 20px;
+        position: relative
+    }
+    </style>
+</head>
+
+<body>
+    <div class="rowone"> </div>
+    <div class="rowtow"> </div>
+</body>
+
+</html>
+
+
+
+<!--
+解决这种问题的办法是要为两个容器添加具有BFC的包裹容器。
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>无标题文档</title>
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+        color: #fff;
+        text-decoration: none;
+        list-style: none;
+        font-family: "微软雅黑"
+    }
+
+    .mg {
+        overflow: hidden;
+    }
+
+    .rowone {
+        background: #f00;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .rowtow {
+        background: #090;
+        height: 100px;
+        margin-top: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="mg">
+        <div class="rowone"> </div>
+    </div>
+    <div class="mg">
+        <div class="rowtow"> </div>
+    </div>
+</body>
+
+</html> -->

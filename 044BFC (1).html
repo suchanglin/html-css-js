@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>BFC1</title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    #red,
+    #yellow,
+    #orange,
+    #green {
+        width: 100px;
+        height: 100px;
+        float: left;
+    }
+
+    #red {
+        background-color: red;
+    }
+
+    #yellow {
+        background-color: yellow;
+    }
+
+    #orange {
+        background-color: orange;
+    }
+
+    #green {
+        background-color: green;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="c1">
+        <div id="red"> </div>
+        <div id="yellow"> </div>
+    </div>
+    <div id="c2">
+        <div id="orange"> </div>
+        <div id="green"> </div>
+    </div>
+    <p>Here is the text!</p>
+</body>
+
+</html>
