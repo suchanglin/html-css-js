@@ -18,7 +18,7 @@ function cutstr(str, len) {
         }
     }
     return strre + "...";
-}
+}//看不懂
 
 //原生JavaScript获取域名主机
 
