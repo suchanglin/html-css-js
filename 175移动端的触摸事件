@@ -1,0 +1,70 @@
+Touch 属性
+事件对应的三个列表虽然名字不一样，但是它们里面装的东西都是差不多的，包含了当前事件的一些相关信息，比如：一些坐标信息。
+
+
+
+TouchList {0: Touch, length: 1}
+length:1
+0:Touch
+    clientX:65 // 触摸点在浏览器窗口中的横坐标
+    clientY:18 // 触摸点在浏览器窗口中的纵坐标
+    force:1 // 触摸点压力大小
+    identifier:0 // 触摸点唯一标识（ID）
+    pageX:65 // 触摸点在页面中的横坐标
+    pageY:18 // 触摸点在页面中的纵坐标
+    radiusX:11.5 // 触摸点椭圆的水平半径
+    radiusY:11.5 // 触摸点椭圆的垂直半径
+    rotationAngle:0 // 旋转角度
+    screenX:560 // 触摸点在屏幕中的横坐标
+    screenY:175 // 触摸点在屏幕中的纵坐标
+target:div#touchLog 触摸目标
+__proto__:Touch
+__proto__:TouchList
+
+
+上面就是一个 TouchList 列表。它对应的就是前面提到的三种事件（touchstart、touchmove、touchend）中的一种，在触发时生成的一个对象列表。
+列表里最有用的就是 Touch 对象了，Touch 对象里存放着对应事件的一些相关的信息，我们就是通过这种个事件里这些属性的有机结合来实现各种效果。
+
+通过上面的 radiusX，radiusY，rotationAngle 这三个属性就可以计算出你的手指触摸手机屏幕时的一个接触面，只不过这个接触面是用一个近似的椭圆来表示，
+也就是说它不是一个真正意义上的接触面，而是一个大概的接触面。相信心细的朋友应该会看到 TouchList 对象里有一个 length 属性，并且它的值为 1  ，
+这说明当前只有一个手指触发了事件（比如：touchstart 事件），换句话说，此时你只有一个手指放到了手机屏幕上，这个手指对应的一些信息存放在 Touch 对象里。
+因为只有一个手指放在了屏幕上，所以这个 TouchList 里只有一个 Touch 对象，并且是第一个下标为 0 。TouchList 列表里还有一个 target 属性，
+这个应该很好理解，就是触摸的目标。
+
+
+dmeo:
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>移动端触摸（touch）事件</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <style>
+    #touchLog {
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        height: 300px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="touchLog">这里显示 touch 信息</div>
+    <script>
+    var obj = document.getElementById("touchLog");
+    obj.addEventListener("touchstart", showMsg);
+
+    function showMsg(ev) {
+        console.log(ev.touches);
+        console.log(ev.targetTouches);
+        console.log(ev.changedTouches);
+    }
+    </script>
+</body>
+
+</html>
