@@ -2,6 +2,7 @@
 
 具名函数
 匿名函数
+
 注意：所有声明的匿名函数都是一个新函数。
 
 二. 创建函数的方式
@@ -13,6 +14,7 @@
 最普通最标准的方法
 
 function myfunc() {}//具名函数
+
 2. 创建函数表达式的方法
 
 创建一个变量，变量等于函数
@@ -34,10 +36,12 @@ var o={
   console.log(fn);
   }
 };
-o.fn();//ERROR报错
+o.fn();//ERROR报错  ,但是o.fn    //原函数
+
 3. Function构造函数
 
 Function("函数体")//这样创建的是匿名函数
+
 三. 函数的执行环境、变量对象、作用域链
 
 执行环境定义了变量和函数有权访问的其他数据。
@@ -75,45 +79,52 @@ function f1(){
 
 通过使用闭包（返回一个对闭包的引用），外部环境也可以访问内部环境的变量和方法。
 让变量的值始终保持在内存中
+
+
 闭包的优点：
 
 函数内部可以引用函数外部的参数和变量
 不会增加额外的全局变量
 函数内部的变量不会被垃圾回收机制回收
+
+
 闭包的缺点：
 
 内存浪费问题：由于闭包会携带包含它的函数的作用域，所以会比其他函数更占内存。
+
 代码示例：
 
-function out() {  
-  var a = 1;  
+function outer() {
+  var a = 1;
 
-       function in(){
+       function inner(){
            alert(a++)
-      };  
+      };
 
-    return in;
- } 
-var test = out();  
-test();// 1 执行后 a++，，然后a还在~  
+    return inner;
+ }
+var test = outer();
+test();// 1 执行后 a++，，然后a还在~
 test();// 2   test()实际上是闭包函数in，一共运行了2次
-test = null;//a被回收！！ 
+test = null;//a被回收！！
 
 在函数执行完毕后，局部活动对象会被销毁，内存中仅仅只是保存全局作用域。
 
-但是这个函数out中的局部变量a一直保存在内存中，并没有在out调用后被自动清除。
+但是这个函数outer中的局部变量a一直保存在内存中，并没有在outer调用后被自动清除。
 
-是因为in被赋给了一个全局变量test，而out是in的父函数，因此out也始终存在内存当中。
+是因为inner被赋给了一个全局变量test，而outer是inner的父函数，因此outer也始终存在内存当中。
+
 闭包与变量
 
 function myFunc(){
+
     var result = new Array();
 
     for(var i=0;i<10;i++)
     {
         result[i]=function(){
             return i;
-        };    
+        };
     }
     return result;
 }
@@ -125,13 +136,76 @@ a中每个函数返回的值都是10，因为闭包的函数都是对myFunc函�
 如何返回1，2，3…10
 
 function myFunc(){
+
     var result = new Array();
 
     for(var i=0;i<10;i++)
     {
         result[i]=function(num){
             return num;
-        }(i);    
+        }(i);
     }
     return result;
 }
+
+
+-------------------------------------------------------------------------------------------------
+
+2018.04.02
+闭包案例一
+
+var a = "global variable";
+var F = function() {
+    var b = "local variable";
+    var N = function() {
+        var c = "inner local";
+        return b;
+    };
+    return N;
+};
+
+
+ var inner = F();
+ inner();
+函数 N 有自己的私有空间，同时也可以访问 f()的空间和全局空间，所以 b 对它来说
+是可见的。因为 F()是可以在全局空间中被调用的（它是一个全局函数），所以我们可以将
+它的返回值赋值给另一个全局变量，从而生成一个可以访问 F()私有空间的新全局函数。
+
+// --------------------------------
+
+案例2
+
+
+ var inner; // placeholder
+ var F = function (){
+ var b = "local variable";
+ var N = function () {
+ return b;
+ };
+ inner = N;
+};
+
+inner();
+
+//由于
+N()是在 F()内部定义的，它可以访问 F()的作用域，所以即使该函数后来升级成了全局函数，但它依
+然可以保留对 F()作用域的访问权。
+
+---------------------------------------------------------------------------------
+
+function F() {
+ var arr = [], i;
+ for(i = 0; i < 3; i++) {
+ arr[i] = (function (x){
+ return function () {
+ return x;
+ }
+ }(i));
+ }
+ return arr;
+}
+
+ var arr = F();
+ arr[0]();  //0
+ arr[1]();  //1
+ arr[2]();  //2
