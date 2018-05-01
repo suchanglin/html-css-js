@@ -28,12 +28,13 @@ true:请求是异步的
 xhr.send(null);
 
 send()函数里面接收的参数，是作为请求主体发送的数据，如果不发送数据，那么必须将参数置为null
-4.给xhr绑定一个状态变化的监听事件onreadystatechange
+
+4.给xhr绑定一个状态变化的监听事件 onreadystatechange
 
 为了满足跨浏览器的兼容性，必须在open事件调用之前指定onreadystatechange事件处理程序
 
 xhr.onreadystatechange = function(){
-    if(xhr.readyState == 4)//请求响应的当前活动阶段，4表示响应已完成
+    if(xhr.readyState == 4)   //请求响应的当前活动阶段，4表示响应已完成
     {
         if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304)
         {alert(xhr.responseText);}
@@ -41,6 +42,8 @@ xhr.onreadystatechange = function(){
         {alert("unsuccessful")}    
     }
 }
+
+
 服务器响应之后，XHR对象的4个属性值发生了变化
 
 responseText:响应的内容
@@ -50,6 +53,7 @@ statusText：响应状态的文字说明
 readyState: ajax请求响应过程的当前活动阶段
 
 根据响应状态status写相关的操作函数
+
 status的几种取值：
 200表示成功
 304表示可以使用浏览器的缓存版本
@@ -69,3 +73,96 @@ xhr.abort()
 5.获取异步调用返回的数据
 
 6.使用js和DOM实现局部刷新
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+2018.05.01五一劳动节修改   常用的三种方案：
+
+第一种方案：XMLHttpRequest
+
+var xhr;
+if (window.XMLHttpRequest) {　 // Mozilla, Safari...
+  　xhr = new XMLHttpRequest();
+} else if (window.ActiveXObject) { // IE
+  　try {
+    　xhr = new ActiveXObject('Msxml2.XMLHTTP');
+ 　 } catch (e) {
+  　  try {
+    　  xhr = new ActiveXObject('Microsoft.XMLHTTP');
+   　 } catch (e) {}
+ 　 }
+}
+if (xhr) {
+  　xhr.onreadystatechange = onReadyStateChange;
+ 　 xhr.open('POST', '/api', true);                                            // 设置 Content-Type 为 application/x-www-form-urlencoded
+ 　 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // 以表单的形式传递数据
+ 　 xhr.send('username=admin&password=root');
+}
+
+// onreadystatechange 方法
+function onReadyStateChange() {
+ 　 // 该函数会被调用四次
+  　console.log(xhr.readyState);
+  　if (xhr.readyState === 4) {
+   　　 // everything is good, the response is received
+    　　if (xhr.status === 200) {
+      　　　console.log(xhr.responseText);
+    　　} else {
+      　　　console.log('There was a problem with the request.');
+   　　 }
+  　} else {
+    　　// still not ready
+    　　console.log('still not ready...');
+  　}
+}
+
+ 
+ 
+ 
+ 第二种方案
+ jQuery实现AJAX
+ 
+ $.ajax({
+    method: 'POST',
+    url: '/api',
+    data: { username: 'admin', password: 'root' }
+})
+  .done(function(msg) {
+      alert( 'Data Saved: ' + msg );
+  });
+
+
+第三种方案
+Fetch
+
+
+fetch(...).then(fun2)
+          .then(fun3) //各依赖有序执行
+          .....
+          .catch(fun)
+          
+（没有回调地狱）          
+
+
+
+fetch(url, {
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "application/json"
+  },
+  credentials: "same-origin"
+}).then(function(response) {
+  response.status     //=> number 100–599
+  response.statusText //=> String
+  response.headers    //=> Headers
+  response.url        //=> String
+
+  return response.text()
+}, function(error) {
+  error.message //=> String
+})
+
+
+
+链接 https://github.github.io/fetch/
