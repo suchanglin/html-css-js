@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+<title>Vue</title>
 <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
 <script src="https://cdn.bootcss.com/vue-router/2.7.0/vue-router.min.js"></script>
 </head>
