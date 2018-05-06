@@ -6,16 +6,20 @@ Web Sockets的目的是：
 
 在一个单独持久的连接上提供全双工、双向通信
 
+(http或https是单向的，只能客户端向服务器请求。WebSocket可以实现服务器向客户端自动发信息，场景：天气信息等。以前的实现需要轮询)
+
 二. web sockets 使用
 
 1. 创建一个WebSocket实例
 
 var socket = new WebSocket("ws://www.example.com/server.php");
+
 注意：传入的参数是一个绝对的URL，websocket协议不受同源策略的影响。
 
 2. 向服务器发送数据 send()方法
 
 socket.send("Hello world");
+
 注意：websocket只能通过send发送纯文本数据，对于复杂的数据结构，需要在发送之前进行序列化。
 
 例如：发送JSON数据
@@ -26,7 +30,7 @@ var message = {
 	clientId: "asdfp8734rew"
 }
 
-socket.send(JSON.stringify(message));   //竟然运行time的方法
+socket.send(JSON.stringify(message));   // 竟然运行time的方法
 
 插叙一点关于JSON的知识：
 
@@ -42,10 +46,10 @@ JSON.stringify()：将对象变成字符串
 当服务器向客户端发送消息时，websocket对象会触发message事件，返回的数据保存在event.data属性中。
 
 socket.onmessage = function(event){
-	var data = event.data;
-	//然后处理获得的数据data
+	var data = event.data;  //  然后处理获得的数据data	
 }
-event.data中保存的也是字符串
+
+event.data 中保存的也是字符串
 
 三. websocket对象
 
@@ -76,6 +80,7 @@ reason：字符串，包含服务器发回的消息
 
 
 实例：
+
 var ws = new WebSocket("wss://echo.websocket.org");
 
 ws.onopen = function(evt) {
