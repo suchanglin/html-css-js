@@ -9,12 +9,17 @@ pattern是模式匹配
 ( [ { \ ^ $ | ) ? * + .] }
 
 ^ 以...开头
+
 $ 以...结尾
 
 ? 出现0次或者1次（最多出现1次）
+
 * 出现任意次
+
 {n} 出现n次
+
 {n,m} 出现n到m次
+
 {n,} 至少出现n次
 
 .      等价于   [^\n\r]          除了回车和换行之外的所有字符
@@ -35,6 +40,7 @@ flags表明三种匹配的标志：
 g 全局匹配
 i 不区分大小写的匹配
 m 多行模式
+
 1. 创建RegExp类型
 
 字面量定义的方法
@@ -53,7 +59,7 @@ var reg = /…/;
 
 test()方法
 
-reg.test(字符串) 返回值为true或者false
+reg.test(字符串)   返回值为true或者false
 
 exec()方法
 
@@ -64,10 +70,12 @@ match()和replace()是字符串的方法
 
 --------------------------------------------------------------------------------------------------
 var re = /^[1-9]{4,10}$/gi;
-var str = "123456";
-alert(re.test(str));      //返回true
 
-alert(re.lastIndex); // 弹出6
+var str = "123456";
+
+alert(re.test(str));    // 返回true
+
+alert(re.lastIndex);   // 弹出6
 
 表示上一次在第6个字符之后结束
 那么下一次再调用 test 的时候， 就会从第6个字符之后继续搜索
@@ -83,19 +91,20 @@ alert(re.test(str));      //返回true
 
 
 JavaScript表单验证email邮箱，判断一个输入量是否为邮箱email，通过正则表达式实现。
+
 function check(){
-var email=document.getElementById("email").value;
-var isemail=/^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2})?$/i;
-if (email=="") {
+   var email=document.getElementById("email").value;
+   var isemail=/^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2})?$/i;
+   if (email=="") {
       alert("请输入您的邮箱!");
       return false;
     }
-if (email.length>25){
+  if (email.length>25){
      alert("长度太长");
      return false
-}
-if (!isemail.test(email)){
+  }
+  if (!isemail.test(email)){
      alert("不是邮箱");
     return false;
-}
+  }
 }
