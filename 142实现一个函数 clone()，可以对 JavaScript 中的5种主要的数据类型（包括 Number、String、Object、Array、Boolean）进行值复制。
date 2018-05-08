@@ -1,0 +1,24 @@
+实现一个函数 clone()，可以对 JavaScript 中的5种主要的数据类型（包括 Number、String、Object、Array、Boolean）进行值复制。
+知识点
+使用 typeof 判断值得类型；
+使用 toString 区分数组和对象；
+递归函数的使用；
+
+function clone(obj) {
+    //判断是对象，就进行循环复制
+    if (typeof obj === 'object' && typeof obj !== 'null') {
+        // 区分是数组还是对象，创建空的数组或对象
+        var o = Object.prototype.toString.call(obj).slice(8, -1) === "Array" ? [] : {};
+        for (var k in obj) {
+            // 如果属性对应的值为对象，则递归复制
+            if(typeof obj[k] === 'object' && typeof obj[k] !== 'null'){
+                o[k] = clone(obj[k])
+            }else{
+                o[k] = obj[k];
+            }
+        }
+    }else{ //不为对象，直接把值返回
+        return obj;
+    }
+    return o;
+}
