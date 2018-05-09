@@ -1,0 +1,1 @@
+console.log和alert输出dom节点时，在文档中点换位置，输出的结果会不一样
