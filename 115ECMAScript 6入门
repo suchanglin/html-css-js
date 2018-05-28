@@ -559,7 +559,14 @@ for (var key in s) // arbitrary order
 
 -----------------------------------------------------------------------------------------------
 2018.05.28
-import * as obj from "xxx" 会将 "xxx" 中所有 export 导出的内容组合成一个对象返回。
+import * as obj from "xxx" 会将 "xxx" 中所有 export 导出的内容组合成一个对象返回。因此被引入的
+模块里面的属性和方法都是新对象的属性和方法。即obj.aa或obj.foo()等。
+
+
+
+import {yyy} from "xxx" 当有唯一导出时，比如export default xxx...,import 后面的变量可以
+不需要花括号{}，当被引入的模块有多个导出时，export aaa...   export bbb... 等，只能用花括号{}
+来表示指定引入的变量，比如我只引入 import {bbb} from "...",不需要aaa.
 
 
 
