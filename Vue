@@ -54,7 +54,7 @@ vue.js框架介绍
 
 vue-cli脚手架   搭建基本代码框架
 
-vue-router   官方插件管理路由
+vue-router   官方插件管理路由axios
 
 vue-resouce  Ajax通信
 
