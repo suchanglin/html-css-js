@@ -43,3 +43,37 @@ $(".ele").on("click",function(a){
 });
 
 $(".ele").trigger("click", '1');//触发事件（发布）
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+2018.06.06
+
+举个板栗：
+
+$(dom).addEvent("alert", function() {
+    alert("弹弹弹，弹走鱼尾纹~~");
+});
+
+// 创建
+var evt = document.createEvent("HTMLEvents");
+// 初始化
+evt.initEvent("alert", false, false);
+
+// 触发, 即弹出文字
+dom.dispatchEvent(evt);举个板栗：
+
+$(dom).addEvent("alert", function() {
+    alert("弹弹弹，弹走鱼尾纹~~");
+});
+
+// 创建
+var evt = document.createEvent("HTMLEvents");
+// 初始化
+evt.initEvent("alert", false, false);
+
+// 触发, 即弹出文字
+dom.dispatchEvent(evt);
