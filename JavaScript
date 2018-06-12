@@ -1,1 +1,12 @@
 console.log和alert输出dom节点时，在文档中点换位置，输出的结果会不一样
+
+JavaScrip有一关键字arguments，它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。arguments类似Array但它不是一个Array：
+
+function foo(x) {
+    console.log('x = ' + x);   // 10
+    for (var i=0; i<arguments.length; i++) {
+        console.log('arg ' + i + ' = ' + arguments[i]);   // 10, 20, 30
+    }
+}
+foo(10, 20, 30);
+调用者传入三个参数，原函数值接收一个参数。 打印的函数是可以获取到所有调用者传参数，而不是接收的参数。
