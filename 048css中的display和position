@@ -26,6 +26,8 @@ static：默认值，没有定位
 absolute：绝对定位
 relative：相对定位
 fixed
+sticky
+
 absolute：若其父元素有absolute/relative/fixed定位，那么相对于父元素进行定位；若没有，则相对于body进行定位
 
 relative：相对于本身的位置进行定位
