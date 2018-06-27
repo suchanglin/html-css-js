@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>JSONP 实例</title>
+</head>
+
+<body>
+    <div id="divCustomers"></div>
+    <script type="text/javascript">
+    function callbackFunction(result, methodName) {
+        var html = '<ul>';
+        for (var i = 0; i < result.length; i++) {
+            html += '<li>' + result[i] + '</li>';
+        }
+        html += '</ul>';
+        document.getElementById('divCustomers').innerHTML = html;
+    }
+
+    </script>
+    <script type="text/javascript" src="http://www.runoob.com/try/ajax/jsonp.php?jsoncallback=callbackFunction"></script>
+</body>
+
+</html>
+
+
+----------------------------------------------------------------------------------------------------
+后端PHP文
+<?php
+  header('Content-type: application/json');
+  //获取回调函数名
+  $jsoncallback = htmlspecialchars($_REQUEST ['jsoncallback']);
+  //json数据
+  $json_data = '["customername1","customername2"]';
+  //输出jsonp格式的数据
+  echo $jsoncallback . "(" . $json_data . ")";
+?>
