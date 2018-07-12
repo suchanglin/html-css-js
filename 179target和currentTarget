@@ -1,0 +1,21 @@
+
+举个简单的例子说明：
+
+
+<view id="outer" bindtap="handleTap1">
+  outer view
+  <view id="middle" catchtap="handleTap2">
+    middle view
+    <view id="inner" bindtap="handleTap3">
+      inner view
+    </view>
+  </view>
+</view>
+
+
+
+
+点击 inner view 时，handleTap3 收到的事件对象 target 和 currentTarget 都是 inner，
+
+而 handleTap2 收到的事件对象 target 就是 inner，currentTarget 就是 middle.
+
