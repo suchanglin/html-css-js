@@ -1,0 +1,24 @@
+function steamroller(arr) {
+    var result = [];
+    getElement(arr, result);
+    return result;
+}
+
+function getElement(arr, result) {
+
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] instanceof Array) {
+            getElement(arr[i], result);
+        } else {
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+
+
+steamroller([[["a"]], [["b"]]]) //应该返回 ["a", "b"]。
+steamroller([1, [2], [3, [[4]]]]) //应该返回 [1, 2, 3, 4]。
+steamroller([1, [], [3, [[4]]]]) //应该返回 [1, 3, 4]。
+steamroller([1, {}, [3, [[4]]]]) //应该返回 [1, {}, 3, 4]。   
+
