@@ -1,26 +1,27 @@
  判断一个字符串中出现次数最多的字符
- 
- var str = 'goodboyy';
- var maxObj = Mmax(str);
- console.log(maxObj);
 
- function Mmax(str) {
-     var obj = {}; // 去重之后的对象，{char:'g',num:1}
-     var max = { char: '', num: 0 }; // 最大次数的字符
-     for (var i = 0; i < str.length; i++) {
-         if (obj[str[i]]) {  
-             ++obj[str[i]];  
-         } else {
-             obj[str[i]] = 1; 
-         }
-         if (obj[str[i]] > max.num) { 
-             max.num = obj[str[i]];
-             max.char = str[i];
-         }
-     }
-     return {
-         str: str,
-         obj: obj,
-         max: max
-     }
- }
+ vvar str = "nininihaoa";
+var o = {};
+for (var i = 0, length = str.length; i < length; i++) {
+    var char = str.charAt(i);
+    if (o[char]) {
+        o[char]++;  // 次数加1
+    } else {
+        o[char] = 1; // 若第一次出现，次数记为1
+    }
+}
+console.log(o);  // 输出的是完整的对象，记录着每一个字符及其出现的次数
+ // 遍历对象，找到出现次数最多的字符的次数
+var max = 0;
+for (var key in o) {
+    if (max < o[key]) {
+        max = o[key]; // max始终储存次数最大的那个
+    }
+}
+for (var key in o) {
+    if (o[key] == max) {
+        // console.log(key);
+        console.log("最多的字符是" + key);
+        console.log("出现的次数是" + max);
+    }
+}
