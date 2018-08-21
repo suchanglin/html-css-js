@@ -100,3 +100,25 @@ var toArray = function(s){
          return arr;
     }
 }
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+$(function() {
+               // $('p').colorful('init')   // 调用默认样式default
+
+
+
+               // $('p').colorful('init', {  // 用到Array.prototype.slice.call(arguments, 1)
+               //     background: true,
+               //     font: false
+               // })
+
+
+        $('p').colorful({   //    直接运用init   -> methods.init.apply(this, arguments)
+            color: 'green',
+            background: true,
+            font: false
+        })
+    });
