@@ -1,4 +1,4 @@
-﻿在很多时候经常看到 Array.prototype.slice.call()方法，比如 Array.prototype.slice.call(arguments)，下面讲一下其原理：
+在很多时候经常看到 Array.prototype.slice.call()方法，比如 Array.prototype.slice.call(arguments)，下面讲一下其原理：
 
 1、基本讲解
 
@@ -8,13 +8,13 @@ arrayObj.slice(start, [end]) 很显然是截取数组的一部分。
 
 2.我们再看call
 
- call([thisObj[,arg1[arg2[[argN]]]]])    //看不懂
+ call([thisObj[,arg1[arg2[[argN]]]]])    // 看不懂
 
 thisObj是一个对象的方法
 
 arrg1~argN是参数
 
-那么 Array.prototype.slice.call(arguments,1);这句话的意思就是说把调用方法的参数截取出来。
+那么 Array.prototype.slice.call(arguments,1);  这句话的意思就是说把调用方法的参数截取出来。
 如：
 
  function test(a,b,c,d)
@@ -43,7 +43,7 @@ if (element.data('jDefined')) {
 
 解成是让arguments转换成一个数组对象，使arguments具有slice()方法。若是直接写arguments.slice(1)则会报错。
 
-typeof arguments==="Object" //而不是 "Array"
+typeof arguments==="Object" //  而不是 "Array"
 
 
 3、真正原理
@@ -53,14 +53,14 @@ Array.prototype.slice.call(arguments)能将具有length属性的对象转成数�
 js对象与com对象不能进行转换）
 如：
 
-var a={length:2,0:'first',1:'second'};//类数组,有length属性，长度为2，第0个是first，第1个是second
+var a={length:2,0:'first',1:'second'};// 类数组,有length属性，长度为2，第0个是first，第1个是second
 console.log(Array.prototype.slice.call(a,0));   // ["first", "second"],调用数组的slice(0);
 
 var a={length:2,0:'first',1:'second'};
-console.log(Array.prototype.slice.call(a,1));//["second"]，调用数组的slice(1);
+console.log(Array.prototype.slice.call(a,1));// ["second"]，调用数组的slice(1);
 
-var a={0:'first',1:'second'};//去掉length属性，返回一个空数组
-console.log(Array.prototype.slice.call(a,0));//[]
+var a={0:'first',1:'second'};// 去掉length属性，返回一个空数组
+console.log(Array.prototype.slice.call(a,0));// []
 
 
 function test(){
@@ -94,8 +94,8 @@ var toArray = function(s){
     } catch(e){
         var arr = [];
         for(var i = 0,len = s.length; i < len; i++){
-            //arr.push(s[i]);
-               arr[i] = s[i];  //据说这样比push快
+            // arr.push(s[i]);
+               arr[i] = s[i];  // 据说这样比push快
         }
          return arr;
     }
