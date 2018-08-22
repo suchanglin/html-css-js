@@ -1,0 +1,42 @@
+caller
+
+caller返回一个函数的引用，这个函数调用了当前的函数。
+使用这个属性要注意:
+1 这个属性只有当函数在执行时才有用
+2 如果在javascript程序中，函数是由顶层调用的，则返回null
+
+var a = function() { 
+alert(a.caller); 
+} 
+var b = function() { 
+a(); 
+} 
+
+
+a(); // null
+b(); //  var b = function(){ a();}   即执行函数的本身。  站在 a 函数的角度：我被谁使用
+
+
+
+
+callee
+callee返回正在执行的函数本身的引用，它是arguments的一个属性
+使用callee时要注意:
+1 这个属性只有在函数执行时才有效
+
+2 它有一个length属性，可以用来获得形参的个数，因此可以用来比较形参和实参个数是否一致，即比
+较arguments.length是否等于arguments.callee.length.  比如有个函数 good(a,b,c,d), arguments.callee.length就是固定形参为4，但是调用
+的时候，可能是good(1,3,2),arguments.length为3，也可能是good（1,4,3,7,8,5,3）,arguments.length为7.
+
+3 它可以用来递归匿名函数。
+var a = function() { 
+alert(arguments.callee); 
+} 
+var b = function() { 
+a(); 
+}
+
+a(); // 返回本身
+b();  // 返回 a 函数。即本身执行的也是a();
+
+
