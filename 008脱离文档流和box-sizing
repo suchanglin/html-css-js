@@ -30,6 +30,18 @@ padding-box：width和height值的是    内容+padding的宽度和高度
 border-box：width和height指的是   内容+padding+border的宽度和高度
 
 
+---------------------------------------------------------------------------------------2018.08.27
+标准盒子模型指的是 content-box ，它的边界是内容区，只对内容区域有效。容器占据的空间大小为:
+宽度 = width + paddingLeft + paddingRight + borderLeft + borderRight
+高度 = height + paddingTop + paddingBottom + borderTop + borderBottom
 
+IE盒子模型指的是 border-box ，它的边界是边框，对这个容器有效。容器占据的空间大小为:
+宽度 = width
+高度 = height
 
+另外：
+
+通常说的“IE盒子模型”指的是IE5.5，IE6及其以后，盒模型都为 content-box
+当浏览器未设置<!doctype>声明时，盒模型都为 border-box
+通过 css3 的box-sizing属性，可以更改元素的盒子模型
 
