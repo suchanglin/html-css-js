@@ -39,7 +39,7 @@ xhr.onreadystatechange = function(){
         if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304)
         {alert(xhr.responseText);}
         else
-        {alert("unsuccessful")}    
+        {alert("unsuccessful")}
     }
 }
 
@@ -116,12 +116,12 @@ function onReadyStateChange() {
   　}
 }
 
- 
- 
- 
+
+
+
  第二种方案
  jQuery实现AJAX
- 
+
  $.ajax({
     method: 'POST',
     url: '/api',
@@ -140,8 +140,8 @@ fetch(...).then(fun2)
           .then(fun3) //各依赖有序执行
           .....
           .catch(fun)
-          
-（没有回调地狱）          
+
+（没有回调地狱）
 
 
 
@@ -166,3 +166,41 @@ fetch(url, {
 
 
 链接 https://github.github.io/fetch/
+
+
+
+---------------------------------------------------------------------------------------------------
+
+20180919封装的ajax函数
+function ajax(opt) {
+    opt = opt || {};
+    opt.method = opt.method.toUpperCase() || 'POST';
+    opt.url = opt.url || '';
+    opt.async = opt.async || true;
+    opt.data = opt.data || null;
+    opt.success = opt.success || function() {};
+    var xmlHttp = null;
+    if (XMLHttpRequest) {
+      xmlHttp = new XMLHttpRequest();
+    } else {
+      xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+       }
+    var params = [];
+    for (var key in opt.data) {
+      params.push(key + '=' + opt.data[key]);
+    }
+    var postData = params.join('&');
+    if (opt.method.toUpperCase() === 'POST') {
+        xmlHttp.open(opt.method, opt.url, opt.async);
+        xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+        xmlHttp.send(postData);
+    } else if (opt.method.toUpperCase() === 'GET') {
+        xmlHttp.open(opt.method, opt.url + '?' + postData, opt.async);
+        xmlHttp.send(null);
+    }
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        opt.success(xmlHttp.responseText);
+         }
+    };
+}
