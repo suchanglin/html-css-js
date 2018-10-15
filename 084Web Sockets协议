@@ -55,8 +55,9 @@ event.data 中保存的也是字符串
 
 1. websocket对象的属性
 
-WebSocket属性readState取值：
-
+WebSocket属性
+Socket.readyState
+取值有4种：
 WebSocket.OPENING(0):正在建立连接
 WebSocket.OPEN(1):已经建立连接
 WebSocket.CLOSING(2):正在关闭连接
@@ -73,7 +74,10 @@ message：服务器向客户端发送消息时会触发
 open：客户端与服务器成功建立连接时触发
 error：在发生错误时触发，连接不能持续
 close：在连接关闭时触发
+
+
 close事件的event有额外的信息：
+
 wasClean:布尔值，是否明确地关闭
 code：服务器返回的数值状态码
 reason：字符串，包含服务器发回的消息
