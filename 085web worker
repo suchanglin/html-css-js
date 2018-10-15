@@ -21,8 +21,10 @@ worker.postMessage({type: 'command', message: 'start!'});
 worker.onmessage = function(event) {
 	console.log(event.data); //输出worker发送来的数据
 }
-在新开的线程中(worker.js文件中)：
 
+
+
+在新开的线程中(worker.js文件中)：
 
 //获取从主线程中传来的数据
 this.onmessage = function(event) {
@@ -34,6 +36,9 @@ this.onmessage = function(event) {
 	//将处理之后的数据发回给主线程
 	this.postMessage(data);
 }
+
+
+
 主线程中的API：
 
 var worker = new Worker('...')
@@ -41,6 +46,9 @@ worker.postMessage()
 worker.onmessage
 worker.onerror
 worker.terminate()
+
+
+
 新开的线程中的API：
 
 在新开的线程中，self和this都是指的worker对象，不能访问页面中的DOM
@@ -48,6 +56,7 @@ worker.terminate()
 this.postMessage()
 this.onmessage
 this.close()
+
 注意：在本地文件中不能运行web worker
 
 XMLHttpRequest的异步执行模式，相当于是一个拥有专用API的web worker。
