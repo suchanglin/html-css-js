@@ -4,11 +4,8 @@ UI事件
 焦点事件
 鼠标事件
 滚轮事件
-文本事件
 键盘事件
-合成事件
-变动事件
-变动名称事件
+自定义事件
 
 
 二. UI事件
@@ -120,3 +117,40 @@ keydown：按下键盘上的任意键触发，按住不放会重复触发
 keypress：按下键盘上的字符键触发，按住不放会重复触发
 keyup：释放键盘上的任意键触发
 textInput：在可编辑区域内输入字符时触发
+
+ 七. 自定义事件
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Event</title>
+    <style>
+    html * {
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="ev">
+        <span>目标元素</span>
+    </div>
+    <script>
+    var dom = document.getElementById('ev')
+
+    var _event = new Event('look', { "bubbles": true, "cancelable": false });
+
+    document.addEventListener('look', function() {
+        console.log('document');
+    });
+
+    dom.addEventListener('look', function() {
+        console.log('dom');
+    });
+    dom.dispatchEvent(_event);  // dom  document   因为参数为bubbles": true，即冒泡
+    document.dispatchEvent(_event);   // document
+    </script>
+</body>
+
+</html>
