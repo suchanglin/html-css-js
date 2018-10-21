@@ -1,0 +1,18 @@
+let promise = new Promise(function(resolve, reject) {
+  console.log('Promise');
+  reject(23);
+  resolve(11);
+});
+
+promise.then(function(value) {
+  console.log('resolved.');
+  console.log(value);
+  
+},function(error){
+   console.log(error)
+});
+
+console.log('Hi!');
+
+当reject(23)在前面时，输出为Promise,Hi,23，同时resolve(11)不运行。
+当resolve(11)在reject(23)时，输出 Promise，Hi,resolve,11，同时reject(23)不运行；
