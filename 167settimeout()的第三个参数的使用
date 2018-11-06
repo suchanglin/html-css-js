@@ -5,3 +5,14 @@ setTimeout( function( a, b ,c ) {
     console.log( b );//2
     console.log( c );//3
 }, 1000, 1, 2, 3 );
+
+------------------------------------------2018.11.06
+function tcon() {
+        alert("恭喜你学会函数调用了!");
+    }
+    setTimeout(tcon,2000)
+    console.log(tcon)
+
+ 第一个参数可以函数代码code；也可以是函数名如tcon；也可以是字符串"tcon()",直接调用。
+
+ 实际上后两种都是简化第一种情况，直接书写代码比较臃肿
