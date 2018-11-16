@@ -100,10 +100,22 @@ window.devicePixelRatio // 10
 另外，在移动端不建议使用 px 作为布局单位，而是应该使用 rem 或者百分比作为布局单位。
 
 
+@media all and (-webkit-min-device-pixel-ratio: 2) {
+    .scale::after {
+        display: block;
+        content: '';
+        border-bottom: 1px solid #000;
+        transform: scaleY(.5);
+    }
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 3) {
+    .scale::after {
+        display: block;
+        content: '';
+        border-bottom: 1px solid #000;
+        transform: scaleY(.333);
+    }
+}
 
 
-
-简书收集过来
-
-作者：黑黢黢
-链接：https://www.jianshu.com/p/c88e9489b583
