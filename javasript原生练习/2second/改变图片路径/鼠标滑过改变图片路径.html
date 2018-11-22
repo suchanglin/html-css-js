@@ -77,7 +77,6 @@
             oImg[i].onmouseover = function() {
                 var img = new Image();
                 img.src = oImg[0].src = this.src.replace(/small/, "big");
-                // console.log(oImg[0].src);  //地址相似，直接使用第一张图地址，用big替换small
                 oDiv.style.display = "block";
                 img.complete ? oDiv.style.display = "none" : (oImg[0].onload = function() { oDiv.style.display = "none" })
             }

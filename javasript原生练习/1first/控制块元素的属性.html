@@ -33,6 +33,7 @@
         for (var i = 0; i < oBtn.length; i++) {
             oBtn[i].index = i;
             oBtn[i].onclick = function() {
+                // index为最后一项时，清除所有样式
                 this.index == oBtn.length - 1 && (oDiv.style.cssText = "");
                 changeStyle(oDiv, oAtt[this.index], oVal[this.index]);
             }

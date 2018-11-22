@@ -95,7 +95,7 @@
             oLi[i].onmouseover = function() {
                 for (var n = 0; n < oLi.length; n++) oLi[n].className = "";
                 this.className = "current";
-                oP.innerHTML = oArray[this.index];
+                oP.innerHTML = oArray[this.index]; // 把var改为let，可以直接this.index改为i
                 oStrong.innerHTML = this.index + 1;
             }
         }

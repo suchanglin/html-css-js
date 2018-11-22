@@ -16,7 +16,7 @@
         cursor: pointer;
         letter-spacing: 5px;
         text-align: center;
-        font: 12px/200px Arial;
+        font: 18px/200px Arial;
         margin: -100px 0 0 -100px;
     }
     </style>
@@ -31,7 +31,7 @@
             timer = setInterval(function() {
                 oBox.style.display = i++ % 2 ? "none" : "block";
                 console.log(i);
-                i > 6 && (clearInterval(timer));//if(i>6){ clearInterval(timer)},偶数平屏幕才显示结果
+                i > 10 && (clearInterval(timer));//if(i>10){ clearInterval(timer)},偶数平屏幕才显示结果
             }, 80)
         }
     };

@@ -15,7 +15,7 @@
         var oBody = document.body;
         var i = 0;
         setInterval(updateNum,1000);
-        updateNum();
+        updateNum(); // 使页面即使显示，不需等待空白一秒钟
         function updateNum() {
             oBody.innerHTML = ++i;
         }

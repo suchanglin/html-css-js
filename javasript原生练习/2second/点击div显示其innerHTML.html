@@ -29,8 +29,10 @@
     window.onload = function() {
         var oDiv = document.getElementById("outer").getElementsByTagName("div");
         for (var i = 0; i < oDiv.length; i++) {
+            console.log(i)  // 立即遍历一轮
             oDiv[i].onclick = function() {
                 // alert($(this).html());   JQUERY方法，记得引入script
+            console.log(i)  // 永远最后一次i的值，当var改为let，则i为当前点击的值
                 alert(this.innerHTML);
             }
         }
