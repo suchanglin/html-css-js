@@ -1,0 +1,11 @@
+
+(function() {
+
+var a = b = 5;
+
+})();
+
+console.log(b); // 5
+console.log(a);  // 报错
+
+// 立即调用函数，a是函数内变量，b是全局变量
