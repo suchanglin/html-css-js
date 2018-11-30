@@ -1,0 +1,391 @@
+1.CSS隐藏元素的几种方法
+
+1、display，使用none值会让元素从文档中直接删除，”直接消失不见了”
+
+用法：display:none
+
+优点：简单暴力，不需要多余代码。不占空间，对布局没影响。
+
+缺点：元素从文档删除，不利于seo
+
+2、text-indent，一般是首行缩2个中文字的用法是text-indent:2em。但当给他一个足够大的负值，大到一般我们浏览器无法显示。
+
+用法：text-indent:-999em
+
+优点：利于搜索引擎
+
+缺点：它的作用其实就是把文字提到段落前面，不让我们看见，不影响宽度？
+
+会影响布局。
+
+3、position，假如说一个元素的距离我们的视窗（电脑显示屏幕）足够大，大到我们浏览器也无法显示出来，那么它也是“消失”的。但是这种做法一般适用于比
+较写死的东西。
+
+用法：position:absolute; top:-999em或者left:-999em
+
+   或  position:absolute; visibility:hidden;
+
+优点：信手拈来，随意摆放
+
+缺点：用法太死，不能随意修改，比较死板
+
+4、visibility，只是“看不见”而已，所以元素依然会影响到布局
+
+用法：visibility:hidden
+
+优点：利于SEO优化
+
+缺点：该属性会继承，假如祖先用了visibility:hidden，那么子元素也是直接显示不见，想要子元素显示让用户看见，还要必须再多写visibility：visible。
+
+
+
+二，简要说一下css元素的分类
+
+行内元素（lnline-element）：
+元素的高度，行高，顶底边距由元素所包含的图片或文字所决定，不可改变；其宽度为内容文字或图片的宽度所决定，
+而其左右边距可人为设置。 行内元素的水平方向的padding-left,padding-right,margin-left,margin-right 都产生边距效果，但是竖直方
+向的padding-top,padding-bottom,margin-top,margin-bottom都不会产生边距效果。（水平方向有效，竖直方向无效）（<a>、<span>、<strong>）
+
+块级元素（block-element）:
+总是独占一行，元素占据的高度，顶底左右边距可以人为设置；其宽度缺省为所在容器的100%，可人为设置；（<div>、<p>、<h1>...<h6>、<ol>、<ul>、<dl>、
+<table>、<address>、<blockquote> 、<form>）
+
+空元素（void-element）：
+即没有内容的HTML元素，例如：br、meta、hr、link、input、img
+
+三 左固定宽度，右自适应两列布局
+
+<!DOCTYPE>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    .one {
+        position: absolute;
+        height: 100px;
+        width: 300px;
+        background-color: blue;
+    }
+
+    .two {
+        height: 200px;
+        margin-left: 300px;
+        background-color: red;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="one"></div>
+    <div class="two">第一种方法</div>
+</body>
+
+</html>
+
+红色区域的宽度
+
+.div {
+        box-sizing: border-box;
+        width: 100px;
+        padding: 10px;
+        height: 200px;
+        background-color: red;
+        background-clip: content-box;
+    }
+    
+ 四、 由于border-box,所以最大宽度定死100px,那么内容宽度只能为100-10-10 = 80px;又因为裁去内容外的一切，所以剩下的宽度为内容宽度80px.
+ 
+ 五、html5只需要<!DOCTYPE HTML>的原因。
+ 
+ SGML：标准通用标记语言（以下简称“通用标言”），是一种定义电子文档结构和描述其内容的国际标准语言；
+ [1]  通用标言为语法置标提供了异常强大的工具，同时具有极好的扩展性，因此在数据分类和索引中非常有用；
+ [2]  是所有电子文档标记语言的起源，早在万维网发明之前“通用标言”就已存在。[1] 
+
+ 
+
+　　DTD：文档类型定义(Document Type Definition)是一套为了进行程序间的数据交换而建立的关于标记符的语法规则。
+  它是标准通用标记语言和可扩展标记语言1.0版规格的一部分，文档可根据某种DTD语法规则验证格式是否符合此规则。文档类型定义也可用做保证标准通
+  用标记语言、可扩展标记语言文档格式的合法性，可通过比较文档和文档类型定义文件来检查文档是否符合规范，元素和标签使用是否正确。文件实例提供应
+  用程序一个数据交换的格式。使用各类文档类型定义是为了让标准通用标记语言、可扩展标记语言文件能符合规定的数据交换标准，因为这样，不同的公
+  司只需定义好标准文档类型定义，就都能依文档类型定义建立文档实例，并且进行验证，如此就可以轻易交换数据，防止了实例数据定义不同等原因造成的数
+  据交换障碍，满足了网络共享和数据交互。文档类型定义文件是一个美国信息交换标准代码文本文件。
+
+ 
+
+　　<!DOCTYPE> 声明不是一个 HTML 标签；它是用来告知 Web 浏览器页面使用了哪种 HTML 版本。HTML5 不是基于 SGML的，因此不需要对DTD进行引
+  用，但是仍然需要doctype来规范浏览器的行为，至于不声明DOCTYPE的后果，就是某些css的处理方式是根据浏览器喜好定的，不是根据标准走的，这
+  样同一份代码在不同浏览器可能产生不同效果，所以写之前必须声明！而HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型
+ 
+ 六、CSS选择符有哪些？哪些属性可以继承？
+ 
+  1.id选择器（ # myid）
+  2.类选择器（.myclassname）
+  3.标签选择器（div, h1, p）
+  4.相邻选择器（h1 + p）
+  5.子选择器（ul > li）
+  6.后代选择器（li a）
+  7.通配符选择器（ * ）
+  8.属性选择器（a[rel = "external"]）
+  9.伪类选择器（a:hover, li:nth-child）
+  
+   可继承的样式： font-size font-family color，其中宽，高不可以继承
+   
+   七、CSS3有哪些特性？
+   1.CSS3的选择器
+
+1）E:last-child 匹配父元素的最后一个子元素E。
+2）E:nth-child(n)匹配父元素的第n个子元素E。 
+3）E:nth-last-child(n) CSS3 匹配父元素的倒数第n个子元素E。
+
+2. @Font-face 特性
+
+Font-face 可以用来加载字体样式，而且它还能够加载服务器端的字体文件，让客户端显示客户端所没有安装的字体。
+
+@font-face { 
+ font-family: BorderWeb; 
+ src:url(BORDERW0.eot); 
+ } 
+ @font-face { 
+ font-family: Runic; 
+ src:url(RUNICMT0.eot); 
+ } 
+ .border { FONT-SIZE: 35px; COLOR: black; FONT-FAMILY: "BorderWeb" } 
+ .event { FONT-SIZE: 110px; COLOR: black; FONT-FAMILY: "Runic" }
+
+
+淘宝字体
+ @font-face {
+                font-family: iconfont;
+                src: url(//at.alicdn.com/t/font_1465189805_4518812.eot);              
+ }
+
+
+3. 圆角
+
+
+border-radius: 15px;
+
+4. 多列布局 （multi-column layout）
+
+
+<div class="mul-col">
+    <div>
+        <h3>新手上路</h3>
+        <p>新手专区 消费警示 交易安全 24小时在线帮助 免费开店</p>
+    </div>
+    <div>
+        <h3>付款方式</h3>
+        <p>快捷支付 信用卡 余额宝 蚂蚁花呗 货到付款</p>
+    </div>
+    <div>
+        <h3>淘宝特色</h3>
+        <p>手机淘宝 旺信 大众评审 B格指南</p>
+    </div>
+</div>
+.mul-col{
+    column-count: 3;
+    column-gap: 5px;
+    column-rule: 1px solid gray;
+    border-radius: 5px;
+    border:1px solid gray;
+    padding: 10px   ;
+}
+5.阴影（Shadow） 
+
+ .class1{ 
+      text-shadow:5px 2px 6px rgba(64, 64, 64, 0.5); 
+ }
+ 
+ 6.CSS3 的渐变效果 
+
+background-image:-webkit-gradient(linear,0% 0%,100% 0%,from(#2A8BBE),to(#FE280E));
+
+7.css弹性盒子模型
+
+
+<div class="boxcontainer">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+</div>
+.boxcontainer { 
+    width: 1000px; 
+    display: -webkit-box; 
+    display: -moz-box; 
+    -webkit-box-orient: horizontal; 
+    -moz-box-orient: horizontal; 
+} 
+            
+ .item { 
+    background: #357c96; 
+    font-weight: bold; 
+    margin: 2px; 
+    padding: 20px; 
+    color: #fff; 
+    font-family: Arial, sans-serif; 
+}
+
+
+8. CSS3制作特效
+
+ Transition 对象变换时的过渡效果
+
+ transition-property 对象参与过渡的属性
+ transition-duration 过渡的持续时间
+ transition-timing-function 过渡的类型
+ transition-delay 延迟过渡的时间
+
+
+Animation动画特效 
+
+
+-----------------------------------------------------------------------------------
+一、谈谈document.ready和window.onload的区别
+在Jquery里面，我们可以看到两种写法:$(function(){}) 和$(document).ready(function(){})
+
+这两个方法的效果都是一样的，都是在dom文档树加载完之后执行一个函数（注意，这里面的文档树加载完不代表全部文件加载完）。
+
+而window.onload是在dom文档树加载完和所有文件加载完之后执行一个函数。也就是说$(document).ready要比window.onload先执行。
+
+二、headyu与body对js引用的不同
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script type="text/javascript">
+
+    alert("加载页面之前进行弹出");
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <input id="btnAlter" type="button" value="button" />
+    </div>
+        <script type="text/javascript">
+
+    alert("加载页面之后进行弹出");
+
+    </script>
+    </form>
+</body>
+</html>
+
+三、两个定时器
+setInterval() ：按照指定的周期（以毫秒计）来调用函数或计算表达式。方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。
+setTimeout() ：在指定的毫秒数后调用函数或计算表达式。
+
+四、document.all 在各浏览器中的支持不同
+1. 所有浏览器使用 document.all 获取取元素的支持程度。
+分析以下代码：
+
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById("info").innerHTML = "document.all : " + document.all;
+    }
+</script>
+<span id="SPAN1"></span>
+<div id="info"></div>
+
+
+在各浏览器中运行结果如下表：
+
+IE6 IE7 IE8(Q)	document.all : [object]
+Opera Safari IE8(S)	document.all : [object HTMLColletion]
+Firefox(Q)	document.all : [object HTML document.all.class]
+Firefox(S)	document.all : undefined
+Chrome	document.all : [object HTMLColletion]
+
+
+
+2. 在 IE 中 document.all 的布尔值是 true ，其他浏览器都是 false。
+分析以下代码：
+
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById("info").innerHTML = "!!document.all : " + !!document.all;
+    }
+</script>
+<span id="SPAN1"></span>
+<div id="info"></div>
+在各浏览器中运行结果如下表：
+
+IE6 IE7 IE8	!!document.all : true
+Firefox Chrome Safari Opera	!!document.all : false
+
+3. 所有浏览器都支持使用 document.all 取元素的方式。
+
+分析以下代码：
+
+<html id="HTML1">
+<script type="text/javascript">
+    window.onload = function() {
+        var html = "<table border='1' style='font-size:12px;'>";
+        function getElement(sec) {
+            html += "<tr><td>" + sec + "</td>" + "<td>" + eval(sec).id + "</td>";
+        }
+        getElement("document.all(0)");
+        getElement("document.all[0]");
+        getElement("document.all.item(0)");
+        getElement("document.all('SPAN1')");
+        getElement("document.all.SPAN1");
+        getElement("document.all['SPAN1']");
+        getElement("document.all.namedItem('SPAN1')");
+        html += "</table>";
+        document.getElementById("info").innerHTML = html;
+    }
+</script>
+<span id="SPAN1"></span>
+<div id="info"></div>
+</html>
+            
+在各浏览器中表现如下：
+
+IE6(Q) IE7(Q) IE8(Q)
+Chrome Safari Opera
+Firefox(Q)	
+IE6(S) IE7(S) IE8(S)	
+Firefox(S)	
+
+解决方案
+由于 document.all 方法存在支持程度问题，获取元素还是推荐用 W3C DOM 规范中提供的 
+document.getElementById、document.getElementsByTagName 等标准方法。
+
+五、document.forms用法
+1、FF中不能接受document.forms("formname")的使用，ie中可以
+
+        最好改成document.forms["formname"]的下标用法
+
+2、FF中不能接受document.all的用法，document.all是在ie中定义的用法
+
+        最好改成document.getElementById
+
+3、FF中不能直接使用div的id获取div的属性，如divId.style.display等
+
+        应一致改成document.getElementById("divId").style.display
+        
+ 七、alert分别输出值是什么？
+ var a = 2;
+var func = (function(){var a = 3;return function(){
+ a++;alert(a);
+}})();
+
+func()  // 4   因为a++是独立表达式，不能想当然认为先取值再自身+1；  
+
+func()    // 5
+
+八、用代码解释对闭包的理解
+var quo=function(status){
+  return{
+    get_status:function(){
+      return status;
+    }
+  }
+}
+
+var myQuo=quo("amazed");
+document.writeln(myQuo.get_status());
