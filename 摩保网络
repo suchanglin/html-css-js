@@ -1,4 +1,4 @@
-1.CSS隐藏元素的几种方法
+﻿1.CSS隐藏元素的几种方法
 
 1、display，使用none值会让元素从文档中直接删除，”直接消失不见了”
 
@@ -389,3 +389,49 @@ var quo=function(status){
 
 var myQuo=quo("amazed");
 document.writeln(myQuo.get_status());
+
+
+
+继承
+
+父类构造器
+
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+Point.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+}
+
+var p = new Point(1, 1);
+var circle = {x: 1, y: 1, r: 1};
+p.move.apply(circle, [2, 1]); // {x: 3, y: 2, r: 1}
+
+子类构造器
+
+function Circle(x, y, r) {
+  Point.apply(this, [x, y]);
+  this.radius = r;
+}
+Circle.prototype = Object.create(Point.prototype);
+Circle.prototype.constructor = Circle;
+Circle.prototype.area = function(){
+  return Math.PI * this.radius * this.radius;
+}
+
+var c = new Circle(1, 2, 3);
+c.move(2, 2);  // 改变了c对象
+c.area();  // 直接求面积  
+
+此处x,y和跟半径没有关系，开始时x:1，y:2，只有调用c.move(x,y)才改变
+
+
+
+try{}
+catch(e){}  // 这是一个函数
+
+
+jquery 绑定事件的几种方式  .on  .delegate  .live  .bind
