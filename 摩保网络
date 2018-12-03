@@ -63,7 +63,7 @@
     <title>Document</title>
     <style type="text/css">
     .one {
-        position: absolute;
+        position: absolute;     //2. float:left;   3. display:flex;  4.BFC overflow:hidden
         height: 100px;
         width: 300px;
         background-color: blue;
@@ -94,16 +94,16 @@
         background-color: red;
         background-clip: content-box;
     }
-    
+
  四、 由于border-box,所以最大宽度定死100px,那么内容宽度只能为100-10-10 = 80px;又因为裁去内容外的一切，所以剩下的宽度为内容宽度80px.
- 
+
  五、html5只需要<!DOCTYPE HTML>的原因。
- 
+
  SGML：标准通用标记语言（以下简称“通用标言”），是一种定义电子文档结构和描述其内容的国际标准语言；
  [1]  通用标言为语法置标提供了异常强大的工具，同时具有极好的扩展性，因此在数据分类和索引中非常有用；
- [2]  是所有电子文档标记语言的起源，早在万维网发明之前“通用标言”就已存在。[1] 
+ [2]  是所有电子文档标记语言的起源，早在万维网发明之前“通用标言”就已存在。[1]
 
- 
+
 
 　　DTD：文档类型定义(Document Type Definition)是一套为了进行程序间的数据交换而建立的关于标记符的语法规则。
   它是标准通用标记语言和可扩展标记语言1.0版规格的一部分，文档可根据某种DTD语法规则验证格式是否符合此规则。文档类型定义也可用做保证标准通
@@ -112,14 +112,14 @@
   司只需定义好标准文档类型定义，就都能依文档类型定义建立文档实例，并且进行验证，如此就可以轻易交换数据，防止了实例数据定义不同等原因造成的数
   据交换障碍，满足了网络共享和数据交互。文档类型定义文件是一个美国信息交换标准代码文本文件。
 
- 
+
 
 　　<!DOCTYPE> 声明不是一个 HTML 标签；它是用来告知 Web 浏览器页面使用了哪种 HTML 版本。HTML5 不是基于 SGML的，因此不需要对DTD进行引
   用，但是仍然需要doctype来规范浏览器的行为，至于不声明DOCTYPE的后果，就是某些css的处理方式是根据浏览器喜好定的，不是根据标准走的，这
   样同一份代码在不同浏览器可能产生不同效果，所以写之前必须声明！而HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型
- 
+
  六、CSS选择符有哪些？哪些属性可以继承？
- 
+
   1.id选择器（ # myid）
   2.类选择器（.myclassname）
   3.标签选择器（div, h1, p）
@@ -129,9 +129,9 @@
   7.通配符选择器（ * ）
   8.属性选择器（a[rel = "external"]）
   9.伪类选择器（a:hover, li:nth-child）
-  
+
    可继承的样式： font-size font-family color，其中宽，高不可以继承
-   
+
    七、CSS3有哪些特性？
    1.CSS3的选择器
 
@@ -143,22 +143,22 @@
 
 Font-face 可以用来加载字体样式，而且它还能够加载服务器端的字体文件，让客户端显示客户端所没有安装的字体。
 
-@font-face { 
- font-family: BorderWeb; 
- src:url(BORDERW0.eot); 
- } 
- @font-face { 
- font-family: Runic; 
- src:url(RUNICMT0.eot); 
- } 
- .border { FONT-SIZE: 35px; COLOR: black; FONT-FAMILY: "BorderWeb" } 
+@font-face {
+ font-family: BorderWeb;
+ src:url(BORDERW0.eot);
+ }
+ @font-face {
+ font-family: Runic;
+ src:url(RUNICMT0.eot);
+ }
+ .border { FONT-SIZE: 35px; COLOR: black; FONT-FAMILY: "BorderWeb" }
  .event { FONT-SIZE: 110px; COLOR: black; FONT-FAMILY: "Runic" }
 
 
 淘宝字体
  @font-face {
                 font-family: iconfont;
-                src: url(//at.alicdn.com/t/font_1465189805_4518812.eot);              
+                src: url(//at.alicdn.com/t/font_1465189805_4518812.eot);
  }
 
 
@@ -192,13 +192,13 @@ border-radius: 15px;
     border:1px solid gray;
     padding: 10px   ;
 }
-5.阴影（Shadow） 
+5.阴影（Shadow）
 
- .class1{ 
-      text-shadow:5px 2px 6px rgba(64, 64, 64, 0.5); 
+ .class1{
+      text-shadow:5px 2px 6px rgba(64, 64, 64, 0.5);
  }
- 
- 6.CSS3 的渐变效果 
+
+ 6.CSS3 的渐变效果
 
 background-image:-webkit-gradient(linear,0% 0%,100% 0%,from(#2A8BBE),to(#FE280E));
 
@@ -211,21 +211,21 @@ background-image:-webkit-gradient(linear,0% 0%,100% 0%,from(#2A8BBE),to(#FE280E)
     <div class="item">3</div>
     <div class="item">4</div>
 </div>
-.boxcontainer { 
-    width: 1000px; 
-    display: -webkit-box; 
-    display: -moz-box; 
-    -webkit-box-orient: horizontal; 
-    -moz-box-orient: horizontal; 
-} 
-            
- .item { 
-    background: #357c96; 
-    font-weight: bold; 
-    margin: 2px; 
-    padding: 20px; 
-    color: #fff; 
-    font-family: Arial, sans-serif; 
+.boxcontainer {
+    width: 1000px;
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+}
+
+ .item {
+    background: #357c96;
+    font-weight: bold;
+    margin: 2px;
+    padding: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
 
 
@@ -239,7 +239,7 @@ background-image:-webkit-gradient(linear,0% 0%,100% 0%,from(#2A8BBE),to(#FE280E)
  transition-delay 延迟过渡的时间
 
 
-Animation动画特效 
+Animation动画特效
 
 
 -----------------------------------------------------------------------------------
@@ -342,17 +342,17 @@ Firefox Chrome Safari Opera	!!document.all : false
 <span id="SPAN1"></span>
 <div id="info"></div>
 </html>
-            
+
 在各浏览器中表现如下：
 
 IE6(Q) IE7(Q) IE8(Q)
 Chrome Safari Opera
-Firefox(Q)	
-IE6(S) IE7(S) IE8(S)	
-Firefox(S)	
+Firefox(Q)
+IE6(S) IE7(S) IE8(S)
+Firefox(S)
 
 解决方案
-由于 document.all 方法存在支持程度问题，获取元素还是推荐用 W3C DOM 规范中提供的 
+由于 document.all 方法存在支持程度问题，获取元素还是推荐用 W3C DOM 规范中提供的
 document.getElementById、document.getElementsByTagName 等标准方法。
 
 五、document.forms用法
@@ -367,27 +367,27 @@ document.getElementById、document.getElementsByTagName 等标准方法。
 3、FF中不能直接使用div的id获取div的属性，如divId.style.display等
 
         应一致改成document.getElementById("divId").style.display
-        
+
  七、alert分别输出值是什么？
  var a = 2;
 var func = (function(){var a = 3;return function(){
  a++;alert(a);
 }})();
 
-func()  // 4   因为a++是独立表达式，不能想当然认为先取值再自身+1；  
+func()  // 4   因为a++是独立表达式，不能想当然认为先取值再自身+1；
 
 func()    // 5
 
 八、用代码解释对闭包的理解
-var quo=function(status){
-  return{
-    get_status:function(){
+var quo = function (status) {
+  return {
+    get_status () {
       return status;
     }
   }
 }
 
-var myQuo=quo("amazed");
+var myQuo = quo("amazed");
 document.writeln(myQuo.get_status());
 
 
@@ -424,7 +424,7 @@ Circle.prototype.area = function(){
 
 var c = new Circle(1, 2, 3);
 c.move(2, 2);  // 改变了c对象
-c.area();  // 直接求面积  
+c.area();  // 直接求面积
 
 此处x,y和跟半径没有关系，开始时x:1，y:2，只有调用c.move(x,y)才改变
 
@@ -435,3 +435,124 @@ catch(e){}  // 这是一个函数
 
 
 jquery 绑定事件的几种方式  .on  .delegate  .live  .bind
+
+
+
+
+<!-- 水平居中布局 -->
+<!-- inline-block + text-align -->
+<style>
+  .parent {
+    text-align: center;
+  }
+  .child {
+    display: inline-block;
+  }
+</style>
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+
+<!-- table + margin -->
+
+<style>
+  .child {
+    display: table;
+    margin: 0 auto;
+  }
+</style>
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+<!-- absolute + transform -->
+<style>
+  .parent {
+    position: relative;
+  }
+  .child {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+</style>
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+
+<!-- flex + justify-content -->
+
+
+<style>
+  .parent {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 或者下面的方法，可以达到一样的效果 */
+
+  .parent {
+    display: flex;
+  }
+  .child {
+    margin: 0 auto;
+  }
+</style>
+
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 垂直居中 -->
+<!-- table-cell + vertical-align -->
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+<style>
+  .parent {
+    display: table-cell;
+    vertical-align: middle;
+  }
+</style>
+
+<!-- absolute + transform -->
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+<style>
+  .parent {
+    position: relative;
+  }
+  .child {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+</style>
+
+<!-- flex + align-items -->
+<div class="parent">
+  <div class="child">Demo</div>
+</div>
+
+<style>
+  .parent {
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+
+<!-- 一列定宽，一列自适应 -->
