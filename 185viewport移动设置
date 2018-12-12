@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <title>Test Page</title>
+    <script>
+    var deviceWidth = parseInt(window.screen.width); //获取当前设备的屏幕宽度
+    var deviceScale = deviceWidth / 640; //得到当前设备屏幕与640之间的比例，之后我们就可以将网页宽度固定为640px
+    var ua = navigator.userAgent;
+    //获取当前设备类型（安卓或苹果）
+    if (/Android (\d+\.\d+)/.test(ua)) {
+        var version = parseFloat(RegExp.$1);
+        if (version > 2.3) {
+            document.write('<meta name="viewport" content="width=640,initial-scale=' + deviceScale + ', minimum-scale = ' + deviceScale + ', maximum-scale = ' + deviceScale + ', target-densitydpi=device-dpi">');
+        } else {
+            document.write('<meta name="viewport" content="width=640,initial-scale=0.75,maximum-scale=0.75,minimum-scale=0.75,target-densitydpi=device-dpi" />');
+        }
+    } else {
+        document.write('<meta name="viewport" content="width=640, user-scalable=no">');
+    }
+    </script>
+</body>
+
+</html>
