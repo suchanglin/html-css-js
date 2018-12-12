@@ -1,0 +1,70 @@
+
+
+A是遮罩层，
+B是正常的DOM，
+C是B上的某个元素，这里是链接。场景是点击A的时候A消失，结果点到了C，页面发生了跳转，这显然不是咱想要的~
+
+下面我们来监测点击事件：
+
+var div1 = document.getElementById("div1"); 
+var div2 = document.getElementById('div2'); 
+var con = document.getElementById('console'); 
+function handle(e){ 
+    var tar = e.target, eve = e.type; 
+   var ele = document.createElement("p"); 
+   ele.innerHTML = "target:"+ tar.id + " event:" + eve ; 
+   con.appendChild(ele); 
+   if(tar.id === "div1"){  
+       div1.style.display = "none"; 
+   } 
+} 
+div1.addEventListener("touchend",handle); 
+div1.addEventListener("touchstart",handle); 
+只要你不点击C处，一切都很平静，貌似没有问题，事件顺序是这样的：
+
+target:div1 event:touchstart 
+target:div2 event:touchend 
+但是如果你在C处点击A，你会发现页面跳转了，为了更清楚的看到这个过程，我们为B绑定click事件，即如果B触发了click事件，
+那么说明，在A上的点击最终点到了B上。在上面javascript清单上添加一行代码如下：
+
+div2.addEventListener('click',handle); 
+点击B区域，可以看到页面下方的log记录控制台内出现如下内容：
+
+target:div1 event:touchstarttarget:div1 event:touchendtarget:div2 event:click 
+可见，在div1的事件触发完毕后，div2也就是B区域神奇的捕获到了click事件，而事实上我们只点击了div1。这就是”点透“了，隔山打牛！
+
+点透现象出现的场景：
+
+刚才举例说明了什么是点透，其实点透的出现场景可以总结如下：
+
+A/B两个层上下z轴重叠。
+
+上层的A点击后消失或移开。（这一点很重要）
+
+B元素本身有默认click事件（如a标签） 或 B绑定了click事件。
+
+在以上情况下，点击A/B重叠的部分，就会出现点透的现象。
+
+为什么会出现”点透“现象
+
+在移动端不使用click而用touch事件代替触摸是因为click事件有着明显的延迟，具体touchstart与click的区别如下：
+
+touchstart：在这个DOM（或冒泡到这个DOM）上手指触摸开始即能立即触发
+
+click：在这个DOM（或冒泡到这个DOM）上手指触摸开始，且手指未曾在屏幕上移
+动（某些<a href=”http://www.it165.net/edu/ewl/” target=”_blank” class=”keylink”>浏览器</a>允许移动一个非常小的位移值），且在这个在这
+个dom上手指离开屏幕，且触摸和离开屏 幕之间的间隔时间较短（某些浏览器不检测间隔时间，也会触发click）才能触发
+
+也就是说，事件的触发时间按由早到晚排列为：touchstart 早于 touchend 早于 click。亦即click的触发是有延迟的，这个时间大概在300ms左右。
+
+由于我们在touchstart阶段就已经隐藏了罩层A，当click被触发时候，能够被点击的元素则是其下的B元素，由于B绑定了click事
+件（或者B本身默认存在click事件），所以B的click事件被触发，产生了点透的情况。
+
+解决方案
+
+对于B元素本身没有默认click事件的情况（无a标签等），应统一使用touch事件，统一代码风格，并且由于click事件在移动端的延迟要大很多，不利于用户体
+验，所以关于触摸事件应尽量使用touch相关事件。
+
+对于B元素本身存在默认click事件的情况,应及时取消A元素的默认点击事件，从而阻止click事件的产生。即应在上例的handle函数中添加代码如下：
+
+e.preventDefault(); 
