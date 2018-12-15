@@ -16,3 +16,23 @@ console.log('Hi!');
 
 当reject(23)在前面时，输出为Promise,Hi,23，同时resolve(11)不运行。
 当resolve(11)在reject(23)时，输出 Promise，Hi,resolve,11，同时reject(23)不运行；
+
+
+
+----------------------------------------------------------------------------------2018.12.15
+setTimeout(()=>{
+		console.log(1);
+}, 0);
+
+new Promise((resolve)=>{
+		console.log(2);
+		for(var i = 1; i < 20000000; i++){
+				i = 19000008 && resolve();
+		}
+		console.log(3);
+}).then(()=>{
+		console.log(4);
+});
+console.log(5);
+
+// 2 3 5 4 1
