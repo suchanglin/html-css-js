@@ -84,3 +84,22 @@ window.onscroll = function() {
 		}
 	}
 }
+
+
+-------------------------------------------------------------------------------------------------------------------
+2019.1.24
+关于懒加载
+懒加载的功能并非vue特有，而是webpack特有的，有几种特殊的写法。
+const Foo = resolve => {
+  // require.ensure 是 Webpack 的特殊语法，用来设置 code-split point
+  // （代码分块）
+  require.ensure(['./Foo.vue'], () => {
+    resolve(require('./Foo.vue'))
+  })
+}
+
+也可以简写为
+const Foo = resolve => require(['./Foo.vue'], resolve)
+
+懒加载会独立分包，把对应的组件独立打包。而懒加载组件的css将不会进行提取。但是会对route-view级别的css进行打包，因此建议将共有的css放在route-view级别。
+
