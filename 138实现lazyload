@@ -101,5 +101,6 @@ const Foo = resolve => {
 也可以简写为
 const Foo = resolve => require(['./Foo.vue'], resolve)
 
-懒加载会独立分包，把对应的组件独立打包。而懒加载组件的css将不会进行提取。但是会对route-view级别的css进行打包，因此建议将共有的css放在route-view级别。
+懒加载会独立分包，把对应的组件独立打包。而懒加载组件的css将不会进行提取。但是会对route-view级别的css进行打包，
+因此建议将共有的css放在route-view级别。
 
