@@ -35,37 +35,96 @@ overflow不为visible(overflow为hidden、scroll、auto)
 (2) 清除内部浮动
 
 
+-----------------------------------------------------------------------------2019.02.22
+利用BFC避免外边距折叠
+BFC可能造成外边距折叠，也可以利用它来避免这种情况。BFC产生外边距折叠要满足一个条件：两个相邻元素要处于同一个BFC中。所以，
+若两个相邻元素在不同的BFC中，就能避免外边距折叠。
 
+改进前面的例子：
 
+<div class="container">
+    <p>Sibling 1</p>
+    <p>Sibling 2</p>
+    <p>Sibling 3</p>
+</div>
+对应的CSS：
 
-这个是与上述无关，纯粹添加记录
+.container {
+  background-color: red;
+  overflow: hidden;      /* creates a block formatting context */
+}
+p {
+  background-color: lightgreen;
+  margin: 10px 0;
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>box-html</title>
-    <style type="text/css">
-        *{margin:0;padding:0;}
-        #body-box{
-            width:700px;
-            height:500px;
-            background-color:#FF00FF;
-            /*overflow:hidden;*/
-        }
-        .box-style{
-            width:500px;
-            height:300px;
-            border:10px dashed black;
-            background-color:red;
-            margin:10px 0 0 20px;
-            padding: 10px 10px 10px 10px;
-        }
-    </style>
-</head>
-<body>
-    <div id="body-box">
-        <div class="box-style">你好帅呀</div>
+结果和上面一样，由于外边距折叠，三个相邻P元素之间的垂直距离是10px，这是因为三个 p 标签都从属于同一个BFC。
+
+修改第三个P元素，使之创建一个新的BFC：
+
+<div class="container">
+    <p>Sibling 1</p>
+    <p>Sibling 2</p>
+    <div class="newBFC">
+        <p>Sibling 3</p>
     </div>
-</body>
-</html>
+</div>
+
+
+对应的CSS：
+
+.container {
+    background-color: red;
+    overflow: hidden;       /* creates a block formatting context */
+}
+p {
+    margin: 10px 0;
+    background-color: lightgreen;
+}
+.newBFC {
+    overflow: hidden;       /* creates new block formatting context */
+}
+
+
+
+
+
+BFC包含浮动
+浮动元素是会脱离文档流的(绝对定位元素会脱离文档流)。如果一个没有高度或者height是auto的容器的子元素是浮动元素，则该容器的高度是不会被撑开的。
+我们通常会利用伪元素(:after或者:before)来解决这个问题。BFC能包含浮动，也能解决容器高度不会被撑开的问题。
+
+
+<div class="container">
+    <div>Sibling</div>
+    <div>Sibling</div>
+</div>
+CSS：
+
+.container {
+  background-color: green;
+}
+.container div {
+  float: left;
+  background-color: lightgreen;
+  margin: 10px;
+}
+在上面这个例子中，容器没有任何高度，并且它包不住浮动子元素，容器的高度并不会被撑开。为解决这个问题，可以在容器中创建一个BFC：
+
+.container {
+    overflow: hidden; /* creates block formatting context */
+    background-color: green;
+}
+.container div {
+    float: left;
+    background-color: lightgreen;
+    margin: 10px;
+}
+现在容器可以包住浮动子元素，并且其高度会扩展至包住其子元素，在这个新的BFC中浮动元素又回归到页面的常规流之中了。
+
+
+
+
+使用BFC避免文字环绕
+
+
+在多列布局中使用BFC
