@@ -1,0 +1,9 @@
+html 里面的 role 本质上是增强语义性，当现有的HTML标签不能充分表达语义性的时候，就可以借助role来说明。通常这种情况出现在一些自定义的组件上，
+这样可增强组件的可访问性、可用性和可交互性。
+
+role的作用是描述一个非标准的tag的实际作用。比如用div做button，那么设置div 的 role=“button”，辅助工具就可以认出这实际上是个button
+
+比如
+
+<div role="checkbox" aria-checked="checked"></div>
+辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
