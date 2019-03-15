@@ -1,0 +1,8 @@
+let obj = {
+    name: 'byteDance',
+    getName: function() { return this.name; }
+}
+let func = obj.getName;
+func(); //结果是''  因为执行环境发生了变化
+
+obj.getName() //才是'byteDance'
