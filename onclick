@@ -16,7 +16,7 @@
     // var i = 0;
     var btns = document.getElementsByTagName('button');
     console.log(btns);
-    for (var i = 0; i < btns.length; i++) {
+    for (let i = 0; i < btns.length; i++) {
         console.log(i);
         btns[i].onclick = function() {
             alert(i);
