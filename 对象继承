@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <script>
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    Person.prototype.hi = function() {
+        console.log('Hi,my name is ' + this.name + ",I'm " + this.age + " years old now.");
+    }
+
+    Person.prototype.LEGS_NUM = 2;
+    Person.prototype.ARMS_NUM = 2;
+    Person.prototype.walk = function() {
+        console.log(this.name + " is walking...");
+    };
+
+    function Student(name, age, className) {
+        Person.call(this, name, age);
+        this.className = className;
+    }
+    Student.prototype = Object.create(Person.prototype);
+    Student.prototype.constructor = Student;
+    // 必须在Object.create(Person.prototype)之后创建的实例才生效,如下文bosn.MOUTH_ONE
+    Student.prototype.MOUTH_ONE = 1;
+
+    Student.prototype.hi = function() {
+        console.log('Hi,my name is ' + this.name + ",I'm " + this.age + " years old now,and from " + this.className + ".");
+    };
+
+    Student.prototype.learn = function(subject) {
+        console.log(this.name + ' is learning ' + subject + ' at ' + this.className + '.')
+    };
+
+    // 测试，分别创建各自构造函数的实例
+    var people = new Person('Davy', 32)
+    var bosn = new Student('Bosn', 27, 'Class 3,Grade 2');
+
+    // 测试 构造函数属性和原型prototype的属性
+    console.log(bosn.MOUTH_ONE) // 1 
+    console.log(people.LEGS_NUM) // 2 原型的属性Person.prototype.LEGS_NUM
+    console.log(bosn.LEGS_NUM) // 2 继承了原型的属性
+    console.log(people.age) // 32  构造函数Person的属性
+    console.log(bosn.className) // Class 3,Grade 2  Student自身属性
+    console.log(people.className) // undefined 所以不影响Person创造的实例
+
+    console.log(bosn.MOUTH_ONE) // 1 这个MOUTH_ONE在Student.prototype而不是Student
+    console.log(people.MOUTH_ONE) // undefined 所以不影响Person创造的实例
+
+    // 测试 Student继承了原型Person.prototype的方法
+    console.log(people.walk())
+    console.log(bosn.walk()) // 继承了原型Person.prototype的方法
+
+    // 测试 Person.prototype.hi是否受到Student.prototype.hi修改的影响
+    console.log(people.hi())
+    console.log(bosn.hi()) // Student.prototype.hi修改了部分内容，不影响实例people
+
+    // 测试 构造函数Person的实例people是否拥有Student的原型方法Student.prototype.learn
+    console.log(bosn.learn('math')) // 自身的方法
+    console.log(people.learn('math')) // people.learn is not a function 所以不影响父级实例
+    </script>
+</body>
+</html>
