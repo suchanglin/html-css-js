@@ -1,0 +1,18 @@
+// 将 observerList 封装在 observer 中
+    var observer = (function() {
+        var observerList = [];
+        return {
+            add: function(obj) {
+                observerList.push(obj);
+            },
+            empty: function() {
+                observerList = [];
+            },
+            getCount: function() {
+                return observerList.length;
+            },
+            get: function() {
+                return observerList;
+            }
+        };
+    })();
