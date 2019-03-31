@@ -78,3 +78,60 @@ function debounce(func, wait, immediate) {
 
 若间隔时间 < wait，callNow == false，不执行func函数
 若间隔时间 > wait，callNow == true，执行func函数
+
+-----------------------------------------------------------------------------------------------------------
+2019.03.31
+在线测试：http://demo.nimius.net/debounce_throttle/
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>防抖测试</title>
+    <style type="text/css">
+    div {
+        width: 200px;
+        height: 300px;
+        background: red;
+        overflow: auto
+    }
+    </style>
+</head>
+<body>
+    <div id="container">scroll 事件本身会触发页面的重新渲染，
+    同时 scroll 事件的 handler 又会被高频度的触发, 
+因此事件的 handler 内部不应该有复杂操作，例如 DOM 操作就不应该放在事件处理中。 
+针对此类高频度触发事件问题（例如页面 scroll ，屏幕 resize，
+监听用户输入等），有两种常用的解决方法，防抖和节流。</div>
+    <script type="text/javascript">
+    // 将会包装事件的 debounce 函数
+    function debounce(fn, delay) {
+        // 维护一个 timer
+        let timer = null;
+
+        return function() {
+            // 通过 ‘this’ 和 ‘arguments’ 获取函数的作用域和变量
+            let context = this;
+            let args = arguments;
+
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                fn.apply(context, args);
+            }, delay);
+        }
+    };
+    // 当用户滚动时被调用的函数
+    function foo() {
+        console.log('你刚才拖拽了滚动条！！!');
+
+    }
+
+    // 在 debounce 中包装我们的函数，过 2 秒触发一次
+    let elem = document.getElementById('container');
+    console.log('滚动停止后等待两秒钟')
+    elem.addEventListener('scroll', debounce(foo, 2000));
+    </script>
+</body>
+
+</html>
