@@ -135,3 +135,55 @@ function debounce(func, wait, immediate) {
 </body>
 
 </html>
+
+-------------------------------------------------------------------------------------------------------
+节流
+var throttle = function(func, delay) {
+    var prev = Date.now();
+    return function() {
+        var context = this;
+        var args = arguments;
+        var now = Date.now();
+        if (now - prev >= delay) {
+            func.apply(context, args);
+            prev = Date.now();
+        }
+    }
+}
+
+var throttle = fucntion(func, delay) {
+    var timer = null;
+
+    return funtion() {
+        var context = this;
+        var args = arguments;
+        if (!timer) {
+            timer = setTimeout(function() {
+                func.apply(context, args);
+                timer = null;
+            }, delay);
+        }
+    }
+}
+
+var throttle = function(func, delay) {
+    var timer = null;
+    var startTime = Date.now();
+
+    return function() {
+        var curTime = Date.now();
+        var remaining = delay - (curTime - startTime);
+        var context = this;
+        var args = arguments;
+
+        clearTimeout(timer);
+        if (remaining <= 0) {
+            func.apply(context, args);
+            startTime = Date.now();
+        } else {
+            timer = setTimeout(func, remaining);
+        }
+    }
+}
+
+
