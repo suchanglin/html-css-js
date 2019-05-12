@@ -36,3 +36,19 @@ new Promise((resolve)=>{
 console.log(5);
 
 // 2 3 5 4 1
+
+------------------------------------------------------------------------------------
+
+var run = function(){
+		var _promise = new Promise(function(resolve, reject){
+			setTimeout(function(){
+				var rand = Math.random();
+				if(rand<0.5){
+					resolve("resolve" + rand);
+				}else{
+					reject("reject" + rand);
+				}
+			},1000);
+		});
+		return _promise;
+	}
