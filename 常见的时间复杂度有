@@ -1,0 +1,38 @@
+常见的时间复杂度有
+
+常数阶 O(1)
+对数阶 O(logN)
+线性阶 O(n)
+线性对数阶 O(nlogN)
+平方阶 O(n^2)
+立方阶 O(n^3)
+!k次方阶 O(n^k)
+指数阶O(2^n)
+
+
+
+let i =0; // 语句执行一次 
+while (i < n) { // 语句执行 n 次 
+  console.log(`Current i is ${i}`); //语句执行 n 次
+  i++; // 语句执行 n 次
+}
+根据注释可以得到，算法复杂度为1 + n + n + n = 1 + 3n，去除常数项，为O(n)。
+
+
+
+
+let number = 1; // 语句执行一次 
+while (number < n) { // 语句执行 logN 次
+  number *= 2; // 语句执行 logN 次
+}
+上面代码while的跳出判断条件是number<n，而循环体内number增长速度是(2^n)，所以循环代码实际执行logN次，复杂度为：1 + 2 * logN = O(logN)
+
+
+
+
+for (let i = 0; i < n; i++) {// 语句执行 n 次
+  for (let j = 0; j < n; j++) {// 语句执行 n^2 次
+    console.log('I am here!'); // 语句执行 n^2 次
+  }
+}
+上面代码是两个for循环嵌套，很容易得出复杂度为：O(n^2)
