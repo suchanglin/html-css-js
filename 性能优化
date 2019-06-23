@@ -1,0 +1,29 @@
+document .addEventListener('DOMContentLoaded',function
+
+
+加载页面和静态资源  页面渲染   
+压缩
+
+静态资源的压缩合并     静态资源缓存   使用CDN 让资源加载更快   
+
+ssr   server side render（jsp php,asp都属于后端渲染）
+
+
+css 放前面   JS放后面    
+
+懒加载     图片懒加载  下拉加载   
+
+
+减少dom查询 ，操作    合并dom插入    事件节流（keyup输入）
+
+
+尽早执行操作（DOMContentLoaded）
+
+
+连接名字  链接名称才会改变
+
+
+
+
+
+
