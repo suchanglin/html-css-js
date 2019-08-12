@@ -1,4 +1,0 @@
-1. 元素节点的 nodeValue 是 undefined 或 null
-2. 文本节点的 nodeValue 是文本自身
-3. 属性节点的 nodeValue 是属性的值
-
