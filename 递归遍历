@@ -1,0 +1,44 @@
+var treeNodes = [{
+        id: 1,
+        name: '1',
+        children: [{
+                id: 11,
+                name: '11',
+                children: [{
+                        id: 111,
+                        name: '111',
+                        children: []
+                    },
+                    {
+                        id: 112,
+                        name: '112'
+                    }
+                ]
+            },
+            {
+                id: 12,
+                name: '12',
+                children: []
+            }
+        ],
+        users: []
+    } ];
+
+
+    var parseTreeJson = function(treeNodes){
+      if (!treeNodes || !treeNodes.length) return;
+
+       for (var i = 0, len = treeNodes.length; i < len; i++) {
+
+            var childs = treeNodes[i].children;
+
+            console.log(treeNodes[i].id);
+
+            if(childs && childs.length > 0){
+                 parseTreeJson(childs);
+            }
+       }
+    };
+
+    console.log('------------- 递归实现 ------------------');
+    parseTreeJson(treeNodes);
