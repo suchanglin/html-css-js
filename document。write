@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+</head>
+
+<body>
+    <div>23</div>
+    <div id="app">this is a test message</div>
+    <script>
+        var div = document.getElementById('app')
+        div.addEventListener('click', function () {
+            alert(1);
+        }, false);
+        div.addEventListener('click', function (event) {
+            for (var p in event) {
+                document.write(p + '=>' + event[p] + '<br/>')
+            }
+        }, false);
+        // div.addEventListener('click', function (event) {
+        //         document.write('12')
+        // }, false);
+        // div.addEventListener('click', function () {
+        //     console.log(1);
+        // }, false);
+        // div.addEventListener('click', function () {
+        //     console.log(2);
+        // }, false);
+
+    </script>
+
+</body>
+
+</html>
