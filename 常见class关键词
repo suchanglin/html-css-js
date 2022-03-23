@@ -1,0 +1,58 @@
+布局类：header, footer, container, main, content, aside, page, section
+包裹类：wrap, inner
+区块类：region, block, box
+结构类：hd, bd, ft, top, bottom, left, right, middle, col, row, grid, span
+列表类：list, item, field
+主次类：primary, secondary, sub, minor
+大小类：s, m, l, xl, large, small
+状态类：active, current, checked, hover, fail, success, warn, error, on, off
+导航类：nav, prev, next, breadcrumb, forward, back, indicator, paging, first, last(
+导航：nav
+主导航：mainbav
+子导航：subnav
+顶导航：topnav
+边导航：sidebar
+左导航：leftsidebar
+右导航：rightsidebar
+菜单：menu
+子菜单：submenu
+标题: title
+摘要: summary)
+交互类：tips, alert, modal, pop, panel, tabs, accordion, slide, scroll, overlay,
+星级类：rate, star
+分割类：group, seperate, divider
+等分类：full, half, third, quarter
+表格类：table, tr, td, cell, row
+图片类：img, thumbnail, original, album, gallery
+语言类：cn, en
+论坛类：forum, bbs, topic, post
+方向类：up, down, left, right
+功能
+- 标志：logo
+- 广告：banner
+- 登陆：login
+- 登录条：loginbar
+- 注册：regsiter
+- 搜索：search
+- 功能区：shop
+- 标题：title
+- 加入：joinus
+- 状态：status
+- 按钮：btn
+- 滚动：scroll
+- 标签页：tab
+- 文章列表：list
+- 提示信息：msg
+- 当前的: current
+- 小技巧：tips
+- 图标: icon
+- 注释：note
+- 指南：guild
+- 服务：service
+- 热点：hot
+- 新闻：news
+- 下载：download
+- 投票：vote
+- 合作伙伴：partner
+- 友情链接：link
+- 版权：copyright
