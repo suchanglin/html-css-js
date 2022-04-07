@@ -1,0 +1,304 @@
+
+File
+File 接口提供有关文件的信息，并允许网页中的JavaScript访问其内容。
+File对象可以用来获取某个文件的信息，还可以用来读取这个文件的内容。通常情况下，File对象是来自用户在一个
+<input>
+元素上选择文件后返回的FileList对象，也可以是来自由拖放操作生成的 DataTransfer对象。
+
+用户在选择一个或者多个文件后，可以通过File API访问这些File对象，这些对象被包含在一个FileList对象中。所有type为file的input都有一个files属性，通过Element.files可以返回FileList对象。
+
+<body>
+    <input type="file" id="fileInput" name="file" multiple="multiple" accept="image/*">
+
+    <script>
+        var fileInput = document.querySelector("#fileInput");
+        fileInput.addEventListener("change", function (event) {
+            var file = fileInput.files[0];
+            console.log(fileInput.files)
+        }, false)
+    </script>
+</body>
+￼
+
+￼files有一个length属性和item方法，可以通过files[index]或者files.item(index)获取我们选择的file对象。每个File对象中包含了文件的一些详细信息：
+￼
+根据size属性换算为我们习惯的文件大小单位：
+
+function bytesToSize(bytes) {
+    if (bytes === 0) return '0 B';  
+    var k = 1024,
+        sizes = ['B','KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    // Math.log() 返回数字的自然对数 log(b)/log(a)=loga(b)) 换底公式 log以a为底b的对数
+    // Math.floor(x) -- 向下取整，返回小于或等于x的值
+    // Math.pow(x,y) -- 返回以x的y次幂，等同于x^y的数值表达式
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
+}
+FileReader
+FileReader 对象允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据
+
+其中File对象可以是来自用户在一个元素上选择文件后返回的FileList对象,也可以来自拖放操作生成的 DataTransfer对象,还可以是来自在一个HTMLCanvasElement上执行mozGetAsFile()方法后返回结果
+
+DataURI对象
+先来看一个例子：
+
+<body>
+    <div id="dropbox" class="dropbox">
+        <div class="area">拖动图片到这里</div>
+    </div>
+    <div id="preview"></div>
+
+    <script type="text/javascript">
+        var dropbox = document.querySelector("#dropbox");
+        var preview = document.querySelector("#preview");
+
+        dropbox.addEventListener("dragenter", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, false);
+
+        dropbox.addEventListener("dragover", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, false);
+
+        dropbox.addEventListener("drop", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            var dt = e.dataTransfer;
+            var files = dt.files;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = new RegExp("^image\/");
+                if (!imageType.test(file.type)) continue;
+
+                // 填充选择的图片到展示区
+                var img = document.createElement("img");
+                img.classList.add("obj");
+                img.file = file;
+                preview.appendChild(img);
+
+                // 读取File对象中的内容
+                var reader = new FileReader();
+                reader.onload = (function (aImg) {
+                    return function (e) {
+                        aImg.src = e.target.result;
+                    };
+                })(img);
+                reader.readAsDataURL(file);
+            }
+        }, false);
+    </script>
+</body>
+￼
+
+在上面的例子中，预览图片的src使用了”data:image/png;base64,xxxxxxxxxxxxx”这种形式的字符串（base64），这种字符串叫做DataURI对象，允许将一个小文件进行编码后嵌入到另外一个文档里，格式为：
+
+data:[<MIME type>][;charset=<charset>][;base64],<encoded data>
+这个字符串可以分为三部分，即声明：参数+数据，逗号左边的是各种参数，右边的是数据。
+
+我们可以通过FileReader 的readAsDataURL方法获得文件的DataURI
+
+readAsDataURL()
+开始读取指定的Blob对象或File对象中的内容。当读取操作完成时，readyState属性的值会成为DONE，如果设置了onloadend事件处理程序，则调用之。同时，result属性中将包含一个data:URL格式的字符串以表示所读取文件的内容。
+
+var reader = new FileReader();
+reader.onload = function() {
+    console.log(this.result);
+}
+reader.readAsDataURL(file);
+URL对象
+除了可以使用base64字符串作为内容的DataURI将一个文件嵌入到另外一个文档里，还可以使用URL对象。URL对象用于生成指向File对象或Blob对象的URL
+静态方法：
+URL.createObjectURL()
+该方法会创建一个 DOMString，其中包含一个表示参数中给出的对象的URL。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的URL 对象表示指定的 File 对象或 Blob 对象。
+objectURL = URL.createObjectURL(blob);
+blob
+是用来创建 URL 的 File 对象或者 Blob 对象​
+
+URL.revokeObjectURL()
+该方法用来释放一个之前通过调用 URL.createObjectURL() 创建的已经存在的 URL 对象。当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
+window.URL.revokeObjectURL(objectURL);
+objectURL
+是一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象
+
+同样以拖拽上传图片预览为例子：
+
+<body>
+    <div id="dropbox" class="dropbox">
+        <div class="area">拖动图片到这里</div>
+    </div>
+    <div id="preview"></div>
+
+    <script type="text/javascript">
+        var dropbox = document.querySelector("#dropbox");
+        var preview = document.querySelector("#preview");
+
+        dropbox.addEventListener("dragenter", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, false);
+
+        dropbox.addEventListener("dragover", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, false);
+
+        dropbox.addEventListener("drop", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log(e)
+            var dt = e.dataTransfer;
+            var files = dt.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = new RegExp("^image\/");
+                if (!imageType.test(file.type)) {
+                    console.log(1)
+                    continue;
+                }
+                // 填充选择的图片到展示区
+                var img = document.createElement("img");
+                img.classList.add("obj");
+                img.file = file;
+                img.src = window.URL.createObjectURL(file);
+                preview.appendChild(img);
+            }
+        }, false);
+    </script>
+</body>
+￼
+
+Blob 二进制大对象
+什么是Blob对象？
+实际上上文的File对象只是 Blob 对象的一个更具体的版本，Blob对象 存储着大量的二进制数据，并且 Blob 的 size 和 type 属性，都会被 File 对象所继承。同样FileReader对象也可以从Blob对象中读取数据
+
+一个 Blob对象表示一个不可变的, 原始数据的类似文件对象。Blob表示的数据不一定是一个JavaScript原生格式。 File 接口
+基于Blob，继承
+blob
+功能并将其扩展为支持用户系统上的文件。
+使用
+Blob()
+构造函数可以构造一个Blob从其他非blob对象和数据。要创建一个包含另一个blob的数据子集的blob，使用
+slice()
+方法。
+
+Blob 构造函数生成blob对象
+Blob构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。数组元素可以是任意多个的ArrayBuffer，ArrayBufferView (typed array)， Blob，或者 DOMString对象。例如：
+
+var arr = ['<h1>hello world</h1>'];
+var blob = new Blob(arr, { "type" : "text/xml" }); // the blob
+console.log(blob);
+slice方法生成blob对象
+Blob对象的slice方法，将二进制数据按照字节分块，返回一个新的Blob对象
+
+var newBlob = oldBlob.slice(startingByte, endindByte);
+返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
+
+使用XMLHttpRequest对象，将大文件分割上传：
+
+function upload(blobOrFile) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = function(e) { ... };
+  xhr.send(blobOrFile);
+}
+
+document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+  var blob = this.files[0];
+
+  const BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
+  const SIZE = blob.size;
+
+  var start = 0;
+  var end = BYTES_PER_CHUNK;
+
+  while(start < SIZE) {
+    upload(blob.slice(start, end));
+    start = end;
+    end = start + BYTES_PER_CHUNK;
+  }
+}, false);
+DataURI（base64）对象转blob对象（二进制）
+/**
+ * dataURL to blob, ref to https://gist.github.com/fupslot/5015897
+ * @param dataURI
+ * @returns {Blob}
+ */
+function dataURItoBlob(dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: mimeString});
+}
+// atob() 将base64解码
+// btoa() 将字符串转码为base64
+var str = 'javascript';
+window.btoa(str)
+//转码结果 "amF2YXNjcmlwdA=="
+window.atob("amF2YXNjcmlwdA==")
+//解码结果 "javascript"
+FormData
+用FormData对象,我们可以通过JavaScript用一些键值对来模拟一系列表单控件,我们还可以使用XMLHttpRequest的send()方法来异步的提交这个”表单”.比起普通的ajax,使用FormData的最大优点就是我们可以异步上传一个二进制文件
+
+使用
+new FormData (form? : HTMLFormElement)
+form 参数可选，是一个HTML表单元素，可以包含任何形式的表单控件,包括文件输入框。
+
+方法
+append() 给当前FormData对象添加一个键/值对
+
+void append(DOMString 键, Blob 值, [可选] DOMString 文件名);
+void append(DOMString 键, DOMString 值);
+name 字段名称
+value 字段值，可以是Blob value，或者一个字符串，如果全都不是，则该值会被自动转换成字符串
+使用FromData对象上传文件
+通过HTML表单创建FormData对象提交上传（base64）
+
+<form id="uploadForm" enctype="multipart/form-data">
+    <input id="file" type="file" name="file"/>
+    <button id="upload" type="button">upload</button>
+</form>
+$.ajax({
+    url: '/upload',
+    type: 'POST',
+    cache: false,
+    data: new FormData($('#uploadForm')[0]),
+    processData: false,
+    contentType: false
+}).done(function(res) {
+}).fail(function(res) {});
+构造 FormData 填充二进制文件数据，通过 ajax 的方式进行提交：
+
+var fd = new FormData(); // 构造FromData对象
+var blob = dataURItoBlob(dataURI); // 将base64转为二进制blob对象
+fd.append('file', blob);
+$.ajax({
+    type: 'POST',
+    url: '/upload',
+    data: fd,
+    processData: false, // 不会将 data 参数序列化字符串,必须false
+    contentType: false, // 根据表单 input 提交的数据使用其默认的 contentType，必须false
+    xhr: function() {
+        var xhr = new window.XMLHttpRequest();
+        xhr.upload.addEventListener("progress", function(evt) {
+            if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                console.log('进度', percentComplete);
+            }
+        }, false);
+        return xhr;
+    }
+}).success(function (res) {
+    // 拿到提交的结果
+}).error(function (err) {
+    console.error(err);
+});
+原文地址：https://www.jianshu.com/p/54d5f8df3b97
+
